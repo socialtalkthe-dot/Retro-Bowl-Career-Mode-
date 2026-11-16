@@ -1,0 +1,103 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-pixel: 'Press Start 2P', monospace;
+    --font-display: 'Barlow Condensed', system-ui, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #1d4972;
+    color: #f1f5f9;
+  }
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Crisp pixel canvas rendering for Retro Bowl sprites */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Classic Retro Bowl blue pixel panel bevel */
+.rb-panel {
+  background-color: #13314d;
+  border: 2px solid #3c6fa1;
+  box-shadow: 0 4px 0 #0b1e30;
+}
+
+.rb-panel-inset {
+  background-color: #0e253b;
+  border: 2px solid #2b547c;
+}
+
+.rb-btn-gold {
+  background-color: #eab308;
+  color: #090d16;
+  border: 2px solid #fde047;
+  box-shadow: 0 3px 0 #854d0e;
+  transition: transform 60ms ease, background-color 120ms ease;
+}
+
+.rb-btn-gold:hover:not(:disabled) {
+  background-color: #facc15;
+}
+
+.rb-btn-gold:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #854d0e;
+}
+
+.rb-btn-green {
+  background-color: #228b44;
+  color: #ffffff;
+  border: 2px solid #4ade80;
+  box-shadow: 0 3px 0 #14532d;
+  transition: transform 60ms ease, background-color 120ms ease;
+}
+
+.rb-btn-green:hover:not(:disabled) {
+  background-color: #28a350;
+}
+
+.rb-btn-green:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #14532d;
+}
+
+.rb-btn-slate {
+  background-color: #1f2d42;
+  color: #e2e8f0;
+  border: 2px solid #3c5173;
+  box-shadow: 0 3px 0 #0a101a;
+  transition: transform 60ms ease, background-color 120ms ease;
+}
+
+.rb-btn-slate:hover:not(:disabled) {
+  background-color: #293b56;
+}
+
+.rb-btn-slate:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #0a101a;
+}
