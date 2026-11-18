@@ -235,27 +235,6 @@ function isEligibleReceiver(a: Actor, userPos: Position): boolean {
 }
 
 
-interface OffensivePlay {
-  id: string;
-  name: string;
-  type: 'PASS' | 'RUN';
-  buildRoutes: (los: number) => {
-    rb: { x: number; y: number }[];
-    te: { x: number; y: number }[];
-    wr1: { x: number; y: number }[];
-    wr2: { x: number; y: number }[];
-  };
-}
-
-type DefenseCallId = 'COVER_2' | 'MAN' | 'LB_BLITZ' | 'PREVENT';
-
-interface DefensiveCall {
-  id: DefenseCallId;
-  name: string;
-  cbCushion: number;
-  lbDepth: number;
-  sDepth: number;
-}
 
 // Exact Retro Bowl Paths (pixel offsets from RetroBowl.js divided by 20px/yard)
 // Positive dy breaks INSIDE toward MID_Y; negative dy breaks OUTSIDE toward sideline!

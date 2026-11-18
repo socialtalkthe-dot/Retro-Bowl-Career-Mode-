@@ -80,16 +80,26 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [statusMsg, setStatusMsg] = useState<string | null>(null);
 
   const [displayName, setDisplayName] = useState(
     account?.displayName ||
-      account?.username ||
-      (activeSave ? `${activeSave.player.firstName} ${activeSave.player.lastName}` : fbUser?.displayName ?? 'Player')
+      (activeSave
+        ? `${activeSave.player.firstName} ${activeSave.player.lastName}`
+        : fbUser?.displayName ?? 'Player')
   );
   const [region, setRegion] = useState<GlobalRegion>(account?.region ?? 'US');
   const [countryCode, setCountryCode] = useState(account?.countryCode ?? 'US');
 
   const localLegacy = useMemo(() => calculateLegacyScore(activeSave), [activeSave]);
+
+  useEffect(() => {
+    if (account) {
+      setDisplayName(account.displayName || account.username);
+      setRegion(account.region);
+      setCountryCode(account.countryCode);
+    }
+  }, [account?.id, account?.displayName, account?.region, account?.countryCode]);
 
   const loadRankings = async (reg: 'ALL' | GlobalRegion) => {
     setLoading(true);
@@ -99,12 +109,14 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
         fetchServerRankings(reg),
         fetchGlobalRankings(reg).catch(() => [] as RankingProfile[]),
       ]);
-      const byId = new Map<string, RankingProfile>();
-      serverList.forEach((p) => byId.set(p.uid, p));
+      const mergedMap = new Map<string, RankingProfile>();
+      serverList.forEach((p) => mergedMap.set(p.uid, p));
       fbList.forEach((p) => {
-        if (!byId.has(p.uid)) byId.set(p.uid, p);
+        if (!mergedMap.has(p.uid)) {
+          mergedMap.set(p.uid, p);
+        }
       });
-      setProfiles(Array.from(byId.values()));
+      setProfiles(Array.from(mergedMap.values()));
     } catch {
       setErrorMsg('Unable to load global leaderboard right now.');
     } finally {
@@ -115,14 +127,6 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
   useEffect(() => {
     void loadRankings(regionFilter);
   }, [regionFilter]);
-
-  useEffect(() => {
-    if (account) {
-      setDisplayName(account.displayName || account.username);
-      setRegion(account.region);
-      setCountryCode(account.countryCode);
-    }
-  }, [account?.id, account?.displayName, account?.region, account?.countryCode]);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
@@ -178,16 +182,18 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
     retroAudio.play('click');
     setSyncing(true);
     setErrorMsg(null);
+    setStatusMsg(null);
     try {
       const nextRegion: GlobalRegion = countryCode.toUpperCase() === 'US' ? 'US' : region;
       if (account) {
         const updated = await updateServerAccountProfile({
           displayName,
-          region: nextRegion,
           countryCode,
+          region: nextRegion,
         });
-        if (updated && onAccountUpdated) {
-          onAccountUpdated(updated);
+        if (updated) {
+          onAccountUpdated?.(updated);
+          setStatusMsg('Competitor profile updated.');
         }
       }
       if (fbUser) {
@@ -213,15 +219,20 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
     );
   }, [profiles, board]);
 
-  const myIdentityId = account?.id ?? fbUser?.uid ?? null;
+  const myUid = account?.id ?? fbUser?.uid ?? null;
 
   const myRankIndex = useMemo(() => {
-    if (!myIdentityId) return -1;
-    return sortedProfiles.findIndex((p) => p.uid === myIdentityId);
-  }, [sortedProfiles, myIdentityId]);
+    if (!myUid) return -1;
+    return sortedProfiles.findIndex((p) => p.uid === myUid);
+  }, [sortedProfiles, myUid]);
 
-  const myElo = account?.onlineElo ?? myProfile?.onlineElo ?? 1000;
-  const myLegacy = Math.max(account?.legacyScore ?? 0, myProfile?.legacyScore ?? 0, localLegacy);
+  const displayedElo = account?.onlineElo ?? myProfile?.onlineElo ?? 1000;
+  const displayedLegacy = Math.max(
+    account?.legacyScore ?? 0,
+    myProfile?.legacyScore ?? 0,
+    localLegacy
+  );
+
   const tiers = board === 'ELO' ? ELO_TIERS : LEGACY_TIERS;
 
   return (
@@ -231,6 +242,11 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
           {errorMsg}
         </div>
       )}
+      {statusMsg && (
+        <div className="p-3 bg-emerald-900/50 border-2 border-emerald-400 text-xs font-semibold text-emerald-100">
+          {statusMsg}
+        </div>
+      )}
 
       {/* Header */}
       <div className="rb-panel p-5 flex flex-wrap items-center justify-between gap-4">
@@ -238,7 +254,7 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
           <div className="flex items-center gap-2.5">
             <Globe className="w-5 h-5 text-[#fde047]" />
             <h1 className="font-pixel text-sm sm:text-base text-[#fde047]">
-              GLOBAL RANKINGS & LEAGUES
+              GLOBAL RANKINGS &amp; LEAGUES
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
@@ -247,11 +263,12 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          {account ? (
-            <span className="px-3 py-2 rb-panel-inset text-xs font-bold text-emerald-300">
+          {account && (
+            <span className="px-3 py-1.5 bg-[#0e253b] border border-[#3c6fa1] text-xs font-bold text-[#fde047]">
               Account: {account.username}
             </span>
-          ) : fbUser ? (
+          )}
+          {fbUser ? (
             <button
               type="button"
               onClick={() => {
@@ -261,18 +278,18 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
               className="rb-btn-slate px-3 py-2 text-xs font-bold flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Sign Out
+              Unlink Google
             </button>
-          ) : (
+          ) : !account ? (
             <button
               type="button"
               onClick={handleSignIn}
               className="rb-btn-gold px-4 py-2 text-xs font-pixel flex items-center gap-2"
             >
               <LogIn className="w-4 h-4" />
-              GOOGLE BACKUP SYNC
+              SIGN IN TO RANK
             </button>
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -294,28 +311,28 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
             <div className="rb-panel-inset p-3 space-y-1">
               <div className="text-slate-400 text-[10px] uppercase font-bold">Online ELO</div>
               <div className="font-display text-2xl font-extrabold text-white">
-                {myElo}
+                {displayedElo}
               </div>
               <span
                 className={`inline-block px-2 py-0.5 text-[10px] font-bold border ${getLeagueBadgeColor(
-                  getEloLeague(myElo)
+                  getEloLeague(displayedElo)
                 )}`}
               >
-                {getEloLeague(myElo)}
+                {getEloLeague(displayedElo)}
               </span>
             </div>
 
             <div className="rb-panel-inset p-3 space-y-1">
               <div className="text-slate-400 text-[10px] uppercase font-bold">Career Legacy</div>
               <div className="font-display text-2xl font-extrabold text-white">
-                {myLegacy.toLocaleString()}
+                {displayedLegacy.toLocaleString()}
               </div>
               <span
                 className={`inline-block px-2 py-0.5 text-[10px] font-bold border ${getLeagueBadgeColor(
-                  getCareerLeague(myLegacy)
+                  getCareerLeague(displayedLegacy)
                 )}`}
               >
-                {getCareerLeague(myLegacy)}
+                {getCareerLeague(displayedLegacy)}
               </span>
             </div>
           </div>
@@ -357,12 +374,12 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
                 disabled={syncing}
                 className="w-full rb-btn-green py-2 text-xs font-pixel disabled:opacity-50"
               >
-                {syncing ? 'SAVING...' : 'UPDATE RANKING PROFILE'}
+                {syncing ? 'UPDATING...' : 'UPDATE COMPETITOR PROFILE'}
               </button>
             </form>
           ) : (
             <div className="text-xs text-slate-400 pt-1">
-              Your Online ELO and Career Legacy Score ({localLegacy.toLocaleString()} pts) save automatically to your account.
+              Sign in above to update your Online ELO and Career Legacy Score ({localLegacy.toLocaleString()} pts) on the leaderboard.
             </div>
           )}
         </div>
@@ -450,7 +467,7 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
           <div className="py-12 text-center text-sm text-slate-400">Loading global rankings...</div>
         ) : sortedProfiles.length === 0 ? (
           <div className="py-12 text-center text-sm text-slate-400">
-            No ranked players in this region yet. Sign in above to claim #1!
+            No ranked players in this region yet. Play matches to claim #1!
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -477,7 +494,7 @@ export const RankingsView: React.FC<RankingsViewProps> = ({
               </thead>
               <tbody>
                 {sortedProfiles.map((p, idx) => {
-                  const isMe = myIdentityId === p.uid;
+                  const isMe = myUid === p.uid;
                   const league = board === 'ELO' ? p.onlineLeague : p.careerLeague;
                   const favTeam = getTeamById(p.favoriteTeamId);
                   return (
