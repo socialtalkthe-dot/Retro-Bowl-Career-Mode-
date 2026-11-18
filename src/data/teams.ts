@@ -46,71 +46,177 @@ function makeUniforms(
 import { HIGH_SCHOOL_TEAMS, US_STATES } from './highSchools';
 export { HIGH_SCHOOL_TEAMS, US_STATES };
 
-type CollegeSpec = [string, string, string, string, string, string, string, string, number, number, string];
-// [id, school, mascot, tla, conf, city, primary, secondary, off, def, stadium]
+type CollegeSpec = [
+  string,
+  string,
+  string,
+  string,
+  string,
+  'FBS' | 'FCS',
+  string,
+  string,
+  string,
+  number,
+  number,
+  string
+];
+// [id, school, mascot, tla, conf, subdivision, city, primary, secondary, off, def, stadium]
 const COLLEGE_SPECS: CollegeSpec[] = [
-  // SEC (12)
-  ['col_uga', 'Georgia', 'Bulldogs', 'UGA', 'SEC', 'Athens, GA', '#ba0c2f', '#000000', 10, 10, 'Sanford Stadium'],
-  ['col_bama', 'Alabama', 'Crimson Tide', 'ALA', 'SEC', 'Tuscaloosa, AL', '#9e1b32', '#ffffff', 9, 9, 'Bryant-Denny Stadium'],
-  ['col_tex', 'Texas', 'Longhorns', 'TEX', 'SEC', 'Austin, TX', '#bf5700', '#ffffff', 9, 9, 'DKR Memorial Stadium'],
-  ['col_lsu', 'LSU', 'Tigers', 'LSU', 'SEC', 'Baton Rouge, LA', '#461d7c', '#fdd023', 9, 8, 'Tiger Stadium'],
-  ['col_tenn', 'Tennessee', 'Volunteers', 'TEN', 'SEC', 'Knoxville, TN', '#ff8200', '#ffffff', 9, 8, 'Neyland Stadium'],
-  ['col_miss', 'Ole Miss', 'Rebels', 'MISS', 'SEC', 'Oxford, MS', '#ce1126', '#14213d', 9, 7, 'Vaught-Hemingway'],
-  ['col_tamu', 'Texas A&M', 'Aggies', 'TAMU', 'SEC', 'College Station, TX', '#500000', '#ffffff', 8, 8, 'Kyle Field'],
-  ['col_ou', 'Oklahoma', 'Sooners', 'OU', 'SEC', 'Norman, OK', '#841617', '#fdf9d8', 8, 8, 'Memorial Stadium'],
-  ['col_uf', 'Florida', 'Gators', 'UF', 'SEC', 'Gainesville, FL', '#0021a5', '#fa4616', 7, 7, 'The Swamp'],
-  ['col_aub', 'Auburn', 'Tigers', 'AUB', 'SEC', 'Auburn, AL', '#0c2340', '#e87722', 7, 8, 'Jordan-Hare Stadium'],
-  ['col_sc', 'South Carolina', 'Gamecocks', 'SC', 'SEC', 'Columbia, SC', '#73000a', '#000000', 7, 8, 'Williams-Brice'],
-  ['col_mizz', 'Missouri', 'Tigers', 'MIZ', 'SEC', 'Columbia, MO', '#f1b82d', '#000000', 8, 7, 'Faurot Field'],
+  // SEC (FBS)
+  ['col_uga', 'Georgia', 'Bulldogs', 'UGA', 'SEC', 'FBS', 'Athens, GA', '#ba0c2f', '#000000', 10, 10, 'Sanford Stadium'],
+  ['col_bama', 'Alabama', 'Crimson Tide', 'ALA', 'SEC', 'FBS', 'Tuscaloosa, AL', '#9e1b32', '#ffffff', 9, 9, 'Bryant-Denny Stadium'],
+  ['col_tex', 'Texas', 'Longhorns', 'TEX', 'SEC', 'FBS', 'Austin, TX', '#bf5700', '#ffffff', 9, 9, 'DKR Memorial Stadium'],
+  ['col_lsu', 'LSU', 'Tigers', 'LSU', 'SEC', 'FBS', 'Baton Rouge, LA', '#461d7c', '#fdd023', 9, 8, 'Tiger Stadium'],
+  ['col_tenn', 'Tennessee', 'Volunteers', 'TEN', 'SEC', 'FBS', 'Knoxville, TN', '#ff8200', '#ffffff', 9, 8, 'Neyland Stadium'],
+  ['col_miss', 'Ole Miss', 'Rebels', 'MISS', 'SEC', 'FBS', 'Oxford, MS', '#ce1126', '#14213d', 9, 7, 'Vaught-Hemingway'],
+  ['col_tamu', 'Texas A&M', 'Aggies', 'TAMU', 'SEC', 'FBS', 'College Station, TX', '#500000', '#ffffff', 8, 8, 'Kyle Field'],
+  ['col_ou', 'Oklahoma', 'Sooners', 'OU', 'SEC', 'FBS', 'Norman, OK', '#841617', '#fdf9d8', 8, 8, 'Memorial Stadium'],
+  ['col_uf', 'Florida', 'Gators', 'UF', 'SEC', 'FBS', 'Gainesville, FL', '#0021a5', '#fa4616', 7, 7, 'The Swamp'],
+  ['col_aub', 'Auburn', 'Tigers', 'AUB', 'SEC', 'FBS', 'Auburn, AL', '#0c2340', '#e87722', 7, 8, 'Jordan-Hare Stadium'],
+  ['col_sc', 'South Carolina', 'Gamecocks', 'SC', 'SEC', 'FBS', 'Columbia, SC', '#73000a', '#000000', 7, 8, 'Williams-Brice'],
+  ['col_mizz', 'Missouri', 'Tigers', 'MIZ', 'SEC', 'FBS', 'Columbia, MO', '#f1b82d', '#000000', 8, 7, 'Faurot Field'],
 
-  // Big Ten (12)
-  ['col_osu', 'Ohio State', 'Buckeyes', 'OSU', 'Big Ten', 'Columbus, OH', '#bb0000', '#666666', 10, 9, 'Ohio Stadium'],
-  ['col_ore', 'Oregon', 'Ducks', 'ORE', 'Big Ten', 'Eugene, OR', '#154733', '#fee123', 10, 8, 'Autzen Stadium'],
-  ['col_mich', 'Michigan', 'Wolverines', 'MICH', 'Big Ten', 'Ann Arbor, MI', '#00274c', '#ffcb05', 8, 10, 'Michigan Stadium'],
-  ['col_psu', 'Penn State', 'Nittany Lions', 'PSU', 'Big Ten', 'State College, PA', '#041e42', '#ffffff', 8, 9, 'Beaver Stadium'],
-  ['col_usc', 'USC', 'Trojans', 'USC', 'Big Ten', 'Los Angeles, CA', '#990000', '#ffc72c', 9, 7, 'LA Memorial Coliseum'],
-  ['col_wash', 'Washington', 'Huskies', 'WASH', 'Big Ten', 'Seattle, WA', '#4b2e83', '#b7a57a', 8, 7, 'Husky Stadium'],
-  ['col_iowa', 'Iowa', 'Hawkeyes', 'IOWA', 'Big Ten', 'Iowa City, IA', '#000000', '#ffcd00', 6, 9, 'Kinnick Stadium'],
-  ['col_wisc', 'Wisconsin', 'Badgers', 'WIS', 'Big Ten', 'Madison, WI', '#c5050c', '#ffffff', 7, 8, 'Camp Randall'],
-  ['col_neb', 'Nebraska', 'Cornhuskers', 'NEB', 'Big Ten', 'Lincoln, NE', '#e41c38', '#ffffff', 7, 7, 'Memorial Stadium'],
-  ['col_ind', 'Indiana', 'Hoosiers', 'IND', 'Big Ten', 'Bloomington, IN', '#990000', '#eeedeb', 8, 8, 'Memorial Stadium'],
-  ['col_msu', 'Michigan State', 'Spartans', 'MSU', 'Big Ten', 'East Lansing, MI', '#18453b', '#ffffff', 7, 7, 'Spartan Stadium'],
-  ['col_ucla', 'UCLA', 'Bruins', 'UCLA', 'Big Ten', 'Los Angeles, CA', '#2774ae', '#ffd100', 7, 7, 'Rose Bowl'],
+  // Big Ten (FBS)
+  ['col_osu', 'Ohio State', 'Buckeyes', 'OSU', 'Big Ten', 'FBS', 'Columbus, OH', '#bb0000', '#666666', 10, 9, 'Ohio Stadium'],
+  ['col_ore', 'Oregon', 'Ducks', 'ORE', 'Big Ten', 'FBS', 'Eugene, OR', '#154733', '#fee123', 10, 8, 'Autzen Stadium'],
+  ['col_mich', 'Michigan', 'Wolverines', 'MICH', 'Big Ten', 'FBS', 'Ann Arbor, MI', '#00274c', '#ffcb05', 8, 10, 'Michigan Stadium'],
+  ['col_psu', 'Penn State', 'Nittany Lions', 'PSU', 'Big Ten', 'FBS', 'State College, PA', '#041e42', '#ffffff', 8, 9, 'Beaver Stadium'],
+  ['col_usc', 'USC', 'Trojans', 'USC', 'Big Ten', 'FBS', 'Los Angeles, CA', '#990000', '#ffc72c', 9, 7, 'LA Memorial Coliseum'],
+  ['col_wash', 'Washington', 'Huskies', 'WASH', 'Big Ten', 'FBS', 'Seattle, WA', '#4b2e83', '#b7a57a', 8, 7, 'Husky Stadium'],
+  ['col_iowa', 'Iowa', 'Hawkeyes', 'IOWA', 'Big Ten', 'FBS', 'Iowa City, IA', '#000000', '#ffcd00', 6, 9, 'Kinnick Stadium'],
+  ['col_wisc', 'Wisconsin', 'Badgers', 'WIS', 'Big Ten', 'FBS', 'Madison, WI', '#c5050c', '#ffffff', 7, 8, 'Camp Randall'],
+  ['col_neb', 'Nebraska', 'Cornhuskers', 'NEB', 'Big Ten', 'FBS', 'Lincoln, NE', '#e41c38', '#ffffff', 7, 7, 'Memorial Stadium'],
+  ['col_ind', 'Indiana', 'Hoosiers', 'IND', 'Big Ten', 'FBS', 'Bloomington, IN', '#990000', '#eeedeb', 8, 8, 'Memorial Stadium'],
+  ['col_msu', 'Michigan State', 'Spartans', 'MSU', 'Big Ten', 'FBS', 'East Lansing, MI', '#18453b', '#ffffff', 7, 7, 'Spartan Stadium'],
+  ['col_ucla', 'UCLA', 'Bruins', 'UCLA', 'Big Ten', 'FBS', 'Los Angeles, CA', '#2774ae', '#ffd100', 7, 7, 'Rose Bowl'],
 
-  // ACC (10)
-  ['col_clem', 'Clemson', 'Tigers', 'CLEM', 'ACC', 'Clemson, SC', '#f56600', '#522d80', 9, 9, 'Memorial Stadium'],
-  ['col_mia', 'Miami', 'Hurricanes', 'MIA', 'ACC', 'Coral Gables, FL', '#f47321', '#005030', 9, 7, 'Hard Rock Stadium'],
-  ['col_fsu', 'Florida State', 'Seminoles', 'FSU', 'ACC', 'Tallahassee, FL', '#782f40', '#ceb888', 8, 8, 'Doak Campbell'],
-  ['col_smu', 'SMU', 'Mustangs', 'SMU', 'ACC', 'Dallas, TX', '#cc0035', '#0033a0', 9, 7, 'Ford Stadium'],
-  ['col_lou', 'Louisville', 'Cardinals', 'LOU', 'ACC', 'Louisville, KY', '#ad0000', '#000000', 8, 7, 'L&N Stadium'],
-  ['col_vt', 'Virginia Tech', 'Hokies', 'VT', 'ACC', 'Blacksburg, VA', '#630031', '#cf4420', 7, 8, 'Lane Stadium'],
-  ['col_unc', 'North Carolina', 'Tar Heels', 'UNC', 'ACC', 'Chapel Hill, NC', '#7bafd4', '#ffffff', 8, 6, 'Kenan Stadium'],
-  ['col_ncst', 'NC State', 'Wolfpack', 'NCST', 'ACC', 'Raleigh, NC', '#cc0000', '#000000', 7, 7, 'Carter-Finley'],
-  ['col_gt', 'Georgia Tech', 'Yellow Jackets', 'GT', 'ACC', 'Atlanta, GA', '#b3a369', '#003057', 7, 7, 'Bobby Dodd'],
-  ['col_stan', 'Stanford', 'Cardinal', 'STAN', 'ACC', 'Stanford, CA', '#8c1515', '#ffffff', 6, 7, 'Stanford Stadium'],
+  // ACC (FBS)
+  ['col_clem', 'Clemson', 'Tigers', 'CLEM', 'ACC', 'FBS', 'Clemson, SC', '#f56600', '#522d80', 9, 9, 'Memorial Stadium'],
+  ['col_mia', 'Miami', 'Hurricanes', 'MIA', 'ACC', 'FBS', 'Coral Gables, FL', '#f47321', '#005030', 9, 7, 'Hard Rock Stadium'],
+  ['col_fsu', 'Florida State', 'Seminoles', 'FSU', 'ACC', 'FBS', 'Tallahassee, FL', '#782f40', '#ceb888', 8, 8, 'Doak Campbell'],
+  ['col_smu', 'SMU', 'Mustangs', 'SMU', 'ACC', 'FBS', 'Dallas, TX', '#cc0035', '#0033a0', 9, 7, 'Ford Stadium'],
+  ['col_lou', 'Louisville', 'Cardinals', 'LOU', 'ACC', 'FBS', 'Louisville, KY', '#ad0000', '#000000', 8, 7, 'L&N Stadium'],
+  ['col_vt', 'Virginia Tech', 'Hokies', 'VT', 'ACC', 'FBS', 'Blacksburg, VA', '#630031', '#cf4420', 7, 8, 'Lane Stadium'],
+  ['col_unc', 'North Carolina', 'Tar Heels', 'UNC', 'ACC', 'FBS', 'Chapel Hill, NC', '#7bafd4', '#ffffff', 8, 6, 'Kenan Stadium'],
+  ['col_ncst', 'NC State', 'Wolfpack', 'NCST', 'ACC', 'FBS', 'Raleigh, NC', '#cc0000', '#000000', 7, 7, 'Carter-Finley'],
+  ['col_gt', 'Georgia Tech', 'Yellow Jackets', 'GT', 'ACC', 'FBS', 'Atlanta, GA', '#b3a369', '#003057', 7, 7, 'Bobby Dodd'],
+  ['col_stan', 'Stanford', 'Cardinal', 'STAN', 'ACC', 'FBS', 'Stanford, CA', '#8c1515', '#ffffff', 6, 7, 'Stanford Stadium'],
 
-  // Big 12 (10)
-  ['col_byu', 'BYU', 'Cougars', 'BYU', 'Big 12', 'Provo, UT', '#002e5d', '#ffffff', 8, 8, 'LaVell Edwards'],
-  ['col_asu', 'Arizona State', 'Sun Devils', 'ASU', 'Big 12', 'Tempe, AZ', '#8c1d40', '#ffc627', 8, 8, 'Mountain America'],
-  ['col_isu', 'Iowa State', 'Cyclones', 'ISU', 'Big 12', 'Ames, IA', '#c8102e', '#f1be48', 8, 8, 'Jack Trice Stadium'],
-  ['col_colo', 'Colorado', 'Buffaloes', 'COLO', 'Big 12', 'Boulder, CO', '#cfb87c', '#000000', 8, 7, 'Folsom Field'],
-  ['col_ksu', 'Kansas State', 'Wildcats', 'KSU', 'Big 12', 'Manhattan, KS', '#512888', '#d1d1d1', 8, 8, 'Bill Snyder Family'],
-  ['col_utah', 'Utah', 'Utes', 'UTAH', 'Big 12', 'Salt Lake City, UT', '#cc0000', '#ffffff', 7, 9, 'Rice-Eccles'],
-  ['col_tcu', 'TCU', 'Horned Frogs', 'TCU', 'Big 12', 'Fort Worth, TX', '#4d1979', '#a3a9ac', 8, 7, 'Amon G. Carter'],
-  ['col_ttu', 'Texas Tech', 'Red Raiders', 'TTU', 'Big 12', 'Lubbock, TX', '#cc0000', '#000000', 8, 6, 'Jones AT&T'],
-  ['col_okst', 'Oklahoma State', 'Cowboys', 'OKST', 'Big 12', 'Stillwater, OK', '#fe5c00', '#000000', 8, 7, 'Boone Pickens'],
-  ['col_bay', 'Baylor', 'Bears', 'BAY', 'Big 12', 'Waco, TX', '#154734', '#ffb81c', 7, 7, 'McLane Stadium'],
+  // Big 12 (FBS)
+  ['col_byu', 'BYU', 'Cougars', 'BYU', 'Big 12', 'FBS', 'Provo, UT', '#002e5d', '#ffffff', 8, 8, 'LaVell Edwards'],
+  ['col_asu', 'Arizona State', 'Sun Devils', 'ASU', 'Big 12', 'FBS', 'Tempe, AZ', '#8c1d40', '#ffc627', 8, 8, 'Mountain America'],
+  ['col_isu', 'Iowa State', 'Cyclones', 'ISU', 'Big 12', 'FBS', 'Ames, IA', '#c8102e', '#f1be48', 8, 8, 'Jack Trice Stadium'],
+  ['col_colo', 'Colorado', 'Buffaloes', 'COLO', 'Big 12', 'FBS', 'Boulder, CO', '#cfb87c', '#000000', 8, 7, 'Folsom Field'],
+  ['col_ksu', 'Kansas State', 'Wildcats', 'KSU', 'Big 12', 'FBS', 'Manhattan, KS', '#512888', '#d1d1d1', 8, 8, 'Bill Snyder Family'],
+  ['col_utah', 'Utah', 'Utes', 'UTAH', 'Big 12', 'FBS', 'Salt Lake City, UT', '#cc0000', '#ffffff', 7, 9, 'Rice-Eccles'],
+  ['col_tcu', 'TCU', 'Horned Frogs', 'TCU', 'Big 12', 'FBS', 'Fort Worth, TX', '#4d1979', '#a3a9ac', 8, 7, 'Amon G. Carter'],
+  ['col_ttu', 'Texas Tech', 'Red Raiders', 'TTU', 'Big 12', 'FBS', 'Lubbock, TX', '#cc0000', '#000000', 8, 6, 'Jones AT&T'],
+  ['col_okst', 'Oklahoma State', 'Cowboys', 'OKST', 'Big 12', 'FBS', 'Stillwater, OK', '#fe5c00', '#000000', 8, 7, 'Boone Pickens'],
+  ['col_bay', 'Baylor', 'Bears', 'BAY', 'Big 12', 'FBS', 'Waco, TX', '#154734', '#ffb81c', 7, 7, 'McLane Stadium'],
 
-  // Independents / Mountain West / G5 Standouts (4)
-  ['col_nd', 'Notre Dame', 'Fighting Irish', 'ND', 'Indep.', 'South Bend, IN', '#0c2340', '#c99700', 9, 9, 'Notre Dame Stadium'],
-  ['col_bsu', 'Boise State', 'Broncos', 'BSU', 'MW', 'Boise, ID', '#0033a0', '#d64309', 9, 7, 'Albertsons Stadium'],
-  ['col_tul', 'Tulane', 'Green Wave', 'TUL', 'AAC', 'New Orleans, LA', '#006747', '#418fde', 8, 7, 'Yulman Stadium'],
-  ['col_mem', 'Memphis', 'Tigers', 'MEM', 'AAC', 'Memphis, TN', '#003087', '#898d8d', 8, 7, 'Simmons Bank Liberty'],
+  // Pac-12 & FBS Independents
+  ['col_orst', 'Oregon State', 'Beavers', 'ORST', 'Pac-12', 'FBS', 'Corvallis, OR', '#dc4405', '#000000', 7, 7, 'Reser Stadium'],
+  ['col_wsu', 'Washington State', 'Cougars', 'WSU', 'Pac-12', 'FBS', 'Pullman, WA', '#981e32', '#5e6a71', 8, 6, 'Martin Stadium'],
+  ['col_nd', 'Notre Dame', 'Fighting Irish', 'ND', 'Indep.', 'FBS', 'South Bend, IN', '#0c2340', '#c99700', 9, 9, 'Notre Dame Stadium'],
+  ['col_uconn', 'UConn', 'Huskies', 'CONN', 'Indep.', 'FBS', 'Storrs, CT', '#000e2f', '#ffffff', 6, 7, 'Rentschler Field'],
+  ['col_umass', 'UMass', 'Minutemen', 'UMAS', 'Indep.', 'FBS', 'Amherst, MA', '#881c1c', '#ffffff', 5, 5, 'McGuirk Stadium'],
+
+  // Mountain West (FBS)
+  ['col_bsu', 'Boise State', 'Broncos', 'BSU', 'MW', 'FBS', 'Boise, ID', '#0033a0', '#d64309', 9, 7, 'Albertsons Stadium'],
+  ['col_unlv', 'UNLV', 'Rebels', 'UNLV', 'MW', 'FBS', 'Las Vegas, NV', '#cf0a2c', '#666666', 8, 7, 'Allegiant Stadium'],
+  ['col_fres', 'Fresno State', 'Bulldogs', 'FRES', 'MW', 'FBS', 'Fresno, CA', '#db0032', '#13284c', 7, 7, 'Valley Children Stadium'],
+  ['col_csu', 'Colorado State', 'Rams', 'CSU', 'MW', 'FBS', 'Fort Collins, CO', '#1e4d2b', '#c8c372', 7, 6, 'Canvas Stadium'],
+  ['col_sdsu', 'San Diego State', 'Aztecs', 'SDSU', 'MW', 'FBS', 'San Diego, CA', '#a6192e', '#000000', 6, 7, 'Snapdragon Stadium'],
+  ['col_afa', 'Air Force', 'Falcons', 'AFA', 'MW', 'FBS', 'Colorado Springs, CO', '#003087', '#ffffff', 7, 7, 'Falcon Stadium'],
+  ['col_sjsu', 'San Jose State', 'Spartans', 'SJSU', 'MW', 'FBS', 'San Jose, CA', '#0055a2', '#e5a823', 7, 6, 'CEFCU Stadium'],
+  ['col_wyo', 'Wyoming', 'Cowboys', 'WYO', 'MW', 'FBS', 'Laramie, WY', '#492f24', '#ffc425', 6, 7, 'War Memorial Stadium'],
+
+  // AAC (FBS)
+  ['col_tul', 'Tulane', 'Green Wave', 'TUL', 'AAC', 'FBS', 'New Orleans, LA', '#006747', '#418fde', 8, 7, 'Yulman Stadium'],
+  ['col_mem', 'Memphis', 'Tigers', 'MEM', 'AAC', 'FBS', 'Memphis, TN', '#003087', '#898d8d', 8, 7, 'Simmons Bank Liberty'],
+  ['col_army', 'Army', 'Black Knights', 'ARMY', 'AAC', 'FBS', 'West Point, NY', '#d4bf91', '#000000', 8, 7, 'Michie Stadium'],
+  ['col_navy', 'Navy', 'Midshipmen', 'NAVY', 'AAC', 'FBS', 'Annapolis, MD', '#00205b', '#c5b783', 7, 7, 'Navy-Marine Corps'],
+  ['col_utsa', 'UTSA', 'Roadrunners', 'UTSA', 'AAC', 'FBS', 'San Antonio, TX', '#0c2340', '#f15a22', 8, 6, 'Alamodome'],
+  ['col_ecu', 'East Carolina', 'Pirates', 'ECU', 'AAC', 'FBS', 'Greenville, NC', '#592a8a', '#fdc82f', 7, 6, 'Dowdy-Ficklen'],
+  ['col_usf', 'South Florida', 'Bulls', 'USF', 'AAC', 'FBS', 'Tampa, FL', '#006747', '#cfc493', 7, 6, 'Raymond James'],
+  ['col_unt', 'North Texas', 'Mean Green', 'UNT', 'AAC', 'FBS', 'Denton, TX', '#00853e', '#ffffff', 8, 5, 'DATCU Stadium'],
+
+  // Sun Belt (FBS)
+  ['col_jmu', 'James Madison', 'Dukes', 'JMU', 'Sun Belt', 'FBS', 'Harrisonburg, VA', '#450084', '#cbb677', 8, 7, 'Bridgeforth Stadium'],
+  ['col_app', 'App State', 'Mountaineers', 'APP', 'Sun Belt', 'FBS', 'Boone, NC', '#222222', '#ffcc00', 7, 7, 'Kidd Brewer Stadium'],
+  ['col_ccu', 'Coastal Carolina', 'Chanticleers', 'CCU', 'Sun Belt', 'FBS', 'Conway, SC', '#006f71', '#a27752', 7, 6, 'Brooks Stadium'],
+  ['col_ull', 'Louisiana', 'Ragin Cajuns', 'ULL', 'Sun Belt', 'FBS', 'Lafayette, LA', '#ce181e', '#ffffff', 8, 6, 'Cajun Field'],
+  ['col_mrsh', 'Marshall', 'Thundering Herd', 'MRSH', 'Sun Belt', 'FBS', 'Huntington, WV', '#00b140', '#ffffff', 7, 7, 'Joan C. Edwards'],
+  ['col_troy', 'Troy', 'Trojans', 'TROY', 'Sun Belt', 'FBS', 'Troy, AL', '#8a2432', '#b3b5b8', 6, 7, 'Veterans Memorial'],
+  ['col_gaso', 'Georgia Southern', 'Eagles', 'GASO', 'Sun Belt', 'FBS', 'Statesboro, GA', '#011e41', '#ffffff', 7, 6, 'Paulson Stadium'],
+  ['col_txst', 'Texas State', 'Bobcats', 'TXST', 'Sun Belt', 'FBS', 'San Marcos, TX', '#501214', '#8d734a', 7, 6, 'UFCU Stadium'],
+
+  // MAC (FBS)
+  ['col_tol', 'Toledo', 'Rockets', 'TOL', 'MAC', 'FBS', 'Toledo, OH', '#15397f', '#ffda00', 7, 7, 'Glass Bowl'],
+  ['col_ohio', 'Ohio', 'Bobcats', 'OHIO', 'MAC', 'FBS', 'Athens, OH', '#00694e', '#ffffff', 7, 7, 'Peden Stadium'],
+  ['col_mioh', 'Miami (OH)', 'RedHawks', 'MOH', 'MAC', 'FBS', 'Oxford, OH', '#b61e2e', '#ffffff', 7, 7, 'Yager Stadium'],
+  ['col_niu', 'Northern Illinois', 'Huskies', 'NIU', 'MAC', 'FBS', 'DeKalb, IL', '#ba0c2f', '#000000', 6, 7, 'Huskie Stadium'],
+  ['col_wmu', 'Western Michigan', 'Broncos', 'WMU', 'MAC', 'FBS', 'Kalamazoo, MI', '#6c4023', '#b5a167', 6, 6, 'Waldo Stadium'],
+  ['col_bgsu', 'Bowling Green', 'Falcons', 'BGSU', 'MAC', 'FBS', 'Bowling Green, OH', '#fe5000', '#4f2c1d', 7, 6, 'Doyt Perry Stadium'],
+  ['col_buff', 'Buffalo', 'Bulls', 'UB', 'MAC', 'FBS', 'Buffalo, NY', '#005bbb', '#ffffff', 6, 6, 'UB Stadium'],
+
+  // C-USA (FBS)
+  ['col_lib', 'Liberty', 'Flames', 'LIB', 'C-USA', 'FBS', 'Lynchburg, VA', '#002d62', '#c41230', 8, 7, 'Williams Stadium'],
+  ['col_wku', 'Western Kentucky', 'Hilltoppers', 'WKU', 'C-USA', 'FBS', 'Bowling Green, KY', '#c60c30', '#ffffff', 8, 6, 'Houchens-Smith'],
+  ['col_jvst', 'Jacksonville State', 'Gamecocks', 'JVST', 'C-USA', 'FBS', 'Jacksonville, AL', '#cc0000', '#ffffff', 7, 6, 'AmFirst Stadium'],
+  ['col_shsu', 'Sam Houston', 'Bearkats', 'SHSU', 'C-USA', 'FBS', 'Huntsville, TX', '#fe5100', '#ffffff', 6, 7, 'Bowers Stadium'],
+  ['col_latech', 'LA Tech', 'Bulldogs', 'LT', 'C-USA', 'FBS', 'Ruston, LA', '#002f8b', '#e31b23', 6, 6, 'Joe Aillet Stadium'],
+  ['col_fiu', 'FIU', 'Panthers', 'FIU', 'C-USA', 'FBS', 'Miami, FL', '#081e3f', '#b6862c', 6, 5, 'Pitbull Stadium'],
+
+  // FCS — Missouri Valley Football Conference (MVFC)
+  ['col_ndsu', 'North Dakota State', 'Bison', 'NDSU', 'MVFC', 'FCS', 'Fargo, ND', '#0a5640', '#ffc72a', 8, 8, 'Fargodome'],
+  ['col_sdsu_fcs', 'South Dakota State', 'Jackrabbits', 'SDS', 'MVFC', 'FCS', 'Brookings, SD', '#0033a0', '#ffd100', 8, 8, 'Dana J. Dykhouse'],
+  ['col_usd', 'South Dakota', 'Coyotes', 'USD', 'MVFC', 'FCS', 'Vermillion, SD', '#ad0000', '#ffffff', 7, 7, 'DakotaDome'],
+  ['col_ilst', 'Illinois State', 'Redbirds', 'ILST', 'MVFC', 'FCS', 'Normal, IL', '#ce1126', '#ffffff', 6, 6, 'Hancock Stadium'],
+  ['col_uni', 'Northern Iowa', 'Panthers', 'UNI', 'MVFC', 'FCS', 'Cedar Falls, IA', '#4b116f', '#ffcc00', 6, 6, 'UNI-Dome'],
+  ['col_ysu', 'Youngstown State', 'Penguins', 'YSU', 'MVFC', 'FCS', 'Youngstown, OH', '#c8102e', '#ffffff', 6, 6, 'Stambaugh Stadium'],
+
+  // FCS — Big Sky
+  ['col_mont', 'Montana', 'Grizzlies', 'MONT', 'Big Sky', 'FCS', 'Missoula, MT', '#660033', '#999999', 7, 7, 'Washington-Grizzly'],
+  ['col_mtst', 'Montana State', 'Bobcats', 'MTST', 'Big Sky', 'FCS', 'Bozeman, MT', '#00205b', '#b9975b', 8, 7, 'Bobcat Stadium'],
+  ['col_ucd', 'UC Davis', 'Aggies', 'UCD', 'Big Sky', 'FCS', 'Davis, CA', '#022851', '#ffbf00', 7, 6, 'UC Davis Health'],
+  ['col_ewu', 'Eastern Washington', 'Eagles', 'EWU', 'Big Sky', 'FCS', 'Cheney, WA', '#a10022', '#ffffff', 7, 5, 'Roos Field'],
+  ['col_web', 'Weber State', 'Wildcats', 'WEB', 'Big Sky', 'FCS', 'Ogden, UT', '#492365', '#ffffff', 6, 6, 'Stewart Stadium'],
+  ['col_idho', 'Idaho', 'Vandals', 'IDHO', 'Big Sky', 'FCS', 'Moscow, ID', '#b3a369', '#000000', 7, 6, 'Kibbie Dome'],
+
+  // FCS — CAA
+  ['col_vill', 'Villanova', 'Wildcats', 'VILL', 'CAA', 'FCS', 'Villanova, PA', '#00205b', '#13b5ea', 7, 7, 'Villanova Stadium'],
+  ['col_del', 'Delaware', 'Blue Hens', 'DEL', 'CAA', 'FCS', 'Newark, DE', '#00539f', '#ffd200', 7, 6, 'Delaware Stadium'],
+  ['col_rich', 'Richmond', 'Spiders', 'RICH', 'CAA', 'FCS', 'Richmond, VA', '#990000', '#000066', 6, 7, 'Robins Stadium'],
+  ['col_wm', 'William & Mary', 'Tribe', 'W&M', 'CAA', 'FCS', 'Williamsburg, VA', '#115740', '#b9975b', 6, 6, 'Zable Stadium'],
+  ['col_nh', 'New Hampshire', 'Wildcats', 'UNH', 'CAA', 'FCS', 'Durham, NH', '#003591', '#ffffff', 6, 6, 'Wildcat Stadium'],
+
+  // FCS — Ivy League
+  ['col_harv', 'Harvard', 'Crimson', 'HARV', 'Ivy', 'FCS', 'Cambridge, MA', '#a51c30', '#1e1e1e', 6, 6, 'Harvard Stadium'],
+  ['col_yale', 'Yale', 'Bulldogs', 'YALE', 'Ivy', 'FCS', 'New Haven, CT', '#00356b', '#ffffff', 6, 6, 'Yale Bowl'],
+  ['col_prin', 'Princeton', 'Tigers', 'PRIN', 'Ivy', 'FCS', 'Princeton, NJ', '#ee7f2d', '#000000', 6, 6, 'Princeton Stadium'],
+  ['col_penn', 'Penn', 'Quakers', 'PENN', 'Ivy', 'FCS', 'Philadelphia, PA', '#990000', '#011f5b', 6, 5, 'Franklin Field'],
+
+  // FCS — SWAC & MEAC
+  ['col_jsu', 'Jackson State', 'Tigers', 'JSU', 'SWAC', 'FCS', 'Jackson, MS', '#002147', '#ffffff', 7, 7, 'Mississippi Veterans'],
+  ['col_famu', 'Florida A&M', 'Rattlers', 'FAMU', 'SWAC', 'FCS', 'Tallahassee, FL', '#f4811f', '#008344', 7, 6, 'Bragg Memorial'],
+  ['col_gram', 'Grambling State', 'Tigers', 'GRAM', 'SWAC', 'FCS', 'Grambling, LA', '#eab308', '#000000', 6, 5, 'Eddie G. Robinson'],
+  ['col_how', 'Howard', 'Bison', 'HOW', 'MEAC', 'FCS', 'Washington, DC', '#003a63', '#e51937', 6, 5, 'Greene Stadium'],
+  ['col_nccu', 'NC Central', 'Eagles', 'NCCU', 'MEAC', 'FCS', 'Durham, NC', '#8b1e24', '#8b8d8f', 6, 6, 'O Kelly-Riddick'],
+
+  // FCS — SoCon & UAC
+  ['col_fur', 'Furman', 'Paladins', 'FUR', 'SoCon', 'FCS', 'Greenville, SC', '#582c83', '#ffffff', 6, 6, 'Paladin Stadium'],
+  ['col_merc', 'Mercer', 'Bears', 'MERC', 'SoCon', 'FCS', 'Macon, GA', '#f76800', '#000000', 6, 6, 'Five Star Stadium'],
+  ['col_acu', 'Abilene Christian', 'Wildcats', 'ACU', 'UAC', 'FCS', 'Abilene, TX', '#4f2d7f', '#ffffff', 7, 5, 'Wildcat Stadium'],
+  ['col_tar', 'Tarleton State', 'Texans', 'TAR', 'UAC', 'FCS', 'Stephenville, TX', '#4f2d7f', '#ffffff', 7, 6, 'Memorial Stadium'],
 ];
 
 export const COLLEGE_TEAMS: LeagueTeam[] = COLLEGE_SPECS.map((spec, idx) => {
-  const [id, name, mascot, shortName, conference, city, primary, secondary, offense, defense, stadium] = spec;
+  const [id, name, mascot, shortName, conference, subdivision, city, primary, secondary, offense, defense, stadium] = spec;
   const helmet = id === 'col_nd' ? '#c99700' : id === 'col_uga' || id === 'col_osu' || id === 'col_bama' ? primary : '#ffffff';
+  const sameSub = COLLEGE_SPECS.filter((s) => s[5] === subdivision);
+  const mySubIdx = sameSub.findIndex((s) => s[0] === id);
+  const rivalSpec = sameSub[(mySubIdx + 1) % sameSub.length] ?? COLLEGE_SPECS[(idx + 1) % COLLEGE_SPECS.length];
   return {
     id,
     name: `${name} ${mascot}`,
@@ -119,15 +225,19 @@ export const COLLEGE_TEAMS: LeagueTeam[] = COLLEGE_SPECS.map((spec, idx) => {
     city,
     conference,
     division: conference,
+    subdivision,
     era: 'COLLEGE',
     offense,
     defense,
-    prestige: Math.min(5, Math.max(3, Math.round((offense + defense) / 3.8))),
-    roof: 0,
+    prestige:
+      subdivision === 'FCS'
+        ? Math.min(3, Math.max(1, Math.round((offense + defense) / 5)))
+        : Math.min(5, Math.max(2, Math.round((offense + defense) / 3.8))),
+    roof: ['col_ndsu', 'col_usd', 'col_uni', 'col_idho', 'col_utsa'].includes(id) ? 1 : 0,
     rainfall: 32,
-    snowfall: ['Big Ten', 'Indep.', 'MW'].includes(conference) ? 30 : 5,
-    uniforms: makeUniforms(primary, secondary, helmet, '#ffffff', id === 'col_bsu' ? '#0033a0' : primary),
-    rivalId: COLLEGE_SPECS[(idx + 1) % COLLEGE_SPECS.length][0],
+    snowfall: ['Big Ten', 'Indep.', 'MW', 'MAC', 'MVFC', 'Big Sky', 'Ivy', 'CAA'].includes(conference) ? 30 : 5,
+    uniforms: makeUniforms(primary, secondary, helmet, '#ffffff', id === 'col_bsu' ? '#0033a0' : id === 'col_ewu' ? '#a10022' : primary),
+    rivalId: rivalSpec[0],
     stadium,
   };
 });

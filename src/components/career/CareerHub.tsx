@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { CareerSave, DilemmaChoice, PlayerAttributes } from '../../types/career';
 import { getTeamById } from '../../data/teams';
-import { NRG_DRINK_PRICE } from '../../data/shopping';
+import { getLifestylePerks, NRG_DRINK_PRICE } from '../../data/shopping';
 import {
   calculateStarRating,
   evaluateHighSchoolRecruiting,
+  getMoraleInfo,
+  getPlayerLegacyScore,
   getPlayerRank,
   getSkillLabel,
   getTeamRank,
@@ -41,6 +43,18 @@ export const CareerHub: React.FC<CareerHubProps> = ({
 
   const hsRecruiting =
     save.era === 'HIGH_SCHOOL' ? evaluateHighSchoolRecruiting(save) : null;
+  const perks = getLifestylePerks(save.player.ownedItemIds ?? []);
+  const legacyScore = getPlayerLegacyScore(save);
+  const curQtrLen: 2 | 2.5 | 3 =
+    save.quarterLength === 2 ? 2 : save.quarterLength === 3 ? 3 : 2.5;
+  const hasLifestyleBuffs =
+    perks.attrBoost.speed > 0 ||
+    perks.attrBoost.strength > 0 ||
+    perks.attrBoost.stamina > 0 ||
+    perks.attrBoost.skill > 0 ||
+    perks.xpBonusPct > 0 ||
+    perks.conditionRegenBonus > 0 ||
+    perks.weeklyNetUpkeep < 0;
 
   const handleResolveDilemma = (choice: DilemmaChoice) => {
     retroAudio.play('click');
@@ -78,7 +92,7 @@ export const CareerHub: React.FC<CareerHubProps> = ({
     const next: CareerSave = JSON.parse(JSON.stringify(save));
     next.player.attributes[attr] += 1;
     next.player.skillPoints -= 1;
-    next.player.starRating = calculateStarRating(next.player.attributes);
+    next.player.starRating = calculateStarRating(next.player.attributes, next.player.position);
     onUpdateSave(next);
   };
 
@@ -106,7 +120,7 @@ export const CareerHub: React.FC<CareerHubProps> = ({
       if (next.player.trainingProgress[trainingFocus] >= 100) {
         next.player.trainingProgress[trainingFocus] -= 100;
         next.player.attributes[trainingFocus] += 1;
-        next.player.starRating = calculateStarRating(next.player.attributes);
+        next.player.starRating = calculateStarRating(next.player.attributes, next.player.position);
         retroAudio.play('starrating');
         setTrainingNotice(`Breakthrough! ${label} improved to ${next.player.attributes[trainingFocus]}/${maxVal}!`);
       } else {
@@ -167,7 +181,7 @@ export const CareerHub: React.FC<CareerHubProps> = ({
 
   const handleCycleQuarterLength = () => {
     retroAudio.play('click');
-    const nextLen: 1 | 2 | 3 = save.quarterLength === 1 ? 2 : save.quarterLength === 2 ? 3 : 1;
+    const nextLen: 2 | 2.5 | 3 = curQtrLen === 2 ? 2.5 : curQtrLen === 2.5 ? 3 : 2;
     onUpdateSave({ ...save, quarterLength: nextLen });
   };
 
@@ -187,8 +201,7 @@ export const CareerHub: React.FC<CareerHubProps> = ({
         : `NFL Year ${save.eraYear} · ${myTeam.division}`;
 
   const starFrame = Math.max(1, Math.min(10, Math.round(save.player.starRating * 2)));
-  const moraleFaceFrame =
-    save.player.morale >= 85 ? 0 : save.player.morale >= 65 ? 2 : save.player.morale >= 45 ? 4 : 6;
+  const moraleMeta = getMoraleInfo(save.player.morale);
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6 flex flex-col gap-6">
@@ -226,9 +239,9 @@ export const CareerHub: React.FC<CareerHubProps> = ({
                 type="button"
                 onClick={handleCycleQuarterLength}
                 className="rb-btn-slate px-3 py-1.5 font-pixel text-[9px]"
-                title="Change Quarter Length"
+                title="Change Quarter Length (2:00 / 2:30 / 3:00)"
               >
-                QTR: {save.quarterLength}M
+                QTR: {curQtrLen === 2.5 ? '2:30' : `${curQtrLen}:00`}
               </button>
               <button
                 type="button"
@@ -397,7 +410,7 @@ export const CareerHub: React.FC<CareerHubProps> = ({
               <div className="text-xs text-slate-300">
                 {save.player.position} · Jersey #{save.player.jersey} · {save.player.archetype}
               </div>
-              <div className="flex flex-wrap items-center gap-2.5 mt-1.5">
+              <div className="flex flex-wrap items-center gap-2 mt-1.5">
                 <RetroSprite name="spr_star_rating_b" frame={starFrame} scale={2} alt="Star rating" />
                 <span className="font-mono-num text-xs text-[#fde047]">
                   Lvl {save.player.level}
@@ -405,9 +418,27 @@ export const CareerHub: React.FC<CareerHubProps> = ({
                 <span className="font-pixel text-[8px] px-1.5 py-0.5 bg-[#0e1624] border border-[#364b6e] text-[#4ade80]">
                   #{playerRank.rank}/{playerRank.poolSize} {playerRank.label.toUpperCase()}
                 </span>
+                <span className="font-pixel text-[8px] px-1.5 py-0.5 bg-[#0e1624] border border-[#eab308]/50 text-[#fde047]">
+                  LEGACY {legacyScore.toLocaleString()}
+                </span>
               </div>
             </div>
           </div>
+
+          {hasLifestyleBuffs && (
+            <div className="rb-panel-inset px-3 py-2 text-[11px] flex flex-wrap items-center gap-x-3 gap-y-1 border-[#38bdf8]/40">
+              <span className="font-pixel text-[8px] text-[#38bdf8]">LIFESTYLE PERKS:</span>
+              {perks.attrBoost.speed > 0 && <span className="text-emerald-300">+{perks.attrBoost.speed} SPD</span>}
+              {perks.attrBoost.strength > 0 && <span className="text-emerald-300">+{perks.attrBoost.strength} STR</span>}
+              {perks.attrBoost.stamina > 0 && <span className="text-emerald-300">+{perks.attrBoost.stamina} STA</span>}
+              {perks.attrBoost.skill > 0 && <span className="text-emerald-300">+{perks.attrBoost.skill} SKL</span>}
+              {perks.xpBonusPct > 0 && <span className="text-[#fde047]">+{perks.xpBonusPct}% XP</span>}
+              {perks.conditionRegenBonus > 0 && <span className="text-sky-300">+{perks.conditionRegenBonus}% Recov</span>}
+              {perks.weeklyNetUpkeep < 0 && (
+                <span className="text-[#4ade80]">+${Math.abs(perks.weeklyNetUpkeep).toLocaleString()}/wk Passive</span>
+              )}
+            </div>
+          )}
 
           {/* High School Recruiting Stock Banner */}
           {hsRecruiting && (
@@ -437,10 +468,10 @@ export const CareerHub: React.FC<CareerHubProps> = ({
             />
             <MeterBox
               label="Morale"
-              value={`${save.player.morale}%`}
+              value={`${save.player.morale}% (${moraleMeta.label})`}
               pct={save.player.morale}
               color="bg-sky-400"
-              icon={<RetroSprite name="spr_attitude" frame={moraleFaceFrame} scale={1.8} />}
+              icon={<RetroSprite name="spr_attitude" frame={moraleMeta.frame} scale={1.8} />}
             />
             <MeterBox
               label="XP"

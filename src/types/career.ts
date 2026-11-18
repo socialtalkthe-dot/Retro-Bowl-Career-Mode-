@@ -62,6 +62,7 @@ export interface LeagueTeam {
   state?: string;
   conference: string;
   division: string;
+  subdivision?: 'FBS' | 'FCS';
   era: Exclude<CareerEra, 'RETIRED'>;
   offense: number; // 1-10
   defense: number; // 1-10
@@ -130,6 +131,8 @@ export interface Teammate {
   age: number;
   rating: number; // 1-5 stars in 0.5 steps
   potential: number;
+  attributes?: PlayerAttributes;
+  maxAttributes?: PlayerAttributes;
   morale: number; // 0-100
   condition: number; // 0-100
   faceId: number;
@@ -212,6 +215,14 @@ export interface ShoppingItem {
   upkeep: number;
   owned: boolean;
   condition: number;
+  attrBoost?: Partial<PlayerAttributes>;
+  xpBonusPct?: number;
+  conditionRegenBonus?: number;
+  coachBonus?: number;
+  fansBonus?: number;
+  agentBonus?: number;
+  gpaBonus?: number;
+  perkLabel?: string;
 }
 
 export interface ContractInfo {
@@ -335,6 +346,6 @@ export interface CareerSave {
   weeklyMeetingDone: boolean;
   uniformChoice: 'home' | 'away' | 'alt';
   difficulty: 'Dynamic' | 'Easy' | 'Medium' | 'Hard' | 'Extreme';
-  quarterLength: 1 | 2 | 3;
+  quarterLength: 2 | 2.5 | 3;
   driveDirection?: 'RIGHT' | 'LEFT' | 'BOTH';
 }

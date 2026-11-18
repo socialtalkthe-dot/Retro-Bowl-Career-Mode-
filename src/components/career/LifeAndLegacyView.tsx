@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CareerSave, StatLine } from '../../types/career';
-import { SHOPPING_CATALOG } from '../../data/shopping';
-import { getPlayerRank, getTeamRank } from '../../engine/careerEngine';
+import { SHOPPING_CATALOG, getLifestylePerks } from '../../data/shopping';
+import { getPlayerLegacyScore, getPlayerRank, getTeamRank } from '../../engine/careerEngine';
 import { RetroSprite } from '../shared/RetroSprite';
 import { retroAudio } from '../../audio/retroAudio';
 import { ShoppingBag } from 'lucide-react';
@@ -39,6 +39,8 @@ export const LifeAndLegacyView: React.FC<LifeAndLegacyViewProps> = ({
 
   const playerRank = getPlayerRank(save);
   const myTeamRank = getTeamRank(save, save.teamId);
+  const perks = getLifestylePerks(save.player.ownedItemIds ?? []);
+  const legacyScore = getPlayerLegacyScore(save);
   const pos = save.player.position;
   const st = save.careerStats;
   const games = Math.max(1, st.games);
@@ -194,6 +196,25 @@ export const LifeAndLegacyView: React.FC<LifeAndLegacyViewProps> = ({
             </div>
           )}
 
+          {/* Active Lifestyle Micro-Boosts & Outside-Life Summary */}
+          <div className="rb-panel-inset px-5 py-3.5 flex flex-wrap items-center justify-between gap-3 border-[#38bdf8]/40">
+            <div className="font-pixel text-[9px] text-[#38bdf8]">
+              ACTIVE LIFESTYLE &amp; OUTSIDE-LIFE PERKS ({save.player.ownedItemIds.length} OWNED)
+            </div>
+            <div className="flex flex-wrap gap-3 text-xs font-mono-num">
+              <span className="text-emerald-300">
+                +{perks.attrBoost.speed} SPD · +{perks.attrBoost.strength} STR · +{perks.attrBoost.stamina} STA · +{perks.attrBoost.skill} SKL
+              </span>
+              <span className="text-[#fde047]">+{perks.xpBonusPct}% XP</span>
+              <span className="text-sky-300">+{perks.conditionRegenBonus}% Recov</span>
+              <span className={perks.weeklyNetUpkeep <= 0 ? 'text-[#4ade80]' : 'text-amber-300'}>
+                {perks.weeklyNetUpkeep <= 0
+                  ? `+$${Math.abs(perks.weeklyNetUpkeep).toLocaleString()}/wk Passive`
+                  : `-$${perks.weeklyNetUpkeep.toLocaleString()}/wk Upkeep`}
+              </span>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {SHOPPING_CATALOG.filter((i) => i.category === shopCat).map((item) => {
               const owned = save.player.ownedItemIds.includes(item.id);
@@ -203,7 +224,7 @@ export const LifeAndLegacyView: React.FC<LifeAndLegacyViewProps> = ({
                   className="rb-panel p-4 flex flex-col justify-between gap-3"
                 >
                   <div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <span className="font-display text-xl font-bold text-white">{item.name}</span>
                       <span className="font-mono-num text-sm font-bold text-[#4ade80]">
                         ${item.price.toLocaleString()}
@@ -217,6 +238,11 @@ export const LifeAndLegacyView: React.FC<LifeAndLegacyViewProps> = ({
                           ? ` · $${item.upkeep.toLocaleString()}/yr upkeep`
                           : ''}
                     </div>
+                    {item.perkLabel && (
+                      <div className="mt-1.5 inline-block px-2 py-0.5 bg-[#0e1624] border border-[#38bdf8]/40 text-[11px] font-semibold text-[#7dd3fc]">
+                        {item.perkLabel}
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -238,6 +264,18 @@ export const LifeAndLegacyView: React.FC<LifeAndLegacyViewProps> = ({
       {tab === 'LEGACY' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 flex flex-col gap-4">
+            <div className="rb-panel p-5 flex items-center justify-between gap-4 border-[#eab308]/50">
+              <div>
+                <div className="font-pixel text-[9px] text-[#fde047]">CAREER LEGACY SCORE</div>
+                <div className="font-display text-4xl font-extrabold text-white mt-1 tabular-nums">
+                  {legacyScore.toLocaleString()} <span className="text-xs font-pixel text-[#4ade80]">PTS</span>
+                </div>
+                <div className="text-xs text-slate-400 mt-1">
+                  Syncs to Global Career Rankings when signed in.
+                </div>
+              </div>
+            </div>
+
             <div className="rb-panel p-5">
               <div className="flex items-center gap-3 mb-3">
                 <RetroSprite name="spr_trophy" frame={0} scale={1} alt="Trophy" />

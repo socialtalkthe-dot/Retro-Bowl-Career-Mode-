@@ -1,13 +1,18 @@
 import React, { useMemo, useState } from 'react';
-import { Archetype, CareerSave, Position } from '../../types/career';
+import { Archetype, CareerSave, PlayerAttributes, Position } from '../../types/career';
 import {
   COLLEGE_TEAMS,
   getTeamsForEra,
+  HIGH_SCHOOL_TEAMS,
   NFL_TEAMS,
   US_STATES,
 } from '../../data/teams';
 import {
+  BuildPotentialTier,
+  calculateStarRating,
   createNewCareer,
+  generatePlayerBuildPreset,
+  getSkillLabel,
   HAIR_COLORS,
   POSITIONS,
   SKIN_TONES,
@@ -15,7 +20,7 @@ import {
 import { PixelPortrait } from '../shared/PixelPortrait';
 import { PixelJerseyPreview } from '../shared/PixelJerseyPreview';
 import { retroAudio } from '../../audio/retroAudio';
-import { ChevronRight, Trash2 } from 'lucide-react';
+import { ChevronRight, RefreshCw, Trash2 } from 'lucide-react';
 
 interface CareerCreatorProps {
   saves: CareerSave[];
@@ -40,26 +45,104 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
   const [hairColor, setHairColor] = useState(HAIR_COLORS[0]);
   const [startEra, setStartEra] = useState<'HIGH_SCHOOL' | 'COLLEGE' | 'NFL'>('HIGH_SCHOOL');
   const [selectedState, setSelectedState] = useState<string>('Texas');
+  const [hsDivision, setHsDivision] = useState<string>('ALL');
   const [hsQuery, setHsQuery] = useState<string>('');
+  const [collegeSub, setCollegeSub] = useState<'ALL' | 'FBS' | 'FCS'>('ALL');
+  const [collegeConf, setCollegeConf] = useState<string>('ALL');
 
   const stateSchools = useMemo(() => getTeamsForEra('HIGH_SCHOOL', selectedState), [selectedState]);
+  const stateDivisions = useMemo(() => {
+    const divs = Array.from(new Set(stateSchools.map((s) => s.division)));
+    return ['ALL', ...divs];
+  }, [stateSchools]);
+
   const filteredSchools = useMemo(() => {
     const q = hsQuery.trim().toLowerCase();
-    if (!q) return stateSchools;
-    return stateSchools.filter(
-      (s) => s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q) || s.division.toLowerCase().includes(q)
-    );
-  }, [stateSchools, hsQuery]);
+    return stateSchools.filter((s) => {
+      if (hsDivision !== 'ALL' && s.division !== hsDivision) return false;
+      if (!q) return true;
+      return (
+        s.name.toLowerCase().includes(q) ||
+        s.city.toLowerCase().includes(q) ||
+        s.division.toLowerCase().includes(q)
+      );
+    });
+  }, [stateSchools, hsDivision, hsQuery]);
+
+  const collegeConferences = useMemo(() => {
+    const pool = COLLEGE_TEAMS.filter((t) => collegeSub === 'ALL' || (t.subdivision ?? 'FBS') === collegeSub);
+    return ['ALL', ...Array.from(new Set(pool.map((t) => t.conference)))];
+  }, [collegeSub]);
+
+  const filteredColleges = useMemo(() => {
+    return COLLEGE_TEAMS.filter((t) => {
+      if (collegeSub !== 'ALL' && (t.subdivision ?? 'FBS') !== collegeSub) return false;
+      if (collegeConf !== 'ALL' && t.conference !== collegeConf) return false;
+      return true;
+    });
+  }, [collegeSub, collegeConf]);
 
   const [highSchoolId, setHighSchoolId] = useState<string>(stateSchools[0]?.id ?? '');
   const [collegeTeamId, setCollegeTeamId] = useState<string>(COLLEGE_TEAMS[0].id);
   const [nflTeamId, setNflTeamId] = useState<string>(NFL_TEAMS[0].id);
+
+  const [buildTier, setBuildTier] = useState<BuildPotentialTier>('25_45');
+  const [buildBaseAttrs, setBuildBaseAttrs] = useState<PlayerAttributes>(
+    () => generatePlayerBuildPreset('QB', 'Dual-Threat', '25_45', 'HIGH_SCHOOL').attrs
+  );
+  const [buildMaxAttrs, setBuildMaxAttrs] = useState<PlayerAttributes>(
+    () => generatePlayerBuildPreset('QB', 'Dual-Threat', '25_45', 'HIGH_SCHOOL').max
+  );
+  const [buildAttrs, setBuildAttrs] = useState<PlayerAttributes>(buildBaseAttrs);
+  const [bonusPointsTotal, setBonusPointsTotal] = useState<number>(4);
+
+  const rollBuildPreset = (
+    nextPos: Position,
+    nextArch: Archetype,
+    nextTier: BuildPotentialTier,
+    nextEra: 'HIGH_SCHOOL' | 'COLLEGE' | 'NFL'
+  ) => {
+    const preset = generatePlayerBuildPreset(nextPos, nextArch, nextTier, nextEra);
+    setBuildBaseAttrs({ ...preset.attrs });
+    setBuildAttrs({ ...preset.attrs });
+    setBuildMaxAttrs({ ...preset.max });
+    setBonusPointsTotal(preset.bonusPoints);
+  };
+
+  const spentBonusPoints =
+    buildAttrs.skill -
+    buildBaseAttrs.skill +
+    (buildAttrs.speed - buildBaseAttrs.speed) +
+    (buildAttrs.strength - buildBaseAttrs.strength) +
+    (buildAttrs.stamina - buildBaseAttrs.stamina);
+  const bonusPointsLeft = Math.max(0, bonusPointsTotal - spentBonusPoints);
+
+  const adjustBuildAttr = (key: keyof PlayerAttributes, delta: -1 | 1) => {
+    retroAudio.play('click');
+    if (delta === 1) {
+      if (bonusPointsLeft <= 0 || buildAttrs[key] >= buildMaxAttrs[key]) return;
+      setBuildAttrs((prev) => ({ ...prev, [key]: prev[key] + 1 }));
+    } else {
+      if (buildAttrs[key] <= buildBaseAttrs[key]) return;
+      setBuildAttrs((prev) => ({ ...prev, [key]: prev[key] - 1 }));
+    }
+  };
+
+  const currentStarRating = useMemo(
+    () => calculateStarRating(buildAttrs, position),
+    [buildAttrs, position]
+  );
+  const maxStarRating = useMemo(
+    () => calculateStarRating(buildMaxAttrs, position),
+    [buildMaxAttrs, position]
+  );
 
   const posMeta = POSITIONS.find((p) => p.id === position)!;
 
   const handleStateChange = (st: string) => {
     retroAudio.play('click');
     setSelectedState(st);
+    setHsDivision('ALL');
     setHsQuery('');
     const schools = getTeamsForEra('HIGH_SCHOOL', st);
     if (schools.length > 0) setHighSchoolId(schools[0].id);
@@ -69,7 +152,9 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
     retroAudio.play('click');
     setPosition(pos);
     const meta = POSITIONS.find((p) => p.id === pos)!;
-    setArchetype(meta.archetypes[0]);
+    const nextArch = meta.archetypes[0];
+    setArchetype(nextArch);
+    rollBuildPreset(pos, nextArch, buildTier, startEra);
   };
 
   const activeTeam =
@@ -96,6 +181,11 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
       startEra,
       collegeTeamId,
       nflTeamId,
+      customBuild: {
+        attrs: buildAttrs,
+        max: buildMaxAttrs,
+        remainingSkillPoints: bonusPointsLeft,
+      },
     });
     onCreateSave(save);
   };
@@ -324,7 +414,11 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
                 <button
                   key={arch}
                   type="button"
-                  onClick={() => setArchetype(arch)}
+                  onClick={() => {
+                    retroAudio.play('click');
+                    setArchetype(arch);
+                    rollBuildPreset(position, arch, buildTier, startEra);
+                  }}
                   className={`px-3.5 py-2 text-xs font-bold border-2 transition-colors ${
                     archetype === arch
                       ? 'bg-white text-slate-950 border-white'
@@ -336,12 +430,138 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
               ))}
             </div>
           </div>
+
+          {/* Star Potential Preset & Pre-Start Attribute Allocation */}
+          <div className="rb-panel-inset p-4 flex flex-col gap-3.5 border-2 border-[#2e405d]">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div className="font-pixel text-[10px] text-[#fde047]">
+                  STAR POTENTIAL &amp; ATTRIBUTES
+                </div>
+                <div className="text-[11px] text-slate-300 mt-0.5">
+                  Current: <span className="text-[#fde047] font-bold">{currentStarRating.toFixed(1)}★</span> · Potential Ceiling:{' '}
+                  <span className="text-sky-300 font-bold">{maxStarRating.toFixed(1)}★</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  retroAudio.play('click');
+                  rollBuildPreset(position, archetype, buildTier, startEra);
+                }}
+                className="rb-btn-slate px-2.5 py-1.5 text-[11px] font-bold inline-flex items-center gap-1.5"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                Re-roll Variation
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              {(
+                [
+                  { id: '2_5', title: '2★ → 5★', sub: 'Raw Upside' },
+                  { id: '25_45', title: '2.5★ → 4.5★', sub: 'Balanced' },
+                  { id: '3_4', title: '3★ → 4★', sub: 'Pro Ready' },
+                ] as const
+              ).map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  onClick={() => {
+                    retroAudio.play('click');
+                    setBuildTier(preset.id);
+                    rollBuildPreset(position, archetype, preset.id, startEra);
+                  }}
+                  className={`py-2 px-2 border-2 text-center transition-colors ${
+                    buildTier === preset.id
+                      ? 'bg-[#eab308] text-slate-950 border-[#fde047]'
+                      : 'bg-[#0e1624] text-slate-200 border-[#24344d] hover:border-[#3c5173]'
+                  }`}
+                >
+                  <div className="font-pixel text-[9px] leading-tight">{preset.title}</div>
+                  <div
+                    className={`text-[10px] mt-0.5 ${
+                      buildTier === preset.id ? 'text-slate-900 font-bold' : 'text-slate-400'
+                    }`}
+                  >
+                    {preset.sub}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#24344d]">
+              <span className="font-semibold text-slate-300">
+                Customize Starting Attributes
+              </span>
+              <span
+                className={`font-pixel text-[9px] ${
+                  bonusPointsLeft > 0 ? 'text-[#4ade80]' : 'text-slate-400'
+                }`}
+              >
+                {bonusPointsLeft} PT{bonusPointsLeft === 1 ? '' : 'S'} LEFT TO BOOST
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {(
+                [
+                  { key: 'skill', label: getSkillLabel(position) },
+                  { key: 'speed', label: 'Speed' },
+                  { key: 'strength', label: 'Strength' },
+                  { key: 'stamina', label: 'Stamina' },
+                ] as { key: keyof PlayerAttributes; label: string }[]
+              ).map((row) => {
+                const cur = buildAttrs[row.key];
+                const baseVal = buildBaseAttrs[row.key];
+                const cap = buildMaxAttrs[row.key];
+                return (
+                  <div key={row.key} className="flex items-center gap-2">
+                    <span className="w-20 shrink-0 text-xs font-semibold text-slate-200 truncate">
+                      {row.label}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => adjustBuildAttr(row.key, -1)}
+                      disabled={cur <= baseVal}
+                      className="w-6 h-6 rb-btn-slate font-mono-num text-xs font-bold disabled:opacity-35"
+                    >
+                      -
+                    </button>
+                    <div className="flex-1 grid grid-cols-10 gap-1">
+                      {Array.from({ length: 10 }, (_, idx) => {
+                        const seg = idx + 1;
+                        const cls =
+                          seg <= cur
+                            ? 'bg-[#eab308] border border-[#fde047]/60'
+                            : seg <= cap
+                              ? 'bg-[#38bdf8]/30 border border-[#38bdf8]/45'
+                              : 'bg-[#090d16] border border-[#1e2c42]';
+                        return <div key={seg} className={`h-2.5 ${cls}`} />;
+                      })}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => adjustBuildAttr(row.key, 1)}
+                      disabled={bonusPointsLeft <= 0 || cur >= cap}
+                      className="w-6 h-6 rb-btn-green font-mono-num text-xs font-bold disabled:opacity-35"
+                    >
+                      +
+                    </button>
+                    <span className="w-10 text-right font-mono-num text-[11px] text-slate-300 shrink-0">
+                      {cur}/{cap}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Right: Starting Era & Real Team Selection (5 cols) */}
         <div className="lg:col-span-5 rb-panel p-6 flex flex-col gap-5">
           <h2 className="font-pixel text-xs text-[#fde047] border-b-2 border-[#24344d] pb-3">
-            02. PATH & REAL TEAM
+            02. PATH &amp; REAL TEAM
           </h2>
 
           {/* Starting Level */}
@@ -358,7 +578,11 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
                 <button
                   key={era.id}
                   type="button"
-                  onClick={() => setStartEra(era.id)}
+                  onClick={() => {
+                    retroAudio.play('click');
+                    setStartEra(era.id);
+                    rollBuildPreset(position, archetype, buildTier, era.id);
+                  }}
                   className={`py-2 px-3 text-xs font-bold border-2 whitespace-nowrap ${
                     startEra === era.id
                       ? 'bg-[#eab308] text-slate-950 border-[#fde047]'
@@ -377,7 +601,7 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
               <div>
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <label className="block text-xs text-slate-400">
-                    Select State <span className="text-[#fde047]">(50 States · 1,000 Schools)</span>
+                    Select State <span className="text-[#fde047]">(50 States · {HIGH_SCHOOL_TEAMS.length.toLocaleString()}+ Schools)</span>
                   </label>
                 </div>
                 <select
@@ -398,12 +622,27 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
                   <label className="block text-xs text-slate-400">
                     Real {selectedState} High Schools ({filteredSchools.length}/{stateSchools.length})
                   </label>
+                  <select
+                    value={hsDivision}
+                    onChange={(e) => {
+                      retroAudio.play('click');
+                      setHsDivision(e.target.value);
+                    }}
+                    className="rb-panel-inset px-2 py-1 text-[11px] text-[#fde047] focus:outline-none"
+                    aria-label="Filter high school division"
+                  >
+                    {stateDivisions.map((div) => (
+                      <option key={div} value={div}>
+                        {div === 'ALL' ? 'All Divisions' : div}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <input
                   type="text"
                   value={hsQuery}
                   onChange={(e) => setHsQuery(e.target.value)}
-                  placeholder={`Filter ${selectedState} schools or cities...`}
+                  placeholder={`Filter ${selectedState} schools, cities, or divisions...`}
                   className="w-full rb-panel-inset px-3 py-1.5 text-xs text-white mb-2 focus:outline-none focus:border-[#fde047]"
                 />
                 <div className="grid grid-cols-1 gap-1.5 max-h-56 overflow-y-auto pr-1">
@@ -443,18 +682,67 @@ export const CareerCreator: React.FC<CareerCreatorProps> = ({
             </>
           )}
 
-          {/* College Team Selector */}
+          {/* College Team Selector (All FBS + FCS Conferences) */}
           {startEra === 'COLLEGE' && (
-            <div>
-              <label className="block text-xs text-slate-400 mb-1.5">Select Real FBS Program</label>
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <label className="block text-xs text-slate-400">
+                  NCAA Program ({filteredColleges.length} Teams · FBS &amp; FCS)
+                </label>
+                <div className="flex gap-1">
+                  {(['ALL', 'FBS', 'FCS'] as const).map((sub) => (
+                    <button
+                      key={sub}
+                      type="button"
+                      onClick={() => {
+                        retroAudio.play('click');
+                        setCollegeSub(sub);
+                        setCollegeConf('ALL');
+                        const nextPool = COLLEGE_TEAMS.filter((t) => sub === 'ALL' || (t.subdivision ?? 'FBS') === sub);
+                        if (nextPool.length > 0 && !nextPool.some((t) => t.id === collegeTeamId)) {
+                          setCollegeTeamId(nextPool[0].id);
+                        }
+                      }}
+                      className={`px-2 py-0.5 font-pixel text-[8px] border ${
+                        collegeSub === sub
+                          ? 'bg-[#eab308] text-slate-950 border-[#fde047]'
+                          : 'bg-[#0e1624] text-slate-300 border-[#24344d]'
+                      }`}
+                    >
+                      {sub}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <select
+                value={collegeConf}
+                onChange={(e) => {
+                  const cf = e.target.value;
+                  setCollegeConf(cf);
+                  const nextPool = COLLEGE_TEAMS.filter(
+                    (t) => (collegeSub === 'ALL' || (t.subdivision ?? 'FBS') === collegeSub) && (cf === 'ALL' || t.conference === cf)
+                  );
+                  if (nextPool.length > 0 && !nextPool.some((t) => t.id === collegeTeamId)) {
+                    setCollegeTeamId(nextPool[0].id);
+                  }
+                }}
+                className="w-full rb-panel-inset px-3 py-2 text-xs text-[#fde047] focus:outline-none focus:border-[#fde047]"
+                aria-label="Filter college conference"
+              >
+                {collegeConferences.map((cf) => (
+                  <option key={cf} value={cf}>
+                    {cf === 'ALL' ? 'All Conferences (P4, G5 & FCS)' : cf}
+                  </option>
+                ))}
+              </select>
               <select
                 value={collegeTeamId}
                 onChange={(e) => setCollegeTeamId(e.target.value)}
                 className="w-full rb-panel-inset px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#fde047]"
               >
-                {COLLEGE_TEAMS.map((t) => (
+                {filteredColleges.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {t.name} ({t.conference})
+                    {t.name} ({t.subdivision ?? 'FBS'} · {t.conference})
                   </option>
                 ))}
               </select>

@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CareerSave, OfferOption } from '../../types/career';
-import { getTeamById, NFL_TEAMS } from '../../data/teams';
-import { startNextSeasonSameTeam, evaluateHighSchoolRecruiting } from '../../engine/careerEngine';
+import { getTeamById } from '../../data/teams';
+import {
+  DraftBoardPick,
+  evaluateCollegeDraftStock,
+  evaluateHighSchoolRecruiting,
+  generateDraftOrderBoard,
+  startNextSeasonSameTeam,
+} from '../../engine/careerEngine';
 import { PixelJerseyPreview } from '../shared/PixelJerseyPreview';
 import { RetroSprite } from '../shared/RetroSprite';
 import { retroAudio } from '../../audio/retroAudio';
@@ -28,6 +34,41 @@ export const OffseasonView: React.FC<OffseasonViewProps> = ({
   const [negMsg, setNegMsg] = useState<string>('Agent Challenge: Guess if the hidden league comp number (1-11) is Higher or Lower to boost your contract!');
   const [negBonusPct, setNegBonusPct] = useState<number>(0);
   const [negDone, setNegDone] = useState(false);
+
+  // Pick-by-pick NFL Draft War Room state
+  const [draftPickIdx, setDraftPickIdx] = useState<number>(1);
+  const [draftRoundTab, setDraftRoundTab] = useState<number>(1);
+  const [draftAuto, setDraftAuto] = useState<boolean>(false);
+  const [draftReport, setDraftReport] = useState<string>('');
+
+  const draftBoard: DraftBoardPick[] = useMemo(() => {
+    if (save.phase !== 'NFL_DRAFT_DAY' || !save.draftInfo) return [];
+    return generateDraftOrderBoard(save, save.draftInfo);
+  }, [save]);
+
+  const isOnTheClockUser =
+    save.phase === 'NFL_DRAFT_DAY' && !!save.draftInfo && draftPickIdx >= save.draftInfo.pick;
+
+  useEffect(() => {
+    if (save.phase !== 'NFL_DRAFT_DAY' || !save.draftInfo || !draftAuto || isOnTheClockUser) {
+      return;
+    }
+    const timer = setInterval(() => {
+      setDraftPickIdx((prev) => {
+        const target = save.draftInfo!.pick;
+        const nextVal = Math.min(target, prev + 1);
+        const nextRd = Math.floor((nextVal - 1) / 32) + 1;
+        setDraftRoundTab(nextRd);
+        if (nextVal >= target) {
+          retroAudio.play('starrating');
+        } else {
+          retroAudio.play('click', 0.25);
+        }
+        return nextVal;
+      });
+    }, 320);
+    return () => clearInterval(timer);
+  }, [save.phase, save.draftInfo, draftAuto, isOnTheClockUser]);
 
   const acceptCollegeOffer = (offer: OfferOption) => {
     retroAudio.play('starrating');
@@ -77,29 +118,25 @@ export const OffseasonView: React.FC<OffseasonViewProps> = ({
   };
 
   const submitCombineToDraft = () => {
-    const score = combineClicks + save.player.attributes.speed * 2 + save.player.starRating * 4;
-    const forty = Math.round((4.85 - Math.min(0.55, score * 0.008)) * 100) / 100;
-    const benchReps = Math.round(14 + save.player.attributes.strength * 1.8 + combineClicks * 0.25);
-    const shuttle = Math.round((4.35 - save.player.attributes.speed * 0.03) * 100) / 100;
-    const projRound = score >= 48 ? 1 : score >= 38 ? 2 : score >= 30 ? 3 : score >= 24 ? 4 : 5;
-
-    const draftTeam = NFL_TEAMS[Math.floor(Math.random() * NFL_TEAMS.length)];
-    const pick = (projRound - 1) * 32 + Math.floor(Math.random() * 28) + 1;
-
+    const evalStock = evaluateCollegeDraftStock(save, combineClicks);
     retroAudio.play('brass1', 0.7);
     const next: CareerSave = JSON.parse(JSON.stringify(save));
     next.phase = 'NFL_DRAFT_DAY';
     next.combineScore = {
-      fortyYard: forty,
-      benchReps,
-      shuttle,
-      draftRoundProj: projRound,
+      fortyYard: evalStock.fortyYard,
+      benchReps: evalStock.benchReps,
+      shuttle: evalStock.shuttle,
+      draftRoundProj: evalStock.round,
     };
     next.draftInfo = {
-      round: projRound,
-      pick,
-      teamId: draftTeam.id,
+      round: evalStock.round,
+      pick: evalStock.overall,
+      teamId: evalStock.teamId,
     };
+    setDraftPickIdx(1);
+    setDraftRoundTab(1);
+    setDraftAuto(false);
+    setDraftReport(evalStock.report);
     onUpdateSave(next);
   };
 
@@ -223,6 +260,9 @@ export const OffseasonView: React.FC<OffseasonViewProps> = ({
                     />
                     <div>
                       <div className="font-pixel text-[9px] text-[#fde047] flex items-center gap-1.5">
+                        <span className="px-1.5 py-0.5 bg-[#0e1624] border border-[#364b6e] text-[#7dd3fc]">
+                          {t.subdivision ?? 'FBS'}
+                        </span>
                         <span>{t.conference}</span>
                         <RetroSprite name="spr_star_rating_b" frame={Math.max(1, Math.min(10, t.prestige * 2))} scale={1} />
                       </div>
@@ -293,8 +333,13 @@ export const OffseasonView: React.FC<OffseasonViewProps> = ({
                         size={60}
                       />
                       <div>
-                        <div className="text-xs text-[#fde047]">{t.conference}</div>
-                        <div className="font-display text-xl font-bold text-white">{t.name}</div>
+                        <div className="text-xs text-[#fde047] flex items-center gap-1.5">
+                          <span className="px-1 py-0.5 bg-[#0e1624] border border-[#364b6e] text-[#7dd3fc] text-[10px]">
+                            {t.subdivision ?? 'FBS'}
+                          </span>
+                          <span>{t.conference}</span>
+                        </div>
+                        <div className="font-display text-xl font-bold text-white mt-0.5">{t.name}</div>
                         <div className="text-xs text-[#4ade80] font-mono-num">NIL: ${off.salaryOrNil.toLocaleString()}/yr</div>
                       </div>
                     </div>
@@ -348,33 +393,166 @@ export const OffseasonView: React.FC<OffseasonViewProps> = ({
       )}
 
       {save.phase === 'NFL_DRAFT_DAY' && save.draftInfo && (
-        <div className="rb-panel p-8 flex flex-col items-center text-center gap-5">
-          <div className="font-pixel text-[10px] text-[#fde047]">
-            THE PICK IS IN · ROUND {save.draftInfo.round} · PICK #{save.draftInfo.pick}
+        <div className="flex flex-col gap-6">
+          <div className="rb-panel p-6 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div className="font-pixel text-[10px] text-[#fde047]">
+                NFL DRAFT LIVE BOARD · PROJ. ROUND {save.draftInfo.round}
+              </div>
+              <h1 className="font-display text-4xl font-extrabold text-white mt-1">
+                {isOnTheClockUser
+                  ? 'THE PICK IS IN!'
+                  : `On The Clock: Pick #${draftPickIdx} (Round ${Math.floor((draftPickIdx - 1) / 32) + 1})`}
+              </h1>
+            </div>
+
+            {!isOnTheClockUser && (
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    retroAudio.play('click');
+                    const nextVal = Math.min(save.draftInfo!.pick, draftPickIdx + 1);
+                    setDraftPickIdx(nextVal);
+                    setDraftRoundTab(Math.floor((nextVal - 1) / 32) + 1);
+                    if (nextVal >= save.draftInfo!.pick) retroAudio.play('starrating');
+                  }}
+                  className="rb-btn-slate px-4 py-2.5 font-pixel text-[9px]"
+                >
+                  NEXT PICK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    retroAudio.play('click');
+                    setDraftAuto((v) => !v);
+                  }}
+                  className={`${draftAuto ? 'rb-btn-green' : 'rb-btn-slate'} px-4 py-2.5 font-pixel text-[9px]`}
+                >
+                  {draftAuto ? 'PAUSE SIM' : 'AUTO-ADVANCE'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    retroAudio.play('starrating');
+                    setDraftAuto(false);
+                    setDraftPickIdx(save.draftInfo!.pick);
+                    setDraftRoundTab(save.draftInfo!.round);
+                  }}
+                  className="rb-btn-gold px-5 py-2.5 font-pixel text-[9px]"
+                >
+                  SKIP TO MY PICK
+                </button>
+              </div>
+            )}
           </div>
-          <PixelJerseyPreview
-            uniform={getTeamById(save.draftInfo.teamId).uniforms.home}
-            jerseyNumber={save.player.jersey}
-            skinTone={save.player.skinTone}
-            position={save.player.position}
-            size={96}
-            animate
-          />
-          <h1 className="font-display text-4xl font-extrabold text-white">
-            {getTeamById(save.draftInfo.teamId).name}
-          </h1>
-          {save.combineScore && (
-            <div className="text-xs font-mono-num text-slate-300">
-              Combine: {save.combineScore.fortyYard}s 40-Yd · {save.combineScore.benchReps} Bench Reps · {save.combineScore.shuttle}s Shuttle
+
+          {isOnTheClockUser && (
+            <div className="rb-panel p-8 flex flex-col items-center text-center gap-5 border-[#fde047]">
+              <div className="font-pixel text-[10px] text-[#fde047]">
+                THE PICK IS IN · ROUND {save.draftInfo.round} · PICK #{save.draftInfo.pick} OVERALL
+              </div>
+              <PixelJerseyPreview
+                uniform={getTeamById(save.draftInfo.teamId).uniforms.home}
+                jerseyNumber={save.player.jersey}
+                skinTone={save.player.skinTone}
+                position={save.player.position}
+                size={96}
+                animate
+              />
+              <h2 className="font-display text-4xl font-extrabold text-white">
+                {getTeamById(save.draftInfo.teamId).name}
+              </h2>
+              {draftReport && (
+                <p className="text-sm text-emerald-300 max-w-lg">{draftReport}</p>
+              )}
+              {save.combineScore && (
+                <div className="text-xs font-mono-num text-slate-300">
+                  Combine: {save.combineScore.fortyYard}s 40-Yd · {save.combineScore.benchReps} Bench Reps · {save.combineScore.shuttle}s Shuttle
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={acceptDraftSelection}
+                className="rb-btn-gold px-7 py-3.5 font-pixel text-[10px]"
+              >
+                SIGN ROOKIE CONTRACT
+              </button>
             </div>
           )}
-          <button
-            type="button"
-            onClick={acceptDraftSelection}
-            className="rb-btn-gold px-7 py-3.5 font-pixel text-[10px]"
-          >
-            SIGN ROOKIE CONTRACT
-          </button>
+
+          {/* Pick-by-Pick Draft Ticker & Round View */}
+          <div className="rb-panel p-5 flex flex-col gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#24344d] pb-3">
+              <div className="font-pixel text-[10px] text-[#fde047]">DRAFT TRACKER (ROUNDS 1-7)</div>
+              <div className="flex flex-wrap gap-1.5">
+                {[1, 2, 3, 4, 5, 6, 7].map((rd) => (
+                  <button
+                    key={rd}
+                    type="button"
+                    onClick={() => setDraftRoundTab(rd)}
+                    className={`px-3 py-1 font-pixel text-[9px] border-2 ${
+                      draftRoundTab === rd
+                        ? 'bg-[#eab308] text-slate-950 border-[#fde047]'
+                        : 'bg-[#0e1624] text-slate-300 border-[#24344d]'
+                    }`}
+                  >
+                    RD {rd}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto pr-1">
+              {draftBoard
+                .filter((p) => p.round === draftRoundTab)
+                .map((p) => {
+                  const tm = getTeamById(p.teamId);
+                  const announced = p.overall <= draftPickIdx;
+                  const showUserBadge = p.isUserPick && announced;
+                  return (
+                    <div
+                      key={p.overall}
+                      className={`px-3 py-2 border-2 flex items-center justify-between gap-2 text-xs ${
+                        showUserBadge
+                          ? 'bg-[#eab308]/20 border-[#fde047] text-white'
+                          : p.overall === draftPickIdx
+                            ? 'bg-[#1c2b44] border-[#38bdf8] text-white'
+                            : 'bg-[#0e1624] border-[#24344d] text-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="font-mono-num text-[11px] text-[#fde047] w-10 shrink-0">
+                          #{p.overall}
+                        </span>
+                        <span
+                          className="w-2.5 h-5 border border-white/25 shrink-0"
+                          style={{ backgroundColor: tm.uniforms.home.shirt }}
+                        />
+                        <div className="min-w-0">
+                          <div className="font-bold truncate">
+                            {tm.shortName} ·{' '}
+                            {announced
+                              ? p.isUserPick
+                                ? `${p.prospectName} (YOU)`
+                                : `${p.prospectPos} ${p.prospectName}`
+                              : 'On Deck...'}
+                          </div>
+                          <div className="text-[10px] text-slate-400 truncate">
+                            {announced ? `${p.prospectPos} · ${p.prospectSchool}` : `Rd ${p.round}, Pick ${p.pickInRound}`}
+                          </div>
+                        </div>
+                      </div>
+                      {showUserBadge && (
+                        <span className="font-pixel text-[8px] px-1.5 py-0.5 bg-[#eab308] text-slate-950">
+                          YOU
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </div>
       )}
 

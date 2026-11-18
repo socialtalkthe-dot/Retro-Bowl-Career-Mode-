@@ -94,8 +94,9 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
 
   const posInfo = POSITIONS.find((p) => p.id === save.player.position)!;
   const userUnit = posInfo.unit; // OFFENSE | DEFENSE | SPECIAL
-  // 2:30 default quarters give realistic 6-8 possessions per side
-  const qtrLenSec = save.quarterLength <= 2 ? 150 : save.quarterLength * 60;
+  // Respect 2:00, 2:30 (default), and 3:00 quarter selections
+  const normalizedQtr = save.quarterLength === 2 ? 2 : save.quarterLength === 3 ? 3 : 2.5;
+  const qtrLenSec = Math.round(normalizedQtr * 60);
   const maxAudiblesPerHalf = Math.min(5, 3 + Math.floor(save.player.attributes.skill / 4));
 
   const [quarter, setQuarter] = useState(1);
@@ -453,8 +454,8 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
     setPlayLog((prev) => [outcome.commentary, ...prev].slice(0, 14));
 
     let timeUsed = outcome.clockStopped
-      ? 1 + Math.floor(Math.random() * 2)
-      : 2 + Math.floor(Math.random() * 3);
+      ? 2 + Math.floor(Math.random() * 3)
+      : 5 + Math.floor(Math.random() * 5);
 
     if (clockFrozenRef.current) {
       timeUsed = 0;
@@ -756,7 +757,7 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
       return;
     }
 
-    let timeStep = 3 + Math.floor(Math.random() * 4);
+    let timeStep = clockSec <= 60 ? 3 + Math.floor(Math.random() * 3) : 5 + Math.floor(Math.random() * 5);
     if (clockFrozenRef.current) {
       timeStep = 0;
       clockFrozenRef.current = false;
@@ -967,9 +968,9 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
           quarter >= 4 &&
           clockSec <= 125 &&
           ((isMyOff && myScore < oppScore) || (!isMyOff && oppScore < myScore));
-        const goShort = rem <= 2 && clampedYard >= 48 && clampedYard < 63 && Math.random() < 0.62;
+        const goShort = rem <= 2 && clampedYard >= 48 && clampedYard < 64 && Math.random() < 0.5;
         if (goShort || (attTrailingLate && clampedYard >= 30 && (clampedYard < 65 || (isMyOff ? oppScore - myScore : myScore - oppScore) > 3))) {
-          const convGain = Math.random() < 0.62 ? 1 + Math.floor(Math.random() * 5) : 0;
+          const convGain = Math.random() < 0.58 ? 1 + Math.floor(Math.random() * 4) : 0;
           if (convGain >= rem) {
             const convYd = clampYard(clampedYard + convGain);
             const msg4 = `${attTeam.shortName} goes for it on 4th & ${rem}... CONVERTS! (+${convGain} yds)`;
@@ -1001,7 +1002,7 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
           }
         }
 
-        const fgThreshold = weatherMeta.simFgMakeMod <= -0.1 ? 66 : 62;
+        const fgThreshold = weatherMeta.simFgMakeMod <= -0.1 ? 68 : 64;
         if (clampedYard >= fgThreshold) {
           const dist = 100 - clampedYard + 17;
           const baseMake = dist <= 40 ? 0.87 : dist <= 50 ? 0.72 : 0.48;
@@ -1116,7 +1117,7 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
       }
 
       const roll = Math.random();
-      let timeStep = 3 + Math.floor(Math.random() * 4);
+      let timeStep = curClk <= 60 ? 3 + Math.floor(Math.random() * 3) : 5 + Math.floor(Math.random() * 5);
       if (clockFrozenRef.current) {
         timeStep = 0;
         clockFrozenRef.current = false;
@@ -1258,7 +1259,8 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
             return;
           }
           let scoredFg = false;
-          if (curYard >= 62) {
+          const fgThreshold = weatherMeta.simFgMakeMod <= -0.1 ? 68 : 64;
+          if (curYard >= fgThreshold) {
             const dist = 100 - curYard + 17;
             const fgGood = Math.random() < (dist <= 40 ? 0.86 : dist <= 50 ? 0.72 : 0.48);
             if (fgGood) {
@@ -1401,14 +1403,19 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
           ? 'STEADY CROWD'
           : 'SPARSE CROWD';
 
+  const isLiveFullscreen = phase === 'LIVE_FIELD';
+
   return (
     <div
       ref={matchRootRef}
       tabIndex={-1}
-      className="fixed inset-0 z-50 bg-[#1d4972] flex flex-col p-2.5 sm:p-4 gap-2.5 overflow-hidden outline-none"
+      className={`fixed inset-0 z-50 bg-[#1d4972] flex flex-col overflow-hidden outline-none ${
+        isLiveFullscreen ? 'p-0 gap-0' : 'p-2.5 sm:p-4 gap-2.5'
+      }`}
     >
-      {/* Authentic Retro Bowl Fullscreen Scorebug */}
-      <div className="shrink-0 bg-[#13314d] border-2 border-[#3c6fa1] shadow-[0_4px_0_#0b1e30] grid grid-cols-1 md:grid-cols-12 items-stretch overflow-hidden">
+      {/* Authentic Retro Bowl Scorebug (floats in corners during LIVE_FIELD for true 100% fullscreen) */}
+      {!isLiveFullscreen && (
+        <div className="shrink-0 bg-[#13314d] border-2 border-[#3c6fa1] shadow-[0_4px_0_#0b1e30] grid grid-cols-1 md:grid-cols-12 items-stretch overflow-hidden">
         {/* Team Score Blocks */}
         <div className="md:col-span-6 flex items-stretch divide-x-2 divide-[#2b547c]">
           {/* My Team */}
@@ -1567,7 +1574,8 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
             </button>
           </div>
         </div>
-      </div>
+        </div>
+      )}
 
       {/* Main Full-Screen Game Viewport */}
       <div className="flex-1 min-h-0 flex flex-col">
@@ -1772,6 +1780,24 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
             audiblesRemaining={audiblesLeft}
             onUseAudible={() => setAudiblesLeft((a) => Math.max(0, a - 1))}
             onPlayComplete={handlePlayComplete}
+            fullscreenHud={{
+              myScore,
+              oppScore,
+              latestPlay: playLog[0],
+              isMuted: muted,
+              isFullscreen,
+              onToggleMute: () => setMuted(retroAudio.toggleMute()),
+              onToggleFullscreen: toggleBrowserFullscreen,
+              onCycleDriveDirection: handleCycleDriveDirection,
+              onExitMatch: () => {
+                retroAudio.stopCrowdAmbience();
+                if (autoSavedRef.current) {
+                  onFinishGame(myScore, oppScore, matchStats, gameRating, true);
+                } else {
+                  onAbortMatch();
+                }
+              },
+            }}
           />
         )}
 
@@ -1978,18 +2004,20 @@ export const MatchDayView: React.FC<MatchDayViewProps> = ({
         )}
       </div>
 
-      {/* Compact Retro Bowl Broadcast Commentary Bar */}
-      <div className="shrink-0 bg-[#13314d] border-2 border-[#3c6fa1] px-4 py-2 flex items-center justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <div className="font-pixel text-[8px] text-[#fde047] mb-1">BROADCAST BOOTH</div>
-          <div className="font-pixel text-[9px] leading-relaxed text-white truncate">
-            {playLog[0]}
+      {/* Compact Retro Bowl Broadcast Commentary Bar (hidden during fullscreen LIVE_FIELD) */}
+      {!isLiveFullscreen && (
+        <div className="shrink-0 bg-[#13314d] border-2 border-[#3c6fa1] px-4 py-2 flex items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="font-pixel text-[8px] text-[#fde047] mb-1">BROADCAST BOOTH</div>
+            <div className="font-pixel text-[9px] leading-relaxed text-white truncate">
+              {playLog[0]}
+            </div>
+            {playLog[1] && (
+              <div className="text-[11px] text-slate-300 truncate">{playLog[1]}</div>
+            )}
           </div>
-          {playLog[1] && (
-            <div className="text-[11px] text-slate-300 truncate">{playLog[1]}</div>
-          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -2008,31 +2036,32 @@ function rollFluidPlayGain(
   userUnit: 'OFFENSE' | 'DEFENSE' | 'SPECIAL',
   weatherMeta?: ReturnType<typeof getWeatherMeta>
 ): number {
+  // Calibrated so sim possessions score ~40%-50% depending on team skill ratings
   const eraCfg =
     era === 'HIGH_SCHOOL'
-      ? { expChance: 0.2, expMin: 16, expSpan: 24, baseMean: 7.2, incompChance: 0.12 }
+      ? { expChance: 0.085, expMin: 13, expSpan: 17, baseMean: 4.5, incompChance: 0.22 }
       : era === 'COLLEGE'
-        ? { expChance: 0.21, expMin: 16, expSpan: 22, baseMean: 7.4, incompChance: 0.13 }
-        : { expChance: 0.18, expMin: 15, expSpan: 19, baseMean: 6.5, incompChance: 0.14 };
+        ? { expChance: 0.095, expMin: 13, expSpan: 17, baseMean: 4.6, incompChance: 0.21 }
+        : { expChance: 0.08, expMin: 12, expSpan: 15, baseMean: 4.1, incompChance: 0.23 };
 
   const incompChance = eraCfg.incompChance + (weatherMeta?.simIncompAdd ?? 0);
   const expChance = eraCfg.expChance * (weatherMeta?.simExpMult ?? 1);
-  const teamEdge = (attOffense - defDefense) * 0.18;
+  const teamEdge = (attOffense - defDefense) * 0.16;
   const skillEdge =
     (isMyOff && (userUnit === 'OFFENSE' || userUnit === 'SPECIAL'))
-      ? (playerStar - 2.5) * 0.55 + (playerSkill - 5) * 0.2
+      ? (playerStar - 2.5) * 0.45 + (playerSkill - 5) * 0.16
       : (!isMyOff && userUnit === 'DEFENSE')
-        ? -((playerStar - 2.5) * 0.55 + (playerSkill - 5) * 0.2)
+        ? -((playerStar - 2.5) * 0.45 + (playerSkill - 5) * 0.16)
         : 0;
 
   const r = Math.random();
   if (r < incompChance) return 0;
-  if (r < incompChance + 0.05) return -(1 + Math.floor(Math.random() * 3));
+  if (r < incompChance + 0.085) return -(1 + Math.floor(Math.random() * 4));
   if (r > 1 - expChance) {
-    return Math.round(eraCfg.expMin + Math.random() * eraCfg.expSpan + Math.max(0, skillEdge * 0.5));
+    return Math.round(eraCfg.expMin + Math.random() * eraCfg.expSpan + Math.max(0, skillEdge * 0.4));
   }
-  const normal = Math.round(eraCfg.baseMean + (Math.random() - 0.35) * 9 + teamEdge + skillEdge);
-  return Math.max(-2, Math.min(20, normal));
+  const normal = Math.round(eraCfg.baseMean + (Math.random() - 0.42) * 7.5 + teamEdge + skillEdge);
+  return Math.max(-3, Math.min(14, normal));
 }
 
 const StatBox: React.FC<{ label: string; value: string }> = ({ label, value }) => (

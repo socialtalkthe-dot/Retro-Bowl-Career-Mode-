@@ -1,0 +1,211 @@
+{
+  "entities": {
+    "RankingProfile": {
+      "title": "RankingProfile",
+      "description": "Public non-PII global competitive ELO and Career Legacy leaderboard profile.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "region": {
+          "type": "string",
+          "enum": ["US", "INTL"]
+        },
+        "countryCode": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4,
+          "pattern": "^[A-Z]{2,4}$"
+        },
+        "favoriteTeamId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "onlineElo": {
+          "type": "number"
+        },
+        "onlineWins": {
+          "type": "integer"
+        },
+        "onlineLosses": {
+          "type": "integer"
+        },
+        "onlineLeague": {
+          "type": "string",
+          "enum": ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "All-Pro", "Retro Legend"]
+        },
+        "legacyScore": {
+          "type": "integer"
+        },
+        "careerLeague": {
+          "type": "string",
+          "enum": ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "All-Pro", "Retro Legend"]
+        },
+        "careerTitles": {
+          "type": "integer"
+        },
+        "careerYards": {
+          "type": "integer"
+        },
+        "careerTDs": {
+          "type": "integer"
+        },
+        "careerGames": {
+          "type": "integer"
+        },
+        "position": {
+          "type": "string",
+          "enum": ["QB", "RB", "WR", "TE", "OL", "DL", "LB", "CB", "S", "K"]
+        },
+        "starRating": {
+          "type": "number"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "region",
+        "countryCode",
+        "favoriteTeamId",
+        "onlineElo",
+        "onlineWins",
+        "onlineLosses",
+        "onlineLeague",
+        "legacyScore",
+        "careerLeague",
+        "careerTitles",
+        "careerYards",
+        "careerTDs",
+        "careerGames",
+        "position",
+        "starRating",
+        "isPublic",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserPrivateProfile": {
+      "title": "UserPrivateProfile",
+      "description": "Strictly owner-only PII profile stored separately from public rankings.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 120
+        },
+        "preferredRegion": {
+          "type": "string",
+          "enum": ["US", "INTL"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "preferredRegion", "createdAt", "updatedAt"]
+    },
+    "OnlineMatchRecord": {
+      "title": "OnlineMatchRecord",
+      "description": "Immutable record of completed online co-op/PvP match results.",
+      "type": "object",
+      "properties": {
+        "matchId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "hostUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["COOP_VS_PVP", "SOLO_PVP"]
+        },
+        "homeTeamName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 48
+        },
+        "awayTeamName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 48
+        },
+        "homeScore": {
+          "type": "integer"
+        },
+        "awayScore": {
+          "type": "integer"
+        },
+        "participantUids": {
+          "type": "array"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "matchId",
+        "hostUid",
+        "mode",
+        "homeTeamName",
+        "awayTeamName",
+        "homeScore",
+        "awayScore",
+        "participantUids",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/rankings/{uid}": {
+      "schema": { "$ref": "#/entities/RankingProfile" },
+      "description": "Public non-PII player ranking documents keyed by auth UID for global US and International ELO and Legacy Score boards."
+    },
+    "/users/{uid}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateProfile" },
+      "description": "Owner-isolated private user metadata and email address."
+    },
+    "/onlineMatches/{matchId}": {
+      "schema": { "$ref": "#/entities/OnlineMatchRecord" },
+      "description": "Completed online multiplayer match records scoped to participating UIDs."
+    }
+  }
+}

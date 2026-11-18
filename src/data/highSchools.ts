@@ -1195,6 +1195,14 @@ export const HS_BY_STATE: Record<string, HsSpec[]> = {
   ],
 };
 
+import { HS_EXTRA_PART1 } from './highSchoolsExtra1';
+import { HS_EXTRA_PART2 } from './highSchoolsExtra2';
+
+const HS_EXTRA_MERGED: Record<string, HsSpec[]> = {
+  ...HS_EXTRA_PART1,
+  ...HS_EXTRA_PART2,
+};
+
 const COLD_STATES = new Set([
   'Alaska', 'Colorado', 'Connecticut', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Maine',
   'Massachusetts', 'Michigan', 'Minnesota', 'Montana', 'Nebraska', 'New Hampshire',
@@ -1202,7 +1210,21 @@ const COLD_STATES = new Set([
   'South Dakota', 'Utah', 'Vermont', 'Wisconsin', 'Wyoming',
 ]);
 
-export const HIGH_SCHOOL_TEAMS: LeagueTeam[] = Object.entries(HS_BY_STATE).flatMap(
+export const ALL_HS_BY_STATE: Record<string, HsSpec[]> = Object.fromEntries(
+  Object.entries(HS_BY_STATE).map(([state, baseSpecs]) => {
+    const seen = new Set<string>();
+    const combined: HsSpec[] = [];
+    for (const spec of [...baseSpecs, ...(HS_EXTRA_MERGED[state] ?? [])]) {
+      const key = spec[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      combined.push(spec);
+    }
+    return [state, combined];
+  })
+);
+
+export const HIGH_SCHOOL_TEAMS: LeagueTeam[] = Object.entries(ALL_HS_BY_STATE).flatMap(
   ([state, specs]) =>
     specs.map((spec, idx) => {
       const [name, mascot, city, division, primary, secondary, helmet, offense, defense] = spec;

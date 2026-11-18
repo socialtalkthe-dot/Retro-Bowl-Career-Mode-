@@ -17,10 +17,10 @@ import {
   COLLEGE_TEAMS,
   getTeamById,
   getTeamsForEra,
-  HIGH_SCHOOL_TEAMS,
   NFL_TEAMS,
 } from '../data/teams';
 import { generatePlayerDilemma } from '../data/dilemmas';
+import { getLifestylePerks } from '../data/shopping';
 
 export const POSITIONS: {
   id: Position;
@@ -194,6 +194,39 @@ export function getSkillLabel(pos: Position): string {
   return POSITIONS.find((p) => p.id === pos)?.skillName ?? 'Skill';
 }
 
+export const POSITION_RATING_CAPS: Record<
+  Position,
+  { speed: number; strength: number; stamina: number; skill: number; maxSum: number }
+> = {
+  QB: { speed: 7, strength: 10, stamina: 10, skill: 10, maxSum: 37 },
+  RB: { speed: 10, strength: 9, stamina: 9, skill: 6, maxSum: 34 },
+  WR: { speed: 10, strength: 6, stamina: 8, skill: 10, maxSum: 34 },
+  TE: { speed: 7, strength: 8, stamina: 10, skill: 8, maxSum: 33 },
+  OL: { speed: 5, strength: 10, stamina: 10, skill: 10, maxSum: 35 },
+  DL: { speed: 5, strength: 10, stamina: 10, skill: 10, maxSum: 35 },
+  LB: { speed: 7, strength: 8, stamina: 10, skill: 8, maxSum: 33 },
+  CB: { speed: 9, strength: 6, stamina: 10, skill: 8, maxSum: 33 },
+  S: { speed: 9, strength: 6, stamina: 10, skill: 8, maxSum: 33 },
+  K: { speed: 7, strength: 10, stamina: 10, skill: 10, maxSum: 37 },
+};
+
+export type BuildPotentialTier = '2_5' | '25_45' | '3_4';
+
+export function getMoraleInfo(morale: number): {
+  frame: number;
+  label: string;
+  textClass: string;
+} {
+  // Exact Retro Bowl spr_attitude frame order (0=Toxic .. 6=Exceptional)
+  if (morale <= 15) return { frame: 0, label: 'Toxic', textClass: 'text-rose-400' };
+  if (morale <= 30) return { frame: 1, label: 'Bad', textClass: 'text-orange-400' };
+  if (morale <= 45) return { frame: 2, label: 'Poor', textClass: 'text-amber-400' };
+  if (morale <= 60) return { frame: 3, label: 'Okay', textClass: 'text-slate-300' };
+  if (morale <= 75) return { frame: 4, label: 'Good', textClass: 'text-sky-300' };
+  if (morale <= 90) return { frame: 5, label: 'Happy', textClass: 'text-emerald-300' };
+  return { frame: 6, label: 'Exceptional', textClass: 'text-[#fde047]' };
+}
+
 export function getBaseAttributes(pos: Position, archetype: Archetype): {
   attrs: PlayerAttributes;
   max: PlayerAttributes;
@@ -243,20 +276,100 @@ export function getBaseAttributes(pos: Position, archetype: Archetype): {
     skill = 5;
   }
 
+  const caps = POSITION_RATING_CAPS[pos];
   return {
-    attrs: { speed, strength, stamina, skill },
+    attrs: {
+      speed: Math.min(caps.speed, speed),
+      strength: Math.min(caps.strength, strength),
+      stamina: Math.min(caps.stamina, stamina),
+      skill: Math.min(caps.skill, skill),
+    },
     max: {
-      speed: Math.min(10, speed + 4),
-      strength: Math.min(10, strength + 4),
-      stamina: Math.min(10, stamina + 5),
-      skill: 10,
+      speed: Math.min(caps.speed, speed + 4),
+      strength: Math.min(caps.strength, strength + 4),
+      stamina: Math.min(caps.stamina, stamina + 5),
+      skill: caps.skill,
     },
   };
 }
 
-export function calculateStarRating(attrs: PlayerAttributes): number {
-  const avg = (attrs.speed + attrs.strength + attrs.stamina + attrs.skill) / 4;
-  return Math.round(Math.min(5, Math.max(1, avg / 2)) * 2) / 2;
+export function calculateStarRating(attrs: PlayerAttributes, pos?: Position): number {
+  const maxSum = pos ? POSITION_RATING_CAPS[pos].maxSum : 35;
+  const sum = attrs.speed + attrs.strength + attrs.stamina + attrs.skill;
+  const halfStars = Math.max(2, Math.min(10, Math.round((sum / maxSum) * 10)));
+  return halfStars / 2;
+}
+
+export function generatePlayerBuildPreset(
+  pos: Position,
+  archetype: Archetype,
+  tier: BuildPotentialTier,
+  era: Exclude<CareerEra, 'RETIRED'>
+): {
+  attrs: PlayerAttributes;
+  max: PlayerAttributes;
+  bonusPoints: number;
+} {
+  const caps = POSITION_RATING_CAPS[pos];
+  const base = getBaseAttributes(pos, archetype).attrs;
+  const keys: (keyof PlayerAttributes)[] = ['skill', 'speed', 'strength', 'stamina'];
+
+  const targetStartStars = tier === '2_5' ? 2.0 : tier === '25_45' ? 2.5 : 3.0;
+  const targetMaxStars = tier === '2_5' ? 5.0 : tier === '25_45' ? 4.5 : 4.0;
+
+  const targetStartSum = Math.max(
+    8,
+    Math.round((targetStartStars * 2 * caps.maxSum) / 10) + (Math.random() < 0.35 ? -1 : Math.random() < 0.35 ? 1 : 0)
+  );
+  const targetMaxSum = Math.min(
+    caps.maxSum,
+    Math.max(targetStartSum + 4, Math.round((targetMaxStars * 2 * caps.maxSum) / 10))
+  );
+
+  // Randomize max ceilings with position bias + natural variation
+  const max: PlayerAttributes = {
+    speed: Math.min(caps.speed, Math.max(4, caps.speed - Math.floor(Math.random() * 2))),
+    strength: Math.min(caps.strength, Math.max(4, caps.strength - Math.floor(Math.random() * 2))),
+    stamina: Math.min(caps.stamina, Math.max(5, caps.stamina - Math.floor(Math.random() * 2))),
+    skill: Math.min(caps.skill, Math.max(5, caps.skill - Math.floor(Math.random() * 2))),
+  };
+
+  let guard = 0;
+  while (max.speed + max.strength + max.stamina + max.skill > targetMaxSum && guard < 40) {
+    guard++;
+    const k = keys[Math.floor(Math.random() * keys.length)];
+    if (max[k] > 3) max[k] -= 1;
+  }
+  guard = 0;
+  while (max.speed + max.strength + max.stamina + max.skill < targetMaxSum && guard < 40) {
+    guard++;
+    const k = keys[Math.floor(Math.random() * keys.length)];
+    if (max[k] < caps[k]) max[k] += 1;
+  }
+
+  // Randomize starting bars around archetype identity + tier floor with genuine variation
+  const attrs: PlayerAttributes = {
+    speed: Math.max(1, Math.min(max.speed, base.speed + Math.floor(Math.random() * 3) - 1)),
+    strength: Math.max(1, Math.min(max.strength, base.strength + Math.floor(Math.random() * 3) - 1)),
+    stamina: Math.max(1, Math.min(max.stamina, base.stamina + Math.floor(Math.random() * 3) - 1)),
+    skill: Math.max(1, Math.min(max.skill, base.skill + Math.floor(Math.random() * 3) - 1)),
+  };
+
+  guard = 0;
+  while (attrs.speed + attrs.strength + attrs.stamina + attrs.skill > targetStartSum && guard < 40) {
+    guard++;
+    const k = keys[Math.floor(Math.random() * keys.length)];
+    if (attrs[k] > 2) attrs[k] -= 1;
+  }
+  guard = 0;
+  while (attrs.speed + attrs.strength + attrs.stamina + attrs.skill < targetStartSum && guard < 40) {
+    guard++;
+    const k = keys[Math.floor(Math.random() * keys.length)];
+    if (attrs[k] < max[k]) attrs[k] += 1;
+  }
+
+  const bonusPoints = era === 'HIGH_SCHOOL' ? 4 : era === 'COLLEGE' ? 5 : 6;
+  return { attrs, max, bonusPoints };
 }
 
 export function getTeamRank(save: CareerSave, targetTeamId: string): {
@@ -370,11 +483,76 @@ export function generateRoster(
     return true;
   });
 
-  const baseAge = era === 'HIGH_SCHOOL' ? 16 : era === 'COLLEGE' ? 19 : 24;
+  const baseAge = era === 'HIGH_SCHOOL' ? 16 : era === 'COLLEGE' ? 19 : 22;
+  const teamOverall = (team.offense + team.defense) / 20; // ~0.45 - 0.95
+  const keys: (keyof PlayerAttributes)[] = ['skill', 'speed', 'strength', 'stamina'];
 
   return slots.map((pos, idx) => {
-    const teamRating = (team.offense + team.defense) / 4; // ~2.5 - 5.0
-    const rating = Math.round(Math.min(5, Math.max(2, teamRating + (Math.random() * 1.4 - 0.7))) * 2) / 2;
+    const caps = POSITION_RATING_CAPS[pos];
+    const age = baseAge + Math.floor(Math.random() * (era === 'NFL' ? 9 : 3));
+    const isYoung = age <= baseAge + 2;
+    const targetStars = Math.max(
+      2.0,
+      Math.min(5.0, Math.round((2.0 + teamOverall * 2.5 + (Math.random() * 1.4 - 0.6)) * 2) / 2)
+    );
+    const potStars = Math.max(
+      targetStars,
+      Math.min(5.0, targetStars + (isYoung ? (Math.random() < 0.7 ? 1.0 : 0.5) : Math.random() < 0.35 ? 0.5 : 0))
+    );
+
+    const targetSum = Math.max(8, Math.round((targetStars * 2 * caps.maxSum) / 10));
+    const potSum = Math.min(caps.maxSum, Math.max(targetSum, Math.round((potStars * 2 * caps.maxSum) / 10)));
+
+    const maxAttrs: PlayerAttributes = {
+      speed: Math.min(caps.speed, Math.max(3, Math.round(caps.speed * (0.65 + Math.random() * 0.35)))),
+      strength: Math.min(caps.strength, Math.max(3, Math.round(caps.strength * (0.65 + Math.random() * 0.35)))),
+      stamina: Math.min(caps.stamina, Math.max(4, Math.round(caps.stamina * (0.65 + Math.random() * 0.35)))),
+      skill: Math.min(caps.skill, Math.max(4, Math.round(caps.skill * (0.65 + Math.random() * 0.35)))),
+    };
+    let g = 0;
+    while (maxAttrs.speed + maxAttrs.strength + maxAttrs.stamina + maxAttrs.skill < potSum && g < 40) {
+      g++;
+      const k = keys[Math.floor(Math.random() * keys.length)];
+      if (maxAttrs[k] < caps[k]) maxAttrs[k] += 1;
+    }
+    g = 0;
+    while (maxAttrs.speed + maxAttrs.strength + maxAttrs.stamina + maxAttrs.skill > potSum && g < 40) {
+      g++;
+      const k = keys[Math.floor(Math.random() * keys.length)];
+      if (maxAttrs[k] > 3) maxAttrs[k] -= 1;
+    }
+
+    const attrs: PlayerAttributes = {
+      speed: Math.max(2, Math.min(maxAttrs.speed, maxAttrs.speed - Math.floor(Math.random() * 3))),
+      strength: Math.max(2, Math.min(maxAttrs.strength, maxAttrs.strength - Math.floor(Math.random() * 3))),
+      stamina: Math.max(2, Math.min(maxAttrs.stamina, maxAttrs.stamina - Math.floor(Math.random() * 3))),
+      skill: Math.max(2, Math.min(maxAttrs.skill, maxAttrs.skill - Math.floor(Math.random() * 3))),
+    };
+    g = 0;
+    while (attrs.speed + attrs.strength + attrs.stamina + attrs.skill < targetSum && g < 40) {
+      g++;
+      const k = keys[Math.floor(Math.random() * keys.length)];
+      if (attrs[k] < maxAttrs[k]) attrs[k] += 1;
+    }
+    g = 0;
+    while (attrs.speed + attrs.strength + attrs.stamina + attrs.skill > targetSum && g < 40) {
+      g++;
+      const k = keys[Math.floor(Math.random() * keys.length)];
+      if (attrs[k] > 2) attrs[k] -= 1;
+    }
+
+    const rating = calculateStarRating(attrs, pos);
+    const potential = calculateStarRating(maxAttrs, pos);
+
+    // Realistic locker room morale spread: mostly Good/Happy/Exceptional (65..96), rare grumpy vet (~44..58)
+    const moraleRoll = Math.random();
+    const morale =
+      moraleRoll < 0.08
+        ? 44 + Math.floor(Math.random() * 14) // occasional Okay/Poor guy
+        : moraleRoll < 0.72
+          ? 64 + Math.floor(Math.random() * 22) // Good / Happy (64..85)
+          : 86 + Math.floor(Math.random() * 12); // Happy / Exceptional (86..97)
+
     const jerseyBase =
       pos === 'QB' ? 1 + (idx % 15) :
       pos === 'RB' ? 20 + (idx % 12) :
@@ -390,11 +568,13 @@ export function generateRoster(
       name: randomName(),
       position: pos,
       jersey: jerseyBase,
-      age: baseAge + Math.floor(Math.random() * (era === 'NFL' ? 7 : 3)),
+      age,
       rating,
-      potential: Math.min(5, rating + (Math.random() > 0.5 ? 0.5 : 0)),
-      morale: 68 + Math.floor(Math.random() * 25),
-      condition: 82 + Math.floor(Math.random() * 18),
+      potential,
+      attributes: attrs,
+      maxAttributes: maxAttrs,
+      morale,
+      condition: 84 + Math.floor(Math.random() * 16),
       faceId: idx % 6,
       skinTone: pick(SKIN_TONES),
       hairColor: pick(HAIR_COLORS),
@@ -580,62 +760,109 @@ export function generateSchedule(
     const finalNfl = ordered.filter(Boolean);
     matchups.splice(0, matchups.length, ...finalNfl);
   } else if (era === 'COLLEGE') {
-    // 12-game FBS regular season:
-    // SEC / ACC: 8 conference + 4 non-conference
-    // Big Ten / Big 12: 9 conference + 3 non-conference
-    // Independents / AAC / MW: rival + 11 unique national FBS opponents
-    const sameConf = shuffleArr(others.filter((t) => t.conference === myTeam.conference));
-    const nonConfPool = shuffleArr(others.filter((t) => t.conference !== myTeam.conference));
-    const isNineConf = myTeam.conference === 'Big Ten' || myTeam.conference === 'Big 12';
-    const isMajorConf = isNineConf || myTeam.conference === 'SEC' || myTeam.conference === 'ACC';
+    const isFcs = myTeam.subdivision === 'FCS';
+    if (isFcs) {
+      // 11-game FCS regular season: up to 7 conference games + 4 OOC (incl. rival + 1 FBS money game + regional FCS)
+      const sameSub = others.filter((t) => t.subdivision === 'FCS');
+      const sameConf = shuffleArr(sameSub.filter((t) => t.conference === myTeam.conference));
+      const otherFcs = shuffleArr(sameSub.filter((t) => t.conference !== myTeam.conference));
+      const fbsPool = shuffleArr(others.filter((t) => t.subdivision !== 'FCS'));
 
-    const usedIds = new Set<string>();
-    const confGames: { opp: LeagueTeam; isHome: boolean; tag: string }[] = [];
-    const nonConfGames: { opp: LeagueTeam; isHome: boolean; tag: string }[] = [];
+      const usedIds = new Set<string>();
+      const confGames: { opp: LeagueTeam; isHome: boolean; tag: string }[] = [];
+      const nonConfGames: { opp: LeagueTeam; isHome: boolean; tag: string }[] = [];
 
-    if (isMajorConf) {
-      const targetConf = Math.min(sameConf.length, isNineConf ? 9 : 8);
-      sameConf.slice(0, targetConf).forEach((opp, idx) => {
+      sameConf.slice(0, 7).forEach((opp, idx) => {
         usedIds.add(opp.id);
         confGames.push({ opp, isHome: idx % 2 === 0, tag: 'CONF' });
       });
-      // Include rival if non-conf
-      const rival = nonConfPool.find((t) => t.id === myTeam.rivalId);
+
+      const rival = otherFcs.find((t) => t.id === myTeam.rivalId);
       if (rival && !usedIds.has(rival.id)) {
         usedIds.add(rival.id);
         nonConfGames.push({ opp: rival, isHome: Math.random() > 0.5, tag: 'RIVAL' });
       }
-      for (const opp of nonConfPool) {
-        if (confGames.length + nonConfGames.length >= 12) break;
+      if (fbsPool[0] && !usedIds.has(fbsPool[0].id)) {
+        usedIds.add(fbsPool[0].id);
+        nonConfGames.push({ opp: fbsPool[0], isHome: false, tag: 'MONEY' });
+      }
+      for (const opp of otherFcs) {
+        if (confGames.length + nonConfGames.length >= 11) break;
         if (usedIds.has(opp.id)) continue;
         usedIds.add(opp.id);
         nonConfGames.push({ opp, isHome: nonConfGames.length % 2 === 0, tag: 'NONCONF' });
       }
+      const rivalGame = nonConfGames.find((g) => g.tag === 'RIVAL');
+      const earlyNonConf = nonConfGames.filter((g) => g.tag !== 'RIVAL');
+      const orderedFcs = [...earlyNonConf, ...shuffleArr(confGames)];
+      if (rivalGame) orderedFcs.push(rivalGame);
+      matchups.push(...orderedFcs.slice(0, 11));
     } else {
-      // Independents / G5: play same-conf opponents + rival + marquee FBS slate (12 unique)
-      sameConf.forEach((opp, idx) => {
-        usedIds.add(opp.id);
-        confGames.push({ opp, isHome: idx % 2 === 0, tag: 'CONF' });
-      });
-      const rival = nonConfPool.find((t) => t.id === myTeam.rivalId);
-      if (rival && !usedIds.has(rival.id)) {
-        usedIds.add(rival.id);
-        nonConfGames.push({ opp: rival, isHome: true, tag: 'RIVAL' });
-      }
-      for (const opp of nonConfPool) {
-        if (confGames.length + nonConfGames.length >= 12) break;
-        if (usedIds.has(opp.id)) continue;
-        usedIds.add(opp.id);
-        nonConfGames.push({ opp, isHome: (confGames.length + nonConfGames.length) % 2 === 0, tag: 'NONCONF' });
-      }
-    }
+      // 12-game FBS regular season:
+      // SEC / ACC: 8 conference + 4 non-conference
+      // Big Ten / Big 12: 9 conference + 3 non-conference
+      // Independents / AAC / MW / Sun Belt / MAC / C-USA / Pac-12: conf + rival + national FBS/1 FCS tune-up
+      const fbsOthers = others.filter((t) => t.subdivision !== 'FCS');
+      const fcsOthers = shuffleArr(others.filter((t) => t.subdivision === 'FCS'));
+      const sameConf = shuffleArr(fbsOthers.filter((t) => t.conference === myTeam.conference));
+      const nonConfPool = shuffleArr(fbsOthers.filter((t) => t.conference !== myTeam.conference));
+      const isNineConf = myTeam.conference === 'Big Ten' || myTeam.conference === 'Big 12';
+      const isMajorConf = isNineConf || myTeam.conference === 'SEC' || myTeam.conference === 'ACC';
 
-    // Place non-conference games early (Weeks 1-3) and rivalry week 12 if non-conf rival exists
-    const rivalGame = nonConfGames.find((g) => g.tag === 'RIVAL');
-    const earlyNonConf = nonConfGames.filter((g) => g.tag !== 'RIVAL');
-    const orderedCol = [...earlyNonConf, ...shuffleArr(confGames)];
-    if (rivalGame) orderedCol.push(rivalGame);
-    matchups.push(...orderedCol.slice(0, 12));
+      const usedIds = new Set<string>();
+      const confGames: { opp: LeagueTeam; isHome: boolean; tag: string }[] = [];
+      const nonConfGames: { opp: LeagueTeam; isHome: boolean; tag: string }[] = [];
+
+      if (isMajorConf) {
+        const targetConf = Math.min(sameConf.length, isNineConf ? 9 : 8);
+        sameConf.slice(0, targetConf).forEach((opp, idx) => {
+          usedIds.add(opp.id);
+          confGames.push({ opp, isHome: idx % 2 === 0, tag: 'CONF' });
+        });
+        const rival = nonConfPool.find((t) => t.id === myTeam.rivalId);
+        if (rival && !usedIds.has(rival.id)) {
+          usedIds.add(rival.id);
+          nonConfGames.push({ opp: rival, isHome: Math.random() > 0.5, tag: 'RIVAL' });
+        }
+        // Optional Week 1 FCS tune-up for P4 schools
+        if (fcsOthers[0] && Math.random() < 0.55) {
+          usedIds.add(fcsOthers[0].id);
+          nonConfGames.push({ opp: fcsOthers[0], isHome: true, tag: 'NONCONF' });
+        }
+        for (const opp of nonConfPool) {
+          if (confGames.length + nonConfGames.length >= 12) break;
+          if (usedIds.has(opp.id)) continue;
+          usedIds.add(opp.id);
+          nonConfGames.push({ opp, isHome: nonConfGames.length % 2 === 0, tag: 'NONCONF' });
+        }
+      } else {
+        sameConf.slice(0, 8).forEach((opp, idx) => {
+          usedIds.add(opp.id);
+          confGames.push({ opp, isHome: idx % 2 === 0, tag: 'CONF' });
+        });
+        const rival = nonConfPool.find((t) => t.id === myTeam.rivalId);
+        if (rival && !usedIds.has(rival.id)) {
+          usedIds.add(rival.id);
+          nonConfGames.push({ opp: rival, isHome: true, tag: 'RIVAL' });
+        }
+        if (fcsOthers[0] && confGames.length + nonConfGames.length < 12) {
+          usedIds.add(fcsOthers[0].id);
+          nonConfGames.push({ opp: fcsOthers[0], isHome: true, tag: 'NONCONF' });
+        }
+        for (const opp of nonConfPool) {
+          if (confGames.length + nonConfGames.length >= 12) break;
+          if (usedIds.has(opp.id)) continue;
+          usedIds.add(opp.id);
+          nonConfGames.push({ opp, isHome: (confGames.length + nonConfGames.length) % 2 === 0, tag: 'NONCONF' });
+        }
+      }
+
+      const rivalGame = nonConfGames.find((g) => g.tag === 'RIVAL');
+      const earlyNonConf = nonConfGames.filter((g) => g.tag !== 'RIVAL');
+      const orderedCol = [...earlyNonConf, ...shuffleArr(confGames)];
+      if (rivalGame) orderedCol.push(rivalGame);
+      matchups.push(...orderedCol.slice(0, 12));
+    }
   } else {
     // High School: 10-game varsity regular season (unique in-state opponents)
     const classPrefix = myTeam.division.split(' ')[0];
@@ -710,6 +937,11 @@ export interface NewCareerConfig {
   startEra: 'HIGH_SCHOOL' | 'COLLEGE' | 'NFL';
   collegeTeamId?: string;
   nflTeamId?: string;
+  customBuild?: {
+    attrs: PlayerAttributes;
+    max: PlayerAttributes;
+    remainingSkillPoints?: number;
+  };
 }
 
 export function createNewCareer(config: NewCareerConfig): CareerSave {
@@ -721,19 +953,23 @@ export function createNewCareer(config: NewCareerConfig): CareerSave {
         ? config.collegeTeamId ?? COLLEGE_TEAMS[0].id
         : config.nflTeamId ?? NFL_TEAMS[0].id;
   const team = getTeamById(teamId);
-  const { attrs, max } = getBaseAttributes(config.position, config.archetype);
 
-  // Give slightly higher starting attributes if starting directly in College or NFL
-  if (era === 'COLLEGE') {
-    attrs.speed = Math.min(max.speed, attrs.speed + 1);
-    attrs.skill = Math.min(max.skill, attrs.skill + 1);
-  } else if (era === 'NFL') {
-    attrs.speed = Math.min(max.speed, attrs.speed + 2);
-    attrs.strength = Math.min(max.strength, attrs.strength + 1);
-    attrs.skill = Math.min(max.skill, attrs.skill + 2);
+  let attrs: PlayerAttributes;
+  let max: PlayerAttributes;
+  let startingSkillPoints: number;
+
+  if (config.customBuild) {
+    attrs = { ...config.customBuild.attrs };
+    max = { ...config.customBuild.max };
+    startingSkillPoints = Math.max(0, config.customBuild.remainingSkillPoints ?? 0);
+  } else {
+    const preset = generatePlayerBuildPreset(config.position, config.archetype, '25_45', era);
+    attrs = preset.attrs;
+    max = preset.max;
+    startingSkillPoints = preset.bonusPoints;
   }
 
-  const starRating = calculateStarRating(attrs);
+  const starRating = calculateStarRating(attrs, config.position);
   const { schedule, standings } = generateSchedule(era, teamId, config.state);
   const coaches = generateCoaches(era);
   const roster = generateRoster(era, config.position, team);
@@ -776,7 +1012,7 @@ export function createNewCareer(config: NewCareerConfig): CareerSave {
       level: 1,
       xp: 0,
       xpToNext: 190,
-      skillPoints: era === 'HIGH_SCHOOL' ? 1 : 2,
+      skillPoints: startingSkillPoints,
       attributes: attrs,
       maxAttributes: max,
       trainingProgress: { speed: 0, strength: 0, stamina: 0, skill: 0 },
@@ -831,7 +1067,7 @@ export function createNewCareer(config: NewCareerConfig): CareerSave {
     weeklyMeetingDone: false,
     uniformChoice: 'home',
     difficulty: 'Dynamic',
-    quarterLength: 2,
+    quarterLength: 2.5,
     driveDirection: 'BOTH',
   };
 
@@ -848,7 +1084,7 @@ export function simulateLeagueWeek(
   const ids = Object.keys(next).filter((id) => id !== save.teamId && id !== userOpponentId);
   const shuffled = shuffleArr(ids);
 
-  // Pair mostly within-conference teams when possible for authentic conference standings
+  // Pair mostly within-conference & same-subdivision teams when possible
   const paired: [string, string][] = [];
   const remaining = [...shuffled];
   while (remaining.length >= 2) {
@@ -857,6 +1093,9 @@ export function simulateLeagueWeek(
     let oppIdx = -1;
     if (Math.random() < 0.72) {
       oppIdx = remaining.findIndex((id) => getTeamById(id).conference === teamA.conference);
+    }
+    if (oppIdx === -1 && save.era === 'COLLEGE' && Math.random() < 0.92) {
+      oppIdx = remaining.findIndex((id) => getTeamById(id).subdivision === teamA.subdivision);
     }
     const b = remaining.splice(oppIdx >= 0 ? oppIdx : 0, 1)[0];
     paired.push([a, b]);
@@ -962,14 +1201,38 @@ export function applyMatchOutcome(
     next.careerByEra[next.era] = addStats(next.careerByEra[next.era], fullGameStats);
   }
 
-  // Update teammates' simulated season stats
+  // Update teammates' simulated season stats, morale, & young player in-season growth
   next.roster = next.roster.map((tm) => {
     const yds = tm.position === 'QB' ? 180 + Math.floor(Math.random() * 110) :
       tm.position === 'RB' || tm.position === 'WR' ? 45 + Math.floor(Math.random() * 70) : 0;
     const tds = yds > 75 && Math.random() > 0.45 ? 1 : 0;
     const tackles = ['DL', 'LB', 'CB', 'S'].includes(tm.position) ? 3 + Math.floor(Math.random() * 6) : 0;
+
+    // Realistic morale shift after game (wins lift morale, losses dip slightly with personal variance)
+    const moraleShift = won ? 3 + Math.floor(Math.random() * 4) : -(2 + Math.floor(Math.random() * 3));
+    const nextMorale = Math.max(18, Math.min(99, tm.morale + moraleShift));
+
+    // Young teammates with potential room can gain a bar mid-season on wins
+    let nextAttrs = tm.attributes;
+    let nextRating = tm.rating;
+    if (nextAttrs && tm.maxAttributes && tm.age <= 25 && won && Math.random() < 0.16) {
+      const growKeys = (['skill', 'speed', 'strength', 'stamina'] as const).filter(
+        (k) => nextAttrs![k] < tm.maxAttributes![k]
+      );
+      if (growKeys.length > 0) {
+        const pickedKey = growKeys[Math.floor(Math.random() * growKeys.length)];
+        nextAttrs = { ...nextAttrs, [pickedKey]: nextAttrs[pickedKey] + 1 };
+        nextRating = calculateStarRating(nextAttrs, tm.position);
+      }
+    }
+
     return {
       ...tm,
+      attributes: nextAttrs,
+      rating: nextRating,
+      isStar: nextRating >= 3.5,
+      morale: nextMorale,
+      condition: Math.max(58, Math.min(100, tm.condition - (2 + Math.floor(Math.random() * 6)))),
       stats: {
         yards: tm.stats.yards + yds,
         tds: tm.stats.tds + tds,
@@ -978,8 +1241,10 @@ export function applyMatchOutcome(
     };
   });
 
-  // Balanced XP & Leveling (~1 skill point every 2-3 solid games)
-  const earnedXP = Math.round(28 + gameRating * 7.5 + (won ? 18 : 6));
+  // Balanced XP & Leveling + Lifestyle Perks
+  const perks = getLifestylePerks(next.player.ownedItemIds ?? []);
+  const baseXP = Math.round(28 + gameRating * 7.5 + (won ? 18 : 6));
+  const earnedXP = Math.round(baseXP * (1 + perks.xpBonusPct / 100));
   next.player.xp += earnedXP;
   while (next.player.xp >= next.player.xpToNext) {
     next.player.xp -= next.player.xpToNext;
@@ -991,12 +1256,15 @@ export function applyMatchOutcome(
     }
   }
 
-  // Condition, Morale, Relationships, Payday
-  const staminaFactor = Math.max(0.5, 1.15 - next.player.attributes.stamina * 0.05);
-  next.player.condition = Math.max(35, Math.round(next.player.condition - 12 * staminaFactor));
+  // Condition, Morale, Relationships, Payday (with Lifestyle Recovery & Outside-Life Perks)
+  const staminaFactor = Math.max(0.5, 1.15 - (next.player.attributes.stamina + perks.attrBoost.stamina) * 0.05);
+  const condDrain = Math.max(3, Math.round(12 * staminaFactor - perks.conditionRegenBonus * 0.45));
+  next.player.condition = Math.max(35, Math.min(100, next.player.condition - condDrain));
   next.player.morale = Math.min(100, Math.max(15, next.player.morale + (won ? 5 : -4) + (gameRating >= 7 ? 3 : -2)));
-  next.player.relationships.coach = Math.min(100, Math.max(10, next.player.relationships.coach + (gameRating >= 7 ? 4 : -2) + (won ? 2 : -1)));
-  next.player.relationships.fans = Math.min(100, Math.max(10, next.player.relationships.fans + (won ? 4 : -3) + (gameRating >= 8 ? 4 : 0)));
+  next.player.relationships.coach = Math.min(100, Math.max(10, next.player.relationships.coach + (gameRating >= 7 ? 4 : -2) + (won ? 2 : -1) + Math.round(perks.coachBonus * 0.5)));
+  next.player.relationships.fans = Math.min(100, Math.max(10, next.player.relationships.fans + (won ? 4 : -3) + (gameRating >= 8 ? 4 : 0) + Math.round(perks.fansBonus * 0.5)));
+  next.player.relationships.agent = Math.min(100, Math.max(10, next.player.relationships.agent + Math.round(perks.agentBonus * 0.5)));
+  next.player.relationships.gpa = Number(Math.min(4.0, Math.max(1.5, next.player.relationships.gpa + perks.gpaBonus * 0.35)).toFixed(2));
 
   // Role promotion
   if (next.player.relationships.coach >= 85 && next.player.starRating >= 4) {
@@ -1020,21 +1288,22 @@ export function applyMatchOutcome(
     }
   }
 
-  // Cash payout (NIL / NFL Game Check + TD Bonus)
+  // Cash payout (NIL / NFL Game Check + TD Bonus + Outside-Life Passive Income / Upkeep)
   const gameTds = (matchStats.passTD ?? 0) + (matchStats.rushTD ?? 0) + (matchStats.recTD ?? 0);
   const gamePay =
     next.era === 'HIGH_SCHOOL'
       ? 50
       : Math.round(next.player.contract.salaryPerYear / next.totalWeeks) +
         gameTds * next.player.contract.tdBonus;
-  next.player.cash = Math.max(0, next.player.cash + gamePay);
+  const outsideLifeNet = -Math.round(perks.weeklyNetUpkeep * 0.35);
+  next.player.cash = Math.max(0, next.player.cash + gamePay + outsideLifeNet);
 
   // News item
   next.newsFeed.unshift({
     id: `n_${Date.now()}`,
     week: next.week,
     headline: `${team.shortName} ${won ? 'Defeats' : 'Falls to'} ${opp.shortName} (${playerScore}-${oppScore})`,
-    body: `${next.player.firstName} ${next.player.lastName} earned a ${gameRating.toFixed(1)}/10 game grade (+${earnedXP} XP${gamePay > 0 ? `, +$${gamePay.toLocaleString()}` : ''}).`,
+    body: `${next.player.firstName} ${next.player.lastName} earned a ${gameRating.toFixed(1)}/10 game grade (+${earnedXP} XP${gamePay > 0 ? `, +$${gamePay.toLocaleString()}` : ''}${outsideLifeNet > 0 ? `, +$${outsideLifeNet.toLocaleString()} passive` : ''}).`,
   });
   next.newsFeed = next.newsFeed.slice(0, 20);
 
@@ -1045,21 +1314,30 @@ export function applyMatchOutcome(
   if ((matchStats.sacks ?? 0) >= 2 && !next.achievements.includes('Sack Artist (2+ Sacks)')) next.achievements.push('Sack Artist (2+ Sacks)');
   if ((matchStats.fgLong ?? 0) >= 50 && !next.achievements.includes('50+ Yard Bomb')) next.achievements.push('50+ Yard Bomb');
 
-  // Helper to compute College CFP 12-team field (Major conf champs + top at-large)
+  // Helper to compute FBS College CFP 12-team field (Major conf champs + top FBS at-large)
   const getCfpField = (): LeagueTeam[] => {
-    const natSorted = sortStandingsRows(Object.values(next.standings)).map((r) => getTeamById(r.teamId));
-    const majorConfs = ['SEC', 'Big Ten', 'ACC', 'Big 12'];
+    const fbsRows = Object.values(next.standings).filter((r) => getTeamById(r.teamId).subdivision !== 'FCS');
+    const natSorted = sortStandingsRows(fbsRows).map((r) => getTeamById(r.teamId));
+    const fbsConfs = ['SEC', 'Big Ten', 'ACC', 'Big 12', 'MW', 'AAC', 'Sun Belt'];
     const confChamps: LeagueTeam[] = [];
-    majorConfs.forEach((cf) => {
+    fbsConfs.forEach((cf) => {
       const topTeam = natSorted.find((t) => t.conference === cf);
       if (topTeam) confChamps.push(topTeam);
     });
     const sortedChamps = sortStandingsRows(
       confChamps.map((t) => next.standings[t.id] ?? { teamId: t.id, wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 })
-    ).map((r) => getTeamById(r.teamId));
+    )
+      .slice(0, 5)
+      .map((r) => getTeamById(r.teamId));
     const champIds = new Set(sortedChamps.map((t) => t.id));
     const atLarge = natSorted.filter((t) => !champIds.has(t.id));
     return [...sortedChamps, ...atLarge].slice(0, 12);
+  };
+
+  // Helper to compute 16-Team FCS Playoffs field
+  const getFcsPlayoffField = (): LeagueTeam[] => {
+    const fcsRows = Object.values(next.standings).filter((r) => getTeamById(r.teamId).subdivision === 'FCS');
+    return sortStandingsRows(fcsRows).slice(0, 16).map((r) => getTeamById(r.teamId));
   };
 
   // Postseason Qualification & Seeded Bracket Progression
@@ -1116,116 +1394,144 @@ export function applyMatchOutcome(
         });
       }
     } else if (next.era === 'COLLEGE') {
-      const majorConfs = ['SEC', 'Big Ten', 'ACC', 'Big 12'];
-      const natSorted = sortStandingsRows(Object.values(next.standings)).map((r) => getTeamById(r.teamId));
-      const myNatRank = natSorted.findIndex((t) => t.id === team.id) + 1;
-
-      if (majorConfs.includes(team.conference)) {
-        const confSorted = natSorted.filter((t) => t.conference === team.conference);
-        const myConfRank = confSorted.findIndex((t) => t.id === team.id) + 1;
-        if (myConfRank <= 2) {
-          const confOpp = confSorted[myConfRank === 1 ? 1 : 0];
-          next.phase = 'PLAYOFFS';
-          next.week += 1;
-          next.schedule.push({
-            week: next.week,
-            opponentId: confOpp.id,
-            isHome: myConfRank === 1,
-            isPlayoff: true,
-            playoffRoundName: `${team.conference} Championship`,
-            played: false,
-            weather: getWeatherForTeam(team),
-          });
-          next.newsFeed.unshift({
-            id: `po_${Date.now()}`,
-            week: next.week,
-            headline: `${team.name} Reach ${team.conference} Championship Game!`,
-            body: `Facing #${myConfRank === 1 ? 2 : 1} ${confOpp.name} for the conference crown & CFP bye.`,
-          });
-          next.weeklyTrainingDone = false;
-          next.weeklyMeetingDone = false;
-          next.pendingDilemma = null;
-          next.updatedAt = Date.now();
-          return next;
+      if (team.subdivision === 'FCS') {
+        const fcsField = getFcsPlayoffField();
+        const myFcsSeed = fcsField.findIndex((t) => t.id === team.id) + 1;
+        if (myFcsSeed < 1 || myFcsSeed > 16) {
+          return finishSeason(next, 'Missed FCS Playoffs');
         }
-      }
-
-      // Not in Conference Championship -> Check 12-team CFP vs Bowl Game
-      const cfpField = getCfpField();
-      const myCfpSeed = cfpField.findIndex((t) => t.id === team.id) + 1;
-      if (myCfpSeed >= 1 && myCfpSeed <= 12) {
-        next.phase = 'PLAYOFFS';
-        next.week += 1;
-        if (myCfpSeed <= 4) {
-          const qfBowls = ['Rose Bowl', 'Sugar Bowl', 'Orange Bowl', 'Cotton Bowl'];
-          const qfOpp = cfpField[12 - myCfpSeed] ?? cfpField[7];
-          const roundName = `CFP Quarterfinal · ${qfBowls[(myCfpSeed - 1) % qfBowls.length]}`;
-          next.schedule.push({
-            week: next.week,
-            opponentId: qfOpp.id,
-            isHome: true,
-            isPlayoff: true,
-            playoffRoundName: roundName,
-            played: false,
-            weather: getWeatherForTeam(team),
-          });
-          next.newsFeed.unshift({
-            id: `po_${Date.now()}`,
-            week: next.week,
-            headline: `#${myCfpSeed} ${team.name} Earn CFP First-Round Bye!`,
-            body: `Advancing directly to the ${roundName} vs ${qfOpp.name}.`,
-          });
-        } else {
-          const oppSeed = 17 - myCfpSeed; // 5v12, 6v11, 7v10, 8v9
-          const firstOpp = cfpField[oppSeed - 1] ?? cfpField[cfpField.length - 1];
-          const isHome = myCfpSeed <= 8;
-          next.schedule.push({
-            week: next.week,
-            opponentId: firstOpp.id,
-            isHome,
-            isPlayoff: true,
-            playoffRoundName: 'CFP First Round',
-            played: false,
-            weather: getWeatherForTeam(isHome ? team : firstOpp),
-          });
-          next.newsFeed.unshift({
-            id: `po_${Date.now()}`,
-            week: next.week,
-            headline: `#${myCfpSeed} ${team.name} Selected for 12-Team CFP!`,
-            body: `CFP First Round: ${isHome ? 'Hosting' : '@'} #${oppSeed} ${firstOpp.name}.`,
-          });
-        }
-      } else if (myRow.wins >= 6) {
-        // Bowl eligible (6+ wins)
-        const bowls = ['Citrus Bowl', 'Alamo Bowl', 'Gator Bowl', 'Holiday Bowl', 'Sun Bowl'];
-        const bowlName = bowls[(myNatRank + next.seasonNumber) % bowls.length];
-        const bowlOpp =
-          natSorted.find((t, idx) => t.id !== team.id && t.conference !== team.conference && Math.abs(idx + 1 - myNatRank) <= 8) ??
-          natSorted.find((t) => t.id !== team.id && t.conference !== team.conference) ??
-          natSorted[myNatRank] ??
-          natSorted[0];
+        const oppSeed = 17 - myFcsSeed;
+        const firstOpp = fcsField[oppSeed - 1] ?? fcsField[fcsField.length - 1];
+        const isHome = myFcsSeed <= 8;
         next.phase = 'PLAYOFFS';
         next.week += 1;
         next.schedule.push({
           week: next.week,
-          opponentId: bowlOpp.id,
-          isHome: false,
+          opponentId: firstOpp.id,
+          isHome,
           isPlayoff: true,
-          playoffRoundName: bowlName,
+          playoffRoundName: 'FCS First Round',
           played: false,
-          weather: getWeatherForTeam(bowlOpp),
+          weather: getWeatherForTeam(isHome ? team : firstOpp),
         });
         next.newsFeed.unshift({
           id: `po_${Date.now()}`,
           week: next.week,
-          headline: `${team.name} Accept Bid to the ${bowlName}!`,
-          body: `At ${myRow.wins}-${myRow.losses}, ${team.shortName} will face ${bowlOpp.name}.`,
+          headline: `#${myFcsSeed} ${team.name} Clinch 16-Team FCS Playoffs!`,
+          body: `FCS First Round: ${isHome ? 'Hosting' : '@'} #${oppSeed} ${firstOpp.name}.`,
         });
       } else {
-        return finishSeason(next, 'Missed Bowl Season');
+        const fbsConfs = ['SEC', 'Big Ten', 'ACC', 'Big 12', 'MW', 'AAC', 'Sun Belt', 'MAC', 'C-USA'];
+        const fbsSorted = sortStandingsRows(
+          Object.values(next.standings).filter((r) => getTeamById(r.teamId).subdivision !== 'FCS')
+        ).map((r) => getTeamById(r.teamId));
+        const myNatRank = fbsSorted.findIndex((t) => t.id === team.id) + 1;
+
+        if (fbsConfs.includes(team.conference)) {
+          const confSorted = fbsSorted.filter((t) => t.conference === team.conference);
+          const myConfRank = confSorted.findIndex((t) => t.id === team.id) + 1;
+          if (myConfRank <= 2 && confSorted.length >= 2) {
+            const confOpp = confSorted[myConfRank === 1 ? 1 : 0];
+            next.phase = 'PLAYOFFS';
+            next.week += 1;
+            next.schedule.push({
+              week: next.week,
+              opponentId: confOpp.id,
+              isHome: myConfRank === 1,
+              isPlayoff: true,
+              playoffRoundName: `${team.conference} Championship`,
+              played: false,
+              weather: getWeatherForTeam(team),
+            });
+            next.newsFeed.unshift({
+              id: `po_${Date.now()}`,
+              week: next.week,
+              headline: `${team.name} Reach ${team.conference} Championship Game!`,
+              body: `Facing #${myConfRank === 1 ? 2 : 1} ${confOpp.name} for the conference crown & CFP bid.`,
+            });
+            next.weeklyTrainingDone = false;
+            next.weeklyMeetingDone = false;
+            next.pendingDilemma = null;
+            next.updatedAt = Date.now();
+            return next;
+          }
+        }
+
+        // Not in Conference Championship -> Check 12-team CFP vs Bowl Game
+        const cfpField = getCfpField();
+        const myCfpSeed = cfpField.findIndex((t) => t.id === team.id) + 1;
+        if (myCfpSeed >= 1 && myCfpSeed <= 12) {
+          next.phase = 'PLAYOFFS';
+          next.week += 1;
+          if (myCfpSeed <= 4) {
+            const qfBowls = ['Rose Bowl', 'Sugar Bowl', 'Orange Bowl', 'Cotton Bowl'];
+            const qfOpp = cfpField[12 - myCfpSeed] ?? cfpField[7];
+            const roundName = `CFP Quarterfinal · ${qfBowls[(myCfpSeed - 1) % qfBowls.length]}`;
+            next.schedule.push({
+              week: next.week,
+              opponentId: qfOpp.id,
+              isHome: true,
+              isPlayoff: true,
+              playoffRoundName: roundName,
+              played: false,
+              weather: getWeatherForTeam(team),
+            });
+            next.newsFeed.unshift({
+              id: `po_${Date.now()}`,
+              week: next.week,
+              headline: `#${myCfpSeed} ${team.name} Earn CFP First-Round Bye!`,
+              body: `Advancing directly to the ${roundName} vs ${qfOpp.name}.`,
+            });
+          } else {
+            const oppSeed = 17 - myCfpSeed; // 5v12, 6v11, 7v10, 8v9
+            const firstOpp = cfpField[oppSeed - 1] ?? cfpField[cfpField.length - 1];
+            const isHome = myCfpSeed <= 8;
+            next.schedule.push({
+              week: next.week,
+              opponentId: firstOpp.id,
+              isHome,
+              isPlayoff: true,
+              playoffRoundName: 'CFP First Round',
+              played: false,
+              weather: getWeatherForTeam(isHome ? team : firstOpp),
+            });
+            next.newsFeed.unshift({
+              id: `po_${Date.now()}`,
+              week: next.week,
+              headline: `#${myCfpSeed} ${team.name} Selected for 12-Team CFP!`,
+              body: `CFP First Round: ${isHome ? 'Hosting' : '@'} #${oppSeed} ${firstOpp.name}.`,
+            });
+          }
+        } else if (myRow.wins >= 6) {
+          const bowls = ['Citrus Bowl', 'Alamo Bowl', 'Gator Bowl', 'Holiday Bowl', 'Sun Bowl', 'Liberty Bowl'];
+          const bowlName = bowls[(myNatRank + next.seasonNumber) % bowls.length];
+          const bowlOpp =
+            fbsSorted.find((t, idx) => t.id !== team.id && t.conference !== team.conference && Math.abs(idx + 1 - myNatRank) <= 10) ??
+            fbsSorted.find((t) => t.id !== team.id && t.conference !== team.conference) ??
+            fbsSorted[0];
+          next.phase = 'PLAYOFFS';
+          next.week += 1;
+          next.schedule.push({
+            week: next.week,
+            opponentId: bowlOpp.id,
+            isHome: false,
+            isPlayoff: true,
+            playoffRoundName: bowlName,
+            played: false,
+            weather: getWeatherForTeam(bowlOpp),
+          });
+          next.newsFeed.unshift({
+            id: `po_${Date.now()}`,
+            week: next.week,
+            headline: `${team.name} Accept Bid to the ${bowlName}!`,
+            body: `At ${myRow.wins}-${myRow.losses}, ${team.shortName} will face ${bowlOpp.name}.`,
+          });
+        } else {
+          return finishSeason(next, 'Missed Bowl Season');
+        }
       }
     } else {
-      // High School: Top 8 in the 20-team State Standings qualify for State Playoffs
+      // High School: Top 8 in the State Standings qualify for State Playoffs
       const stateSorted = sortStandingsRows(Object.values(next.standings)).map((r) => getTeamById(r.teamId));
       const myStateSeed = stateSorted.findIndex((t) => t.id === team.id) + 1;
       if (myStateSeed < 1 || myStateSeed > 8) {
@@ -1257,7 +1563,8 @@ export function applyMatchOutcome(
     const isStandaloneBowl =
       next.era === 'COLLEGE' &&
       !roundName.includes('Championship') &&
-      !roundName.includes('CFP');
+      !roundName.includes('CFP') &&
+      !roundName.includes('FCS');
 
     if (isStandaloneBowl) {
       if (won) {
@@ -1308,6 +1615,7 @@ export function applyMatchOutcome(
     const isFinalRound =
       roundName === 'Retro Bowl Championship' ||
       roundName === 'CFP National Championship' ||
+      roundName === 'FCS National Championship' ||
       roundName === `${next.selectedState} State Championship`;
 
     if (isFinalRound) {
@@ -1315,7 +1623,9 @@ export function applyMatchOutcome(
         next.era === 'HIGH_SCHOOL'
           ? `${next.selectedState} State Champions`
           : next.era === 'COLLEGE'
-            ? 'CFP National Champions'
+            ? roundName.startsWith('FCS')
+              ? 'FCS National Champions'
+              : 'CFP National Champions'
             : 'Retro Bowl Champions';
       next.trophies.push(`Season ${next.seasonNumber}: ${titleName} (${team.shortName})`);
       if (next.era === 'HIGH_SCHOOL' && !next.achievements.includes('State Champion')) {
@@ -1338,7 +1648,6 @@ export function applyMatchOutcome(
       const remainingConf = confSeeds.filter((t) => t.id !== team.id && !priorPlayoffOppIds.has(t.id));
 
       if (roundName === 'Wild Card Round') {
-        // #4/#5/#6/#7 tends to visit #1 or #2; #2/#3 hosts
         const nextOpp = (mySeed >= 4 ? remainingConf[0] : remainingConf[remainingConf.length - 1]) ?? remainingConf[0];
         const oppSeed = confSeeds.findIndex((t) => t.id === nextOpp.id) + 1;
         const isHome = mySeed < oppSeed;
@@ -1365,7 +1674,6 @@ export function applyMatchOutcome(
           weather: getWeatherForTeam(isHome ? team : nextOpp),
         });
       } else {
-        // Won AFC/NFC Championship -> Retro Bowl Championship vs opposite conference #1/#2 seed
         const oppConf = team.conference === 'AFC' ? 'NFC' : 'AFC';
         const oppConfSeeds = getNflConferenceSeeds(next.standings, oppConf);
         const sbOpp = oppConfSeeds[0] ?? oppConfSeeds[1];
@@ -1380,60 +1688,81 @@ export function applyMatchOutcome(
         });
       }
     } else if (next.era === 'COLLEGE') {
-      const cfpField = getCfpField();
-      const myCfpSeed = cfpField.findIndex((t) => t.id === team.id) + 1;
-      const availableCfp = cfpField.filter((t) => t.id !== team.id && !priorPlayoffOppIds.has(t.id));
-
-      if (roundName.endsWith('Championship') && !roundName.includes('National')) {
-        // Won Major Conference Championship -> auto Top-4 CFP Seed & Bye straight to Quarterfinal Bowl!
-        const qfBowls = ['Rose Bowl', 'Sugar Bowl', 'Orange Bowl', 'Cotton Bowl'];
-        const effectiveSeed = myCfpSeed >= 1 && myCfpSeed <= 4 ? myCfpSeed : 2;
-        const qfOpp = availableCfp[Math.max(0, availableCfp.length - effectiveSeed)] ?? availableCfp[0];
+      if (team.subdivision === 'FCS') {
+        const fcsField = getFcsPlayoffField();
+        const myFcsSeed = Math.max(1, fcsField.findIndex((t) => t.id === team.id) + 1);
+        const availableFcs = fcsField.filter((t) => t.id !== team.id && !priorPlayoffOppIds.has(t.id));
+        const nextOpp = availableFcs[0] ?? fcsField[0];
+        const nextRound =
+          roundName === 'FCS First Round'
+            ? 'FCS Quarterfinal'
+            : roundName === 'FCS Quarterfinal'
+              ? 'FCS Semifinal'
+              : 'FCS National Championship';
+        const isHome = nextRound !== 'FCS National Championship' && myFcsSeed <= 4;
         next.schedule.push({
           week: next.week,
-          opponentId: qfOpp.id,
-          isHome: true,
+          opponentId: nextOpp.id,
+          isHome,
           isPlayoff: true,
-          playoffRoundName: `CFP Quarterfinal · ${qfBowls[(effectiveSeed - 1) % qfBowls.length]}`,
+          playoffRoundName: nextRound,
           played: false,
-          weather: getWeatherForTeam(team),
-        });
-      } else if (roundName === 'CFP First Round') {
-        const qfBowls = ['Rose Bowl', 'Sugar Bowl', 'Orange Bowl', 'Cotton Bowl'];
-        const qfOpp = availableCfp[0] ?? cfpField[0];
-        next.schedule.push({
-          week: next.week,
-          opponentId: qfOpp.id,
-          isHome: false,
-          isPlayoff: true,
-          playoffRoundName: `CFP Quarterfinal · ${qfBowls[myCfpSeed % qfBowls.length]}`,
-          played: false,
-          weather: getWeatherForTeam(qfOpp),
-        });
-      } else if (roundName.startsWith('CFP Quarterfinal')) {
-        const sfBowls = ['Peach Bowl', 'Fiesta Bowl'];
-        const sfOpp = availableCfp[0] ?? cfpField[1];
-        next.schedule.push({
-          week: next.week,
-          opponentId: sfOpp.id,
-          isHome: myCfpSeed <= 2,
-          isPlayoff: true,
-          playoffRoundName: `CFP Semifinal · ${sfBowls[myCfpSeed % 2]}`,
-          played: false,
-          weather: getWeatherForTeam(team),
+          weather: getWeatherForTeam(isHome ? team : nextOpp),
         });
       } else {
-        // CFP Semifinal -> CFP National Championship
-        const natOpp = availableCfp[0] ?? cfpField[0];
-        next.schedule.push({
-          week: next.week,
-          opponentId: natOpp.id,
-          isHome: false,
-          isPlayoff: true,
-          playoffRoundName: 'CFP National Championship',
-          played: false,
-          weather: getWeatherForTeam(natOpp),
-        });
+        const cfpField = getCfpField();
+        const myCfpSeed = cfpField.findIndex((t) => t.id === team.id) + 1;
+        const availableCfp = cfpField.filter((t) => t.id !== team.id && !priorPlayoffOppIds.has(t.id));
+
+        if (roundName.endsWith('Championship') && !roundName.includes('National')) {
+          const qfBowls = ['Rose Bowl', 'Sugar Bowl', 'Orange Bowl', 'Cotton Bowl'];
+          const effectiveSeed = myCfpSeed >= 1 && myCfpSeed <= 4 ? myCfpSeed : 2;
+          const qfOpp = availableCfp[Math.max(0, availableCfp.length - effectiveSeed)] ?? availableCfp[0];
+          next.schedule.push({
+            week: next.week,
+            opponentId: qfOpp.id,
+            isHome: true,
+            isPlayoff: true,
+            playoffRoundName: `CFP Quarterfinal · ${qfBowls[(effectiveSeed - 1) % qfBowls.length]}`,
+            played: false,
+            weather: getWeatherForTeam(team),
+          });
+        } else if (roundName === 'CFP First Round') {
+          const qfBowls = ['Rose Bowl', 'Sugar Bowl', 'Orange Bowl', 'Cotton Bowl'];
+          const qfOpp = availableCfp[0] ?? cfpField[0];
+          next.schedule.push({
+            week: next.week,
+            opponentId: qfOpp.id,
+            isHome: false,
+            isPlayoff: true,
+            playoffRoundName: `CFP Quarterfinal · ${qfBowls[myCfpSeed % qfBowls.length]}`,
+            played: false,
+            weather: getWeatherForTeam(qfOpp),
+          });
+        } else if (roundName.startsWith('CFP Quarterfinal')) {
+          const sfBowls = ['Peach Bowl', 'Fiesta Bowl'];
+          const sfOpp = availableCfp[0] ?? cfpField[1];
+          next.schedule.push({
+            week: next.week,
+            opponentId: sfOpp.id,
+            isHome: myCfpSeed <= 2,
+            isPlayoff: true,
+            playoffRoundName: `CFP Semifinal · ${sfBowls[myCfpSeed % 2]}`,
+            played: false,
+            weather: getWeatherForTeam(team),
+          });
+        } else {
+          const natOpp = availableCfp[0] ?? cfpField[0];
+          next.schedule.push({
+            week: next.week,
+            opponentId: natOpp.id,
+            isHome: false,
+            isPlayoff: true,
+            playoffRoundName: 'CFP National Championship',
+            played: false,
+            weather: getWeatherForTeam(natOpp),
+          });
+        }
       }
     } else {
       // High School State Playoffs: Quarterfinal -> Semifinal -> State Championship
@@ -1537,14 +1866,8 @@ function finishSeason(save: CareerSave, finishLabel: string): CareerSave {
       return startNextSeasonSameTeam(next);
     }
   } else if (next.era === 'COLLEGE') {
-    if (next.eraYear >= 3) {
-      // Eligible for Transfer Portal OR NFL Draft!
-      next.phase = 'OFFSEASON_PORTAL_OR_DRAFT';
-      next.pendingOffers = generateTransferPortalOffers(next.player.starRating, next.teamId);
-    } else {
-      next.phase = 'OFFSEASON_PORTAL_OR_DRAFT';
-      next.pendingOffers = generateTransferPortalOffers(next.player.starRating, next.teamId);
-    }
+    next.phase = 'OFFSEASON_PORTAL_OR_DRAFT';
+    next.pendingOffers = generateTransferPortalOffers(next);
   } else if (next.era === 'NFL') {
     if (next.player.age >= 38) {
       next.phase = 'HALL_OF_FAME';
@@ -1616,35 +1939,34 @@ export function evaluateHighSchoolRecruiting(save: CareerSave): RecruitingEvalua
     prodPoints = Math.min(48, tckPg * 4.8 + impactPg * 10);
     highlightsSummary = `${hs.tackles} tck, ${hs.sacks} sk, ${hs.defInt} INT`;
   } else {
-    // Kicker
     const fgPct = hs.fgAtt > 0 ? hs.fgMade / hs.fgAtt : 0.7;
     prodPoints = Math.min(48, fgPct * 24 + (hs.fgMade / games) * 8 + (hs.fgLong >= 45 ? 10 : 0));
     highlightsSummary = `${hs.fgMade}/${hs.fgAtt} FG (Long ${hs.fgLong} yds)`;
   }
 
-  const starComponent = save.player.starRating * 6.5; // up to 32.5
+  const starComponent = save.player.starRating * 6.5;
   const teamSuccess = winPct * 12 + hsTitles * 8 + allStateCount * 7;
   const gpaAdj = gpa >= 3.2 ? 4 : gpa < 2.2 ? -14 : 0;
   const rawScore = Math.max(20, Math.min(100, Math.round(prodPoints + starComponent + teamSuccess + gpaAdj)));
 
   let stars = 2;
   if (rawScore >= 76 && gpaEligible) stars = 5;
-  else if (rawScore >= 56) stars = 4;
+  else if (rawScore >= 56 && gpaEligible) stars = 4;
   else if (rawScore >= 38) stars = 3;
 
   const tierLabel =
     stars === 5
-      ? '5★ Five-Star Blue Chip'
+      ? '5★ Blue-Chip (Power 4)'
       : stars === 4
-        ? '4★ National Prospect'
+        ? '4★ National Prospect (P4 / Top G5)'
         : stars === 3
-          ? '3★ Power/G5 Recruit'
-          : '2★ Sleeper Prospect';
+          ? '3★ G5 / Top FCS Recruit'
+          : '2★ FCS / Developmental Recruit';
 
   const productionNote = !gpaEligible
-    ? `Academic GPA (${gpa.toFixed(2)}) limited top-tier scholarship offers.`
+    ? `Academic GPA (${gpa.toFixed(2)}) limited offers primarily to FCS & Group of 5 qualifiers.`
     : hsTitles > 0
-      ? `State Championship pedigree & ${highlightsSummary} drove elite D1 demand.`
+      ? `State Championship pedigree & ${highlightsSummary} drove elite college demand.`
       : `Evaluation based on ${hs.games} varsity games (${highlightsSummary}) and ${myRow.wins}-${myRow.losses} record.`;
 
   return { score: rawScore, stars, tierLabel, gpaEligible, highlightsSummary, productionNote };
@@ -1652,54 +1974,223 @@ export function evaluateHighSchoolRecruiting(save: CareerSave): RecruitingEvalua
 
 export function generateCollegeOffers(save: CareerSave): OfferOption[] {
   const evalRes = evaluateHighSchoolRecruiting(save);
-  const sorted = [...COLLEGE_TEAMS].sort((a, b) => (b.offense + b.defense) - (a.offense + a.defense));
-  let pool: LeagueTeam[];
+  const powerConfs = new Set(['SEC', 'Big Ten', 'ACC', 'Big 12', 'Indep.']);
+  const fbsSorted = COLLEGE_TEAMS.filter((t) => t.subdivision !== 'FCS').sort(
+    (a, b) => b.offense + b.defense - (a.offense + a.defense)
+  );
+  const fcsSorted = COLLEGE_TEAMS.filter((t) => t.subdivision === 'FCS').sort(
+    (a, b) => b.offense + b.defense - (a.offense + a.defense)
+  );
 
+  let pool: LeagueTeam[];
   if (evalRes.stars >= 5 && evalRes.gpaEligible) {
-    pool = sorted.slice(0, 14);
-  } else if (evalRes.stars >= 4) {
-    pool = sorted.slice(8, 30);
+    pool = fbsSorted.filter((t) => powerConfs.has(t.conference) && t.offense + t.defense >= 16);
+  } else if (evalRes.stars >= 4 && evalRes.gpaEligible) {
+    pool = fbsSorted.filter((t) => t.offense + t.defense >= 14).slice(4, 34);
   } else if (evalRes.stars >= 3) {
-    pool = sorted.slice(20, 42);
+    const g5 = fbsSorted.filter((t) => !powerConfs.has(t.conference) || t.offense + t.defense <= 14);
+    pool = [...g5.slice(0, 14), ...fcsSorted.slice(0, 6)];
   } else {
-    pool = sorted.slice(28);
+    const lowerG5 = fbsSorted.filter((t) => !powerConfs.has(t.conference) && t.offense + t.defense <= 13);
+    pool = [...fcsSorted, ...lowerG5];
   }
 
+  if (pool.length < 6) pool = [...fcsSorted, ...fbsSorted.slice(-10)];
   const chosen = [...pool].sort(() => Math.random() - 0.5).slice(0, 6);
   return chosen.map((t, i) => {
     const isTopOffer = i === 0;
+    const isFcs = t.subdivision === 'FCS';
     const role: OfferOption['role'] =
-      evalRes.stars >= 5 || (evalRes.stars >= 4 && t.prestige <= 4) ? 'Starter' : 'Backup';
+      evalRes.stars >= 5 || (evalRes.stars >= 4 && t.prestige <= 4) || isFcs ? 'Starter' : 'Backup';
     const pitch = isTopOffer
-      ? `${evalRes.stars}★ HS Tape (${evalRes.highlightsSummary}) · Immediate ${t.conference} Opportunity`
+      ? `${evalRes.stars}★ HS Tape (${evalRes.highlightsSummary}) · ${t.subdivision ?? 'FBS'} ${t.conference}`
       : role === 'Starter'
         ? `Full-Ride Scholarship + Projected Year-1 Starter · ${t.conference}`
-        : `Full-Ride Developmental Scholarship · ${t.conference}`;
+        : `Developmental Scholarship · ${t.conference}`;
+    const baseNil = isFcs ? 6000 : 11500;
     return {
       id: `col_off_${t.id}_${i}`,
       teamId: t.id,
       type: 'SCHOLARSHIP',
       pitch,
       role,
-      salaryOrNil: Math.round((t.prestige * 11000) + evalRes.stars * 9500 + (save.player.starRating * 5000)),
+      salaryOrNil: Math.round(t.prestige * baseNil + evalRes.stars * (isFcs ? 3500 : 9500) + save.player.starRating * 3500),
       years: 4,
-      tdBonus: 400 + t.prestige * 175,
+      tdBonus: (isFcs ? 200 : 400) + t.prestige * 150,
     };
   });
 }
 
-export function generateTransferPortalOffers(starRating: number, currentTeamId: string): OfferOption[] {
-  const pool = COLLEGE_TEAMS.filter((t) => t.id !== currentTeamId).sort(() => Math.random() - 0.5).slice(0, 5);
-  return pool.map((t, i) => ({
+export function generateTransferPortalOffers(save: CareerSave): OfferOption[] {
+  const col = save.careerByEra.COLLEGE;
+  const g = Math.max(1, col.games);
+  const totalTds = col.passTD + col.rushTD + col.recTD;
+  const prod =
+    col.passYards / g * 0.1 +
+    (col.rushYards + col.recYards) / g * 0.22 +
+    (totalTds / g) * 8 +
+    ((col.tackles + col.sacks * 2 + col.defInt * 3) / g) * 3.5 +
+    (col.blocks + col.pancakes) / g * 3;
+  const portalScore = save.player.starRating * 10 + prod;
+
+  const current = getTeamById(save.teamId);
+  const eligible = COLLEGE_TEAMS.filter((t) => t.id !== save.teamId);
+  const pool =
+    portalScore >= 62
+      ? eligible.filter((t) => t.subdivision !== 'FCS' && t.offense + t.defense >= 15)
+      : portalScore >= 46
+        ? eligible.filter((t) => t.offense + t.defense >= 13)
+        : eligible.filter((t) => t.subdivision === 'FCS' || t.offense + t.defense <= 14 || t.conference === current.conference);
+
+  const chosen = (pool.length >= 5 ? pool : eligible).sort(() => Math.random() - 0.5).slice(0, 5);
+  return chosen.map((t, i) => ({
     id: `tp_off_${t.id}_${i}`,
     teamId: t.id,
     type: 'TRANSFER_PORTAL',
-    pitch: `NIL Package + Starting Job in ${t.conference}`,
-    role: starRating >= 3.5 ? 'Captain' : 'Starter',
-    salaryOrNil: Math.round(t.prestige * 18000 + starRating * 15000),
+    pitch: `${t.subdivision ?? 'FBS'} ${t.conference} · Projected ${save.player.starRating >= 3.5 ? 'Captain' : 'Starter'}`,
+    role: save.player.starRating >= 3.5 ? 'Captain' : 'Starter',
+    salaryOrNil: Math.round((t.subdivision === 'FCS' ? 8500 : 18500) * t.prestige + save.player.starRating * 12000),
     years: 2,
-    tdBonus: 1000,
+    tdBonus: t.subdivision === 'FCS' ? 450 : 1000,
   }));
+}
+
+export interface DraftBoardPick {
+  round: number;
+  pickInRound: number;
+  overall: number;
+  teamId: string;
+  isUserPick: boolean;
+  prospectName: string;
+  prospectPos: Position;
+  prospectSchool: string;
+}
+
+export function evaluateCollegeDraftStock(
+  save: CareerSave,
+  combineClicks: number
+): {
+  round: number;
+  overall: number;
+  teamId: string;
+  fortyYard: number;
+  benchReps: number;
+  shuttle: number;
+  gradeScore: number;
+  report: string;
+} {
+  const col = save.careerByEra.COLLEGE;
+  const games = Math.max(1, col.games);
+  const myTeam = getTeamById(save.teamId);
+  const pos = save.player.position;
+  let prod = 0;
+
+  if (pos === 'QB') {
+    prod = (col.passYards / games) * 0.11 + ((col.passTD + col.rushTD) / games) * 6.5 - col.interceptions * 0.7;
+  } else if (pos === 'RB' || pos === 'WR' || pos === 'TE') {
+    prod = ((col.rushYards + col.recYards) / games) * 0.22 + ((col.rushTD + col.recTD) / games) * 7.5;
+  } else if (pos === 'OL') {
+    prod = (col.blocks / games) * 4.5 + (col.pancakes / games) * 9 - (col.sacksAllowed / games) * 4;
+  } else if (pos === 'K') {
+    prod = (col.fgAtt > 0 ? col.fgMade / col.fgAtt : 0.75) * 20 + (col.fgLong >= 48 ? 8 : 0);
+  } else {
+    prod = (col.tackles / games) * 3.8 + ((col.sacks * 2.4 + col.defInt * 3 + col.tfl * 1.4) / games) * 8;
+  }
+
+  const levelAdj = myTeam.subdivision === 'FCS' ? -5 : myTeam.prestige >= 4 ? 5 : 0;
+  const natTitleBonus = save.trophies.some((t) => t.includes('National Champions')) ? 8 : 0;
+  const allAmBonus = save.history.some((h) => h.awards.some((a) => a.includes('All-American'))) ? 6 : 0;
+  const combineBonus = Math.min(18, combineClicks * 0.55);
+  const gradeScore = Math.max(
+    18,
+    Math.min(100, Math.round(save.player.starRating * 8.5 + prod + levelAdj + natTitleBonus + allAmBonus + combineBonus))
+  );
+
+  const round =
+    gradeScore >= 82 ? 1 :
+    gradeScore >= 68 ? 2 :
+    gradeScore >= 56 ? 3 :
+    gradeScore >= 45 ? 4 :
+    gradeScore >= 36 ? 5 :
+    gradeScore >= 28 ? 6 : 7;
+
+  const slotInRound = Math.max(1, Math.min(32, Math.round(32 - ((gradeScore % 14) / 14) * 30)));
+  const overall = (round - 1) * 32 + slotInRound;
+  const draftTeam = NFL_TEAMS[Math.floor(Math.random() * NFL_TEAMS.length)];
+
+  const fortyYard = Math.round((4.88 - Math.min(0.58, (combineClicks * 0.5 + save.player.attributes.speed * 3.2) * 0.011)) * 100) / 100;
+  const benchReps = Math.round(14 + save.player.attributes.strength * 1.9 + combineClicks * 0.25);
+  const shuttle = Math.round((4.36 - save.player.attributes.speed * 0.032) * 100) / 100;
+
+  const report =
+    round === 1
+      ? `First-round franchise cornerstone out of ${myTeam.shortName} (${myTeam.conference}).`
+      : round <= 3
+        ? `Day 2 starter-grade prospect from ${myTeam.name}.`
+        : `High-upside Day 3 value pick ready to compete in NFL camp.`;
+
+  return { round, overall, teamId: draftTeam.id, fortyYard, benchReps, shuttle, gradeScore, report };
+}
+
+export function generateDraftOrderBoard(
+  save: CareerSave,
+  userDraft: { round: number; pick: number; teamId: string }
+): DraftBoardPick[] {
+  const draftPositions: Position[] = ['QB', 'WR', 'DL', 'CB', 'OL', 'RB', 'LB', 'TE', 'S', 'K'];
+  const collegeNames = COLLEGE_TEAMS.filter((c) => c.subdivision !== 'FCS').map((c) => c.shortName);
+  const board: DraftBoardPick[] = [];
+  for (let overall = 1; overall <= 224; overall++) {
+    const round = Math.floor((overall - 1) / 32) + 1;
+    const pickInRound = ((overall - 1) % 32) + 1;
+    const isUser = overall === userDraft.pick;
+    const team = isUser
+      ? getTeamById(userDraft.teamId)
+      : NFL_TEAMS[(overall * 7 + save.seasonNumber * 3) % NFL_TEAMS.length];
+    board.push({
+      round,
+      pickInRound,
+      overall,
+      teamId: team.id,
+      isUserPick: isUser,
+      prospectName: isUser
+        ? `${save.player.firstName} ${save.player.lastName}`
+        : `${FIRST_NAMES[(overall * 5) % FIRST_NAMES.length]} ${LAST_NAMES[(overall * 11) % LAST_NAMES.length]}`,
+      prospectPos: isUser ? save.player.position : draftPositions[(overall * 3) % draftPositions.length],
+      prospectSchool: isUser
+        ? getTeamById(save.teamId).shortName
+        : collegeNames[(overall * 13) % collegeNames.length] ?? 'UGA',
+    });
+  }
+  return board;
+}
+
+export function getPlayerLegacyScore(save: CareerSave): number {
+  const st = save.careerStats;
+  const yds = st.passYards + st.rushYards + st.recYards;
+  const tds = st.passTD + st.rushTD + st.recTD;
+  const defPts = st.tackles * 1.8 + st.sacks * 12 + st.defInt * 18 + st.passDeflections * 5 + st.tfl * 6;
+  const stPts = st.fgMade * 7 + st.xpMade * 2 + (st.fgLong >= 50 ? 25 : 0);
+  const olPts = st.blocks * 4 + st.pancakes * 11;
+  const titles = save.trophies.length * 140;
+  const nflRings = save.trophies.filter((t) => t.includes('Retro Bowl')).length * 220;
+  const mvps = st.mvpAwards * 85;
+  const eraBonus = save.era === 'NFL' || save.era === 'RETIRED' ? 180 : save.era === 'COLLEGE' ? 75 : 20;
+  return Math.max(
+    100,
+    Math.round(
+      100 +
+        save.player.starRating * 45 +
+        yds * 0.045 +
+        tds * 9 +
+        defPts +
+        stPts +
+        olPts +
+        titles +
+        nflRings +
+        mvps +
+        eraBonus
+    )
+  );
 }
 
 export function generateNflFreeAgencyOffers(starRating: number, currentTeamId: string): OfferOption[] {
@@ -1749,13 +2240,44 @@ export function startNextSeasonSameTeam(save: CareerSave, newTeamId?: string, ne
       };
     }
   } else {
-    // Refresh teammates condition & age
-    next.roster = next.roster.map((tm) => ({
-      ...tm,
-      age: tm.age + 1,
-      condition: 100,
-      stats: { yards: 0, tds: 0, tackles: 0 },
-    }));
+    // Realistic offseason teammate development & veteran regression
+    next.roster = next.roster.map((tm) => {
+      const nextAge = tm.age + 1;
+      let nextAttrs = tm.attributes ? { ...tm.attributes } : undefined;
+      let nextRating = tm.rating;
+
+      if (nextAttrs && tm.maxAttributes) {
+        if (nextAge <= 26) {
+          // Young players develop 1-2 bars toward their potential ceiling
+          const upgrades = nextAge <= 23 ? 2 : 1;
+          for (let u = 0; u < upgrades; u++) {
+            const room = (['skill', 'speed', 'strength', 'stamina'] as const).filter(
+              (k) => nextAttrs![k] < tm.maxAttributes![k]
+            );
+            if (room.length > 0) {
+              const k = room[Math.floor(Math.random() * room.length)];
+              nextAttrs[k] += 1;
+            }
+          }
+        } else if (nextAge >= 31) {
+          // Aging veterans gradually lose speed & stamina like Retro Bowl
+          if (nextAttrs.speed > 2 && Math.random() < 0.65) nextAttrs.speed -= 1;
+          if (nextAttrs.stamina > 2 && Math.random() < 0.55) nextAttrs.stamina -= 1;
+        }
+        nextRating = calculateStarRating(nextAttrs, tm.position);
+      }
+
+      return {
+        ...tm,
+        age: nextAge,
+        attributes: nextAttrs,
+        rating: nextRating,
+        isStar: nextRating >= 3.5,
+        morale: Math.max(55, Math.min(92, tm.morale + (nextAge <= 26 ? 6 : 0))),
+        condition: 100,
+        stats: { yards: 0, tds: 0, tackles: 0 },
+      };
+    });
   }
 
   const { schedule, standings } = generateSchedule(targetEra, targetTeamId, next.selectedState);
