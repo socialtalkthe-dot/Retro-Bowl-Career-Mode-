@@ -1,0 +1,422 @@
+ui_Version_Mode	College
+
+
+
+msg_co_draft_pick	$playername ($position) entered the draft as a Round $round pick and was signed by $team!##You receive $reccred Recruitment Credits!
+msg_co_draft_notpick	$playername ($position) did not get drafted.##You receive $reccred Recruitment Credit!##
+msg_co_draft_nottrydraft_y3	$playername ($position) (Ju) is not declaring for the Draft and will return to $teamname for his Senior Year.
+msg_co_draft_early_y3	$playername ($position) (Ju) feels like he is ready to declare for the draft early! Do you want to encourage him to declare?##You can receive double the Recruitment Credits for players who declare early.##If you don't encourage him he will return to the team to play for the next season.
+
+ui_DraftCollege	Pro#Draft
+msg_TimeForProDraft	The College football season is over and your Senior and Junior star players are preparing to declare for the Pro Draft.
+
+ui_ExceedRecruitmentCredits	Not enough Recruitment Credits to hire $playername.##You have $num RC remaining.
+
+ui_co_Draft_NotPicked	Not Picked
+ui_co_Draft_R1	R1
+ui_co_Draft_R2	R2
+ui_co_Draft_R3	R3
+ui_co_Draft_Graduate	GRADUATE
+ui_co_Draft_SrYear	SR. YEAR
+
+ui_Year_Short	Yr
+
+msg_CollegeProDraftRC_NoSpace	Since your wallet is too small, you have been given a total of $num out of $maxNum Recruitment Credits from players leaving your team.
+
+msg_NewSeasonCollege	A new season begins!##You have been given $num additional Recruitment Credits to help you recruit new star players with this year's freshman class.
+msg_NewSeasonCollege_NoSpace	A new season begins!##You have been given $maxNum additional Recruitment Credits to help you recruit new star players with this year's freshman class.##Unfortunately your Wallet is full and you can only keep $num Recruitment Credit(s). You can increase the Wallet size in the ATHLETICS OFFICE.
+
+msg_MeetingGPANotNeeded	The academic tutor believes that $playername's GPA is already at the upper end of what he can achieve.
+
+ui_Major	MAJOR
+ui_Minor	MINOR
+ui_OrientationWeek	O-WEEK SOCIETY
+ui_Hometown	HOMETOWN
+
+ui_Undeclared	Undeclared
+ui_AdmissionsDraftConfirm	If you finish the Admissions process, you will not be able to choose new players for the team until the season is complete and the next year's Admissions begin.##If you have recruited all the freshman players that you need, then you can continue. 
+
+ui_FraternityRush	Fraternity Rush
+ui_Admissions_Warn_Once	Remember that other colleges will be making admissions offers to the same candidates!##Each time you recruit a new athlete the number of remaining prospects will be reduced.
+
+msg_Suspended	$playername ($position) has been suspended because of his low grades.
+
+ui_Awards	Awards
+ui_Epilogue	Epilogue
+ui_No_Epilogue	No Epilogue Yet
+ui_ClassOf	CLASS OF 
+ui_No_Awards	No Awards Yet
+
+msg_BoostSalaryWalletTooSmall	Your Wallet is full so you receive $num Recruitment Credits.
+
+// Non-player Dilemmas - Bye-week dilemmas to rewrite/expand.
+dilemma_ByeWeek1	[ODBW_01]#It's your bye week. Do you want to spend some extra time focusing on the team or arrange some interviews with the media?-choice_FocusTeam-choice_FocusMedia
+dilemma_ByeWeek2	[ODBW_02]#It's your bye week. Do you want to work on the finances with the athletic director or focus on getting the team ready for the next game?-choice_FocusOwner-choice_FocusTeam
+dilemma_ByeWeek3	[ODBW_03]#It's your bye week. Do you want to arrange some interviews with the media or do some work with your coaching staff?-choice_FocusMedia-choice_FocusCoaches
+dilemma_ByeWeek4	[ODBW_04]#It's your bye week. Do you want to work on the finances with the athletic director or develop some strategies with your coaching staff?-choice_FocusOwner-choice_FocusCoaches
+dilemma_ByeWeek5	[ODBW_05]#It's your bye week. Do you want to spend some extra time training the team or working with your coaches?-choice_FocusTeam-choice_FocusCoaches
+dilemma_ByeWeek6	[NDBW_06]#It's your bye week. Do you want to work on the finances with the athletic director or arrange some interviews with the media?-choice_FocusOwner-choice_FocusMedia
+dilemma_ByeWeek7	[NDBW_07]#It's your bye week. Do you want to arrange some additional academic tutoring or do you want to focus on getting the team ready for the next game?-choice_FocusGPA-choice_FocusTeam
+dilemma_ByeWeek8	[NDBW_08]#It's your bye week. Do you want to arrange some additional academic tutoring for the team or do you want to arrange a round of media interviews for them?-choice_FocusGPA-choice_FocusMedia
+dilemma_ByeWeek9	[NDBW_09]#It's your bye week. Do you want to give your team time to study or do you want to them to put on a showcase to impress the athletics director?-choice_FocusGPA-choice_FocusOwner
+dilemma_ByeWeek10	[NDBW_10]#It's your bye week. Do you want to arrange some additional academic tutoring for the team or some additional professional training for your coaches?-choice_FocusGPA-choice_FocusCoaches
+dilemma_ByeWeek11	[NDBW_11]#It's your bye week. Do you want to attend a fundraiser for next year's scholarships or do you to focus on getting the team ready for the next game?-choice_FocusRC-choice_FocusTeam
+dilemma_ByeWeek12	[NDBW_12]#It's your bye week. Do you want to attend a fundraiser for next year's scholarships or arrange some interviews with the media?-choice_FocusRC-choice_FocusMedia
+dilemma_ByeWeek13	[NDBW_13]#It's your bye week. Do you want to attend a fundraiser for next year's scholarships or to work on this year's finances with the athletic director?-choice_FocusRC-choice_FocusOwner
+dilemma_ByeWeek14	[NDBW_14]#It's your bye week. Do you want to attend a fundraiser for next year's scholarships or do some work with your coaching staff?-choice_FocusRC-choice_FocusCoaches
+dilemma_ByeWeek15	[NDBW_15]#It's your bye week. Do you want the team to talk to alumni about raising funds for next year's scholarships, or to focus on their academic study?-choice_FocusRC-choice_FocusGPA
+
+choice_FocusRC_bonus	2
+
+choice_FocusGPA	Study#Time
+choice_FocusRC	Raise#Funds
+
+
+// Non-player Dilemmas - Meet owner, needs rewrite
+
+dilemma_Owner1	[ODOW_01]#The athletics director wants you to attend a Faculty planning meeting. It clashes with a planned media interview.-choice_MeetOwner-choice_MeetMedia
+dilemma_Owner2	[ODOW_02]#The athletics director wants you to give a presentation to the Faculty. You had scheduled a meeting with the team.-choice_MeetOwner-choice_MeetTeam
+dilemma_Owner3	[ODOW_03]#The athletics director needs you to submit a new budget to the Faculty. You were intending to hold a meeting with your coaching staff.-choice_MeetOwner-choice_MeetCoaches
+
+// Player Dilemmas - Generic, no rewrite needed
+
+dilemma_Coach_BustUp	Your $coachposition has had a major argument with $playername.-choice_SideWithCoach-choice_SideWithPlayer
+dilemma_RestPlayer	Hey coach, I'm feeling totally exhausted. Can I rest for the next game?-choice_RestYes-choice_RestNo
+
+// Player Dilemmas - Main groups. All still used. Rewrites required.
+
+dilemma_toxic1	[ODTX_01]#$playername was arrested by campus security last night for spray-painting the Dean's car.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic2	[ODTX_02]#$playername is having to explain himself in front of a committee after filling the Dean's office with paper cups full of water.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic3	[ODTX_03]#$playername is being questioned about an incident where the campus security office was covered in toilet paper while officers were out on patrol.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic4	[ODTX_04]#Other players are no longer speaking to $playername after several, now-deleted, posts on social media where he claimed to be the only player on the team with any talent.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic5	[ODTX_05]#$playername did not turn up for training at all today. It emerged that he had gone back to $HOMETOWN without telling anyone.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic6	[ODTX_06]#$playername has been ostracised by the other students on his $MAJOR course for conducting loud conversations on his cellphone in the library.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic7	[ODTX_07]#$playername has been asked to move off-campus because he has repeatedly left the dorm's shared kitchen in a disgusting state.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic8	[ODTX_08]#Players on the team claim to have caught $playername rifling through other people's kit bags when he thought he was alone in the locker room.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic9	[ODTX_09]#Some Freshman students have accused $playername of stealing their money after promising to buy alcohol for them and then never coming back.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic10	[ODTX_10]#Multiple complaints have been lodged against $playername for playing loud, bass-heavy music in his dorm room at 3am.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic11	[ODTX_11]#$playername made a hit on a defenseless player in training today.-choice_IgnoreFine-choice_FinePlayer
+dilemma_toxic12	[ODTX_12]#$playername made a very late hit on a player in training today.-choice_IgnoreFine-choice_FinePlayer
+dilemma_toxic13	[ODTX_13]#$playername was verbally abusive towards the coaching staff today.-choice_IgnoreFine-choice_FinePlayer
+
+dilemma_random1	[ODRN_01]#$playername caused an incident on campus when he left his rental car in the Dean's parking spot.-choice_IgnoreFine-choice_FinePlayer
+dilemma_random2	[ODRN_02]#The Faculty have demanded that you take action after $playername was found to have cheated during a recent academic assignment.-choice_IgnoreFine-choice_FinePlayer
+dilemma_random3	[ODRN_03]#The team broke a pre-game curfew after $playername decided to throw a party in his dorm room.-choice_FinePlayer-choice_CriticiseTeam
+dilemma_random4	[ODRN_04]#You caught $playername playing Retro Bowl during a team meeting.-choice_FinePlayer-choice_PraisePlayer
+
+dilemma_late1	[ODLT_01]#$playername was late for training today.-choice_IgnoreFine-choice_FinePlayer
+dilemma_late2	[ODLT_02]#$playername turned up late for a team meeting today.-choice_IgnoreFine-choice_FinePlayer
+dilemma_late3	[ODLT_03]#$playername didn't turn up for a meeting with the coaching staff today.-choice_IgnoreFine-choice_FinePlayer
+
+dilemma_rookie1	[ODRK_01]#Freshman $position $playername was stopped by campus security while trying to sneak a keg into a dorm room party.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie2	[ODRK_02]#Freshman $position $playername did not turn up for today's training session. Apparently he had no clean clothes and was waiting around for someone to show him how to use the machines in the dorm's laundry room.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie3	[ODRK_03]#Freshman $position $playername was picked up by law enforcement for underage drinking in an off-campus bar.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie4	[ODRK_04]#Freshman $position $playername caused his entire dorm to be evacuated when he set the kitchen area on fire while trying to make mac and cheese.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie5	[ODRK_05]#Training was disrupted when Freshman $position $playername's highschool sweetheart turned up unexpectedly, demanding to know why a girl called $randomfname_female had answered his cellphone on Friday night.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie6	[ODRK_06]#Freshman $position $playername was caught using a fake ID to buy a six-pack of hard seltzer at a local mini-mart.-choice_DefendPlayer-choice_CriticisePlayer
+
+news_CharityWork1	[ONCH_01]#The crowd at the last game were boosted by a noisy contingent of $playername's friends from the $HOBBY society.
+news_CharityWork2	[ONCH_02]#A campaign instigated on the $HOBBY messageboards resulted in $playername winning the 'One to Watch' poll on a major College Football website. It's been a huge boost to the team's profile!
+news_CharityWork3	[ONCH_03]#The team's online video channel has received thousands of new subscribers, most of them coming from the "$HOBBY for Insiders" videos which $playername had been posting in his spare time.
+news_CharityWork4	[ONCH_04]#The team's profile was boosted after $playername was a guest on the latest episode of the number one $HOBBY podcast.
+news_CharityWork5	[ONCH_05]#$playername raised thousands of dollars for victims of hurricane $randomfname_female after gathering pledges from his teammates, his highschool friends, and fellow members of the $HOBBY society for his sponsored run.
+news_CharityWork6	[ONCH_06]#$playername helped to secure funding to repair the older bleachers in the stadium after talking to some rich alumni at an event for legacy members of the $HOBBY society.
+
+// Player Dilemmas - New groups for College - Hobby negative choice
+
+dilemma_hobby1	[NDHO_01]#$playername did not turn up to training last weekend. He had gone out of state to the $HOBBY convention instead.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hobby2	[NDHO_02]#$playername got into a fistfight on campus when a dispute with a rival branch of the $HOBBY society turned nasty.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hobby3	[NDHO_03]#$playername stayed on the bench during the last training session after receiving a minor finger injury at a meeting of the $HOBBY society.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hobby4	[NDHO_04]#$playername turned up to Football practise looking very ill. Apparently there was a mixer to welcome the new members of the $HOBBY society last night.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hobby5	[NDHO_05]#The rest of the team is furious with $playername after he made everyone listen to the latest $HOBBY podcast before the game, instead of the usual pump-up music mix.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hobby6	[NDHO_06]#$playername is one of the students under investigation after "$HOBBY4Life" was spray-painted on a sculpture in the middle of the campus grounds.-choice_IgnoreFine-choice_FinePlayer
+
+// Player Dilemmas - New groups for College - Study dilemma for low GPA
+
+dilemma_study1	[NDST_01]#$playername needs extra time away from training to resubmit his $MINOR paper after his first submission was flagged by anti-plagiarism software.####He is currently posting a $gpa GPA.-choice_GPAUp-choice_GPADrop
+dilemma_study2	[NDST_02]#$playername has asked to miss the next training session to study for his $MAJOR test.##He is currently posting a $gpa GPA.-choice_GPAUp-choice_GPADrop
+dilemma_study3	[NDST_03]#$playername wants to join his class on the $MINOR study field trip so needs to miss the next training session.##He is currently posting a $gpa GPA.-choice_GPAUp-choice_GPADrop
+dilemma_study4	[NDST_04]#$playername wants to attend a guest lecture by some of the most prestigious academics in the field of $MAJOR. The timetable clashes with Football training.##He is currently posting a $gpa GPA.-choice_GPAUp-choice_GPADrop
+dilemma_study5	[NDST_05]#$playername has asked to skip training so that he can spend extra time working on his $MINOR essay.##He is currently posting a $gpa GPA.-choice_GPAUp-choice_GPADrop
+dilemma_study6	[NDST_06]#The $MAJOR professor has demanded that $playername re-sits his last test. The exam clashes with Football training.##He is currently posting a $gpa GPA.-choice_GPAUp-choice_GPADrop
+
+// Player Dilemmas - New groups for College - Player threatens to leave because they are in the SUSPENDED GPA state
+
+dilemma_leaverescue_gpa1	[NRGP_01]#$playername has not been consistently achieving the GPA required by his scholarship conditions and may be forced to leave $teamname. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_gpa2	[NRGP_02]#The $MAJOR professor does not think that $playername will ever achieve good enough results to pass her class and is suggesting that his scholarship should be revoked. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_gpa3	[NRGP_03]#The Dean is under pressure because of the impact that underperforming atheletes are having on the institution's academic reputation, and he is suggesting that $playername should be indefinitely suspended from $teamname. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dlr_gpa_cost	-5
+news_playerleaves_gpa_norescue	[NLGP_00]#$playername has been forced to quit Football due to his poor academic record. He will no longer play for $teamname.
+
+// Player Dilemmas - New groups for College - Player threatens to leave due to repeated TOXIC dilemmas
+
+dilemma_leaverescue_toxic1	[NRTX_01]#$playername is among a group of students who have been accused of selling stolen exam papers. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_toxic2	[NRTX_02]#The rest of the team have said that they cannot deal with $playername's destructive attitude any more. They have demanded that you cut him immediately so that they can be a harmonious team. Do you want to convince them that he should be given another chance?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_toxic3	[NRTX_03]#Multiple other players have been seriously injured due to $playername being overly aggressive during training sessions, and they want you to cut him from the team. Do you want to convince them that he should be given another chance?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_toxic4	[NRTX_04]#$playername's Football scholarship is at risk of being revoked after he was verbally abusive to the Dean when he was summoned to explain his most recent prank. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_toxic5	[NRTX_05]#Several students are demanding that $playername is thrown out of college after he enticed them into a pyramid scheme where they lost thousands of dollars. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_toxic6	[NRTX_06]#Representatives of $randomteamname are demanding serious sanctions after their missing animal mascot was found by police in $playername's dorm room. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dlr_toxic_cost	-20
+
+news_playerleaves_toxic_norescue	[NLTX_00]#$headcoachname has decided that $playername was a disruptive influence and that it was better for everyone to cut him from the team.
+
+news_playerleaves_toxic1	[NLTX_01]#It is clear from his disruptive behavior that $playername has become more and more dissatisfied with College. He has decided to drop out and pursue the passions he discovered as part of the $HOBBY society. He will no longer play for $teamname.
+news_playerleaves_toxic2	[NLTX_02]#It is clear from his disruptive behavior that $playername has become more and more dissatisfied with College Football. He has decided to quit Football and concentrate on his $MAJOR studies in the hope that it will lead to a better college experience. He will no longer play Football for $teamname.
+news_playerleaves_toxic3	[NLTX_03]#After multiple incidents, the Faculty disciplinary board have decided that there is no way that $playername can remain as part of the student body, and he has been suspended indefinitely. He will no longer play for $teamname.
+news_playerleaves_toxic4	[NLTX_04]#It is clear from his disruptive behavior that $playername has become more and more dissatisfied with College life. He has decided to drop out and work for his uncle's business in $HOMETOWN. He will no longer play for $teamname.
+news_playerleaves_toxic5	[NLTX_05]#It is clear from his disruptive behavior that $playername has become more and more dissatisfied with $teamname. He has decided to transfer to $randomteamname where he hopes he will be a better fit. He will no longer play for $teamname.
+news_playerleaves_toxic6	[NLTX_06]#It is clear from his disruptive behavior that $playername has become more and more dissatisfied with College life. He has decided to drop out and go travelling in the hope of "finding himself".
+
+// Player Dilemmas - New groups for College - Party dilemmas and Party-variant of Late dilemmas.
+
+dilemma_hangover_party1	[NDLP_01]#$playername did not show up for training yesterday. After going out for a quiet drink, his friends lost sight of him, and locations on his social media posts suggest he may be in Tijuana.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hangover_party2	[NDLP_02]#$playername was forced to spectate during today's training after he woke up handcuffed to the goal on the Football field with no memory of where the key might be.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hangover_party3	[NDLP_03]#$playername overslept and was late for training today: His alarm did not go off after he tried to prove his cellphone was waterproof using a glass of beer.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hangover_party4	[NDLP_04]#$playername did not show up for training today - his friends say they last saw him drunkenly hailing a taxi to $HOMETOWN after he saw pictures of his ex-girlfriend with a new partner.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hangover_party5	[NDLP_05]#$playername turned up late for training today, failed to run in a straight line, then vomited into the drinks cooler.-choice_IgnoreFine-choice_FinePlayer
+dilemma_hangover_party6	[NDLP_06]#$playername did not show up for training today. When you attempted to call him, someone named $randomfname_female briefly answered then hung up without explanation.-choice_IgnoreFine-choice_FinePlayer
+
+dilemma_party1	[NDPY_01]#Complaints have been lodged against $playername after he invited his friends from $HOMETOWN High to party with him in college, and they trashed one of the dorm rooms.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party2	[NDPY_02]#Future meetings of the $HOBBY society have been suspended on campus after $playername turned their annual cheese and wine mixer into a wild party which lasted 48 hours.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party3	[NDPY_03]#$playername has been instructed to write a letter of apology after organising a 'naked mile' run on the same day that prospective students were touring the college with their families.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party4	[NDPY_04]#The fire department were called out to a local bar after $playername dropped a tray of flaming sambuca shots.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party5	[NDPY_05]#One of the coordinators caught $playername stashing a crate of beer in the locker room.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party6	[NDPY_06]#A study trip for students on the $MAJOR course got out of hand when $playername started buying drinks for everyone at a nearby bar.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party7	[NDPY_07]#Teammates are doubting $playername's commitment after he arranged to hit the clubs with some $randomteamname players "because those guys really know how to have fun".-choice_IgnoreFine-choice_FinePlayer
+dilemma_party8	[NDPY_08]#Local news crews interviewed shaken neighbours in the aftermath of an out-of-control party at a $teamname fraternity house after $playername shared an open invitation on social media.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party9	[NDPY_09]#Dozens of inebriated students descended on the $teamname campus wearing $playername jerseys after he decided to organize a huge party in his own honor.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party10	[NDPY_10]#$MINOR students assigned to complete a group project with $playername have complained that he left them to finish it while he took a weekend break to fly overseas for a "Full Moon Party".-choice_IgnoreFine-choice_FinePlayer
+dilemma_party11	[NDPY_11]#Other $teamname students have asserted that they never got paid after $playername hired them to work as the wait staff for a Black Tie ball which he threw for his circle of friends.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party12	[NDPY_12]#$playername has been called before a disciplinary board to explain some photographs taken at a so-called "bad taste" costume party which have leaked out onto social media.-choice_IgnoreFine-choice_FinePlayer
+dilemma_party13	[NDPY_13]#$playername was taken in by security after being caught relieving himself in the campus fountain during a heavy night of partying.-choice_IgnoreFine-choice_FinePlayer
+
+// Player Dilemmas - New groups for College - Player threatens to leave due to repeated PARTY dilemmas
+
+dilemma_leaverescue_party1	[NRPY_01]#The Dean has asked you to remove $playername from the team after three other players ended up in the E.R. when he invited them for a drinking session. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_party2	[NRPY_02]#One of your faculty colleagues is pushing for $playername's Football scholarship to be revoked after he repeatedly disrupted her lectures with drunken heckling. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_party3	[NRPY_03]#The cheerleading coach is insisting that $playername is removed from the Football team after it emerged that he was conducting relationships with three different cheerleaders without them being aware of each other. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_party4	[NRPY_04]#After $playername left an unpaid bar tab for thousands of dollars at a local nightclub, the Dean is considering revoking his Football scholarship for damaging the College's relationship with the community. Do you want to intervene on his behalf to keep him on the team?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_party5	[NRPY_05]#The chief of the local P.D. has called you in because $playername is intoxicated in the lockup for the third time this month. He is considering charging him with a felony instead of a misdemeanor this time. Do you want to take responsibility for him?-choice_DefendPlayer-choice_CutPlayer
+dilemma_leaverescue_party6	[NRPY_06]#The rest of the team are sick of covering for $playername's drunken antics and his sub-par performance when hungover. They have demanded that you cut him immediately so that they can be a serious team again. Do you want to convince them that he should be given another chance?-choice_DefendPlayer-choice_CutPlayer
+dlr_party_cost	-20
+
+news_playerleaves_party_norescue	[NLPY_00]#$headcoachname has decided to cut $playername from the $teamname lineup. His constant partying was becoming a distraction from the team's achievements on the field.
+
+news_playerleaves_party1	[NLPY_01]#$playername's hard-partying lifestyle has become unsustainable. He has checked into a rehab facility in the hope of getting his life back on track. He will no longer play for $teamname.
+news_playerleaves_party2	[NLPY_02]#$playername's party lifestyle has resulted in his Football career being cut short after he drunkenly fell from a second storey window. In the long term he is expected to recover but he will no longer play for $teamname.
+news_playerleaves_party3	[NLPY_03]#$playername's constant partying has likely contributed to him failing his most recent medical assessment. His drastically reduced lung capacity means that it is no longer safe for him to continue with College Football. He will no longer play for $teamname.
+news_playerleaves_party4	[NLPY_04]#After multiple citations for public intoxication, indecency, and criminal damage, scouts have made it clear that no Pro Team would ever take a chance on recruiting $playername. With no path to going Pro, he has decided to quit College Football immediately rather than later and will no longer play for $teamname.
+news_playerleaves_party5	[NLPY_05]#After an event called "The Party to End All Parties" resulted in incalculable damage to campus property, the ringleaders have all been immediately expelled from the institution. This includes $playername, who will now no longer play for $teamname.
+news_playerleaves_party6	[NLPY_06]#$playername has informed you that he is dropping out of College. It seems that his constant partying has blown through his scholarship money and put him in debt so that he cannot afford to stay at the institution. He will no longer play for $teamname.
+
+// Player Dilemmas - New groups for College - Dilemma choice lables
+
+choice_GPAUp	Allow Study
+choice_GPADrop	Don't Allow
+choice_CutPlayer	Cut Player
+
+choice_GPAUpResultMsg	Remember! The rest of the team will be annoyed if one player is given special treatment and extra study time.
+
+msg_RosterLimitAllFreshman	You have reached the roster limit and you are not allowed to revoke Admissions offers which you have already made to this year's Freshman class. You cannot cut or sign any more players. Please start the new season.
+
+ui_WalkOnStudent	Walk-On Athlete
+ui_WalkOnStudentOffer	Coach $coachname has identified a walk-on player who could be useful to your team.##$playername may have what it takes to be an effective $position. Do you want to meet with him?
+
+
+// General College rewrite - finished lines, in file order. 
+
+ui_TradePlayer	Cut Player
+ui_Draft	Freshman#Admiss'ns
+ui_DraftRound	College Admissions
+ui_SignPlayer	Recruit Player
+msg_SignPlayer	Do you want to recruit $position $playername?
+msg_SignRookie	Do you want to recruit Freshman $playername as a $position?
+msg_CannotSign1	You already have a $position.##You will need to cut the $position from your roster if you want to recruit $playername.
+msg_CannotSign2	You already have $num players for the $position position.##You will need to cut someone from your roster if you want to recruit $playername.
+ui_Sign	Recruit
+info_StarPlayers	These are your key players - the student athletes that make a real difference on game day. You can have up to 10 key players. (You can increase the limit to 12 players in the options if you prefer, and use a larger reserve of RECRUITMENT CREDITS.)##The rest of your squad do not have star ratings and are hidden. Their contribution towards the overall offense and defense ratings is dependent on the coordinator ratings.
+info_StarPlayers12	These are your key players - the student athletes that make a real difference on game day. You can have up to 12 key players.##The rest of your squad do not have star ratings and are hidden. Their contribution towards the overall offense and defense ratings is dependent on the coordinator ratings.
+info_Draft	It's time for College Admissions!##You have a limited number of RECRUITMENT CREDITS which represent your influence within the Faculty over player admissions and scholarships. You will receive more RC when you make your institution more attractive to Freshman players by winning Bowl games and if your Senior players declare for the Pro Draft.##Choose wisely! You will need to scout players in order to reveal more details about them.##If you need to cut existing players from the team you can do so via the Roster screen.
+info_Draft2	New Admissions Rules!##You now need to scout Freshman players if you wish to reveal their potential. You do this via their profile page. The number of players you can scout per draft is limited.
+ui_FreeAgents	Walk-On Athlete
+news_PlayerRetiringNoTag	$position $playername will graduate at the end of the season. He is not tagged for the Yearbook.
+news_PlayerRetiringTag	$position $playername will graduate at the end of the season. You have already tagged him for the Yearbook.
+msg_ClearFreeAgent	This potential Walk-On will not take up College Football and will permanently go back to his studies. Are you sure you want to proceed?
+info_Facility_Stadium	Increase the size of your RECRUITMENT CREDIT wallet so that you can save more credits when your players get drafted.##Improve your institution's stadium to make fans more positive after a win and less negative after a loss.##Higher quality training facilities help players gain XP faster.##Better rehab helps players maintain good condition and recover from injury quicker.
+ui_FrontOffice	Athletics Office
+btn_FrontOffice	Athletics#Office
+postmatch_toxic1	$position $playername has received a warning for a uniform violation ($uniform).-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic2	$position $playername has received a warning for unnecessary roughness.-choice_CriticisePlayer-choice_CriticiseOfficials
+postmatch_toxic3	$position $playername has received a warning for unsportsmanlike conduct.-choice_CriticisePlayer-choice_CriticiseCoaches
+postmatch_toxic4	$position $playername was apparently overheard saying "come get me" towards the opposition sideline during the game today.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic5	$position $playername has received a warning for making a hand gesture during the game today.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic6	$position $playername has received a warning for fighting with an opponent during the game today.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic7	$position $playername has received a warning for making physical contact with an official today.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic8	$position $playername has received a warning for taunting today.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_win3	This institution has taken some criticism in the past. It must feel good to win.-choice_PraiseFans-choice_PraiseOwner
+postmatch_question_player_1	A freshman journalist for the College Paper asks:##In which position does $playername play?-choice_qpos_correct-choice_qpos_wrong
+postmatch_question_player_2	A freshman journalist for the College Paper asks:##In which position does $playername play?-choice_qpos_wrong-choice_qpos_correct
+postmatch_question_staff_1	A freshman journalist for the College Paper asks:##Which coordinator is $playername?-choice_qpos_wrong-choice_qpos_correct
+postmatch_question_staff_2	A freshman journalist for the College Paper asks:##Which coordinator is $playername?-choice_qpos_correct-choice_qpos_wrong
+choice_PraiseOwner	Praise#Faculty
+choice_FocusOwner	Athletic#Director
+news_DraftEnded	The Freshman players have arrived at college and the season can begin!
+news_SignFreeAgent	$playername has joined the $teamname football team as a walk-on.
+ui_FavoriteTeam	Favorite College
+news_NewCareer	With just $num $weeks left in the season $teamname have appointed $coachname as their new head coach.##No one knows what to expect from this untested new arrival!
+msg_Intro_1	Welcome to $teamname!##This is your home screen. You can tap on the division table to view divisions and the schedule.##When you are ready tap the ATHLETICS OFFICE button.
+msg_Intro_1_gp	Welcome to $teamname!##This is your home screen. You can use ² or the - Button to view divisions and the schedule.##When you are ready highlight the ATHLETICS OFFICE button and press ¹.
+msg_Intro_1_gp_xb	Welcome to $teamname!##This is your home screen. You can use ² to view divisions and the schedule.##When you are ready highlight the ATHLETICS OFFICE button and press º.
+msg_Intro_2	From the Athletics Office you can upgrade facilities and staff.##Tapping an 'i' icon will bring up useful information.
+msg_Intro_2_gp	From the Athletics Office you can upgrade facilities and staff.##Highlighting an 'i' icon and pressing ¹ will bring up useful information.
+msg_Intro_2_gp_xb	From the Athletics Office you can upgrade facilities and staff.##Highlighting an 'i' icon and pressing º will bring up useful information.
+msg_Intro_5	Here you can view player details and attributes. Keep an eye on morale and condition.##Poor morale can lead to game penalties and problems off the field.##Low condition can lead to injury or worse - fumbles!##Players who have a low GPA can be suspended and will be exluded from games while they study to get their GPA back up.
+msg_RosterLimit	You have reached the roster limit. You will need to cut players before you can recruit new ones.
+news_firstmatchWin	$yourname's first game in charge of $teamname1 ended with a win against $teamname2 - it looks like this new appointment is working out.##The $teamname1 fans will be looking forward to next season now with renewed hope.
+news_firstmatchLoss	$yourname's first game in charge of $teamname1 ended in defeat against $teamname2 and questions still linger over this surprising appointment.##$yourlastname will be left in no doubt about how much work there is to do to turn this team's fortunes around.
+msg_JobOffers_1	Your raw talent as a head coach is making waves in College Football. A few institutions are interested in hiring you.
+msg_JobOffers_2	Your reputation is growing! The following institutions are interested in taking you on as head coach.
+msg_JobOffers_3	Your reputation is widely acknowledged within College Football and there are a number of institutions interested in taking you on as head coach.
+msg_JobOffers_4	Your wealth of experience and knowledge of the game make you the most highly sought after coach in College Football. Institutions are queuing up to take you on as head coach.
+news_NewJob3	$oldteamname fans may be in shock today as $yourname walks out on them to become the new head coach of $newteamname. Assessing the student athletes and recruiting new co-ordinators will be a priority upon arrival.
+choice_MeetOwner	Meet#Faculty
+choice_IgnoreFine	Ignore#Incident
+choice_FinePlayer	Discipline#Player
+btn_HallOfFame	Yearbook
+ui_HallOfFame	Yearbook
+ui_FavouriteTeam	Favorite College
+msg_StoreReview	Would you like to rate and review Retro Bowl College on the store?
+tip_17	Coaching Credit isn't cash, it's kudos - it represents how much respect you have from the faculty, team and fans
+tip_27	If you keep ignoring players' needs they may end up leaving anyway without giving you a chance to intervene
+tip_29	You can get extra Recruitment Credits if players declare for the Pro Draft in their Junior year
+tip_30	You can check player GPA on the profile page. If it is low you can arrange for extra tuition in the MEETING area
+ui_Alternate	Alt1
+ui_PlayerHallOfFame	Yearbook
+ui_PlayerHallOfFameEmpty	To put players in the Yearbook you need to tag them in the top-left corner of their profile page.
+msg_TradeAwayRookie	Warning! Cutting a recently recruited player has a negative impact on team morale and your fan relationship!
+btn_PlayerHallOfFame	Player   #Y'book  
+info_TrainingRegime	Setting the training regime to HARD will help players to gain more XP per game and will help them to concentrate on sports. However they will consume more energy, be less happy, their GPA may suffer and their risk of injury is increased.##LIGHT training conserves energy, increases morale, leaves more time for study and reduces injury risk, but XP will be gained at a slower rate than normal and players may be distracted by other things on campus!
+news_mvp	$position $playername won the Association award for Most Valuable College Player!
+news_roty	$position $playername won the Association award for Freshman Player of the Year!
+news_opoy	$position $playername won the Association award for College Offensive Player of the Year!
+news_dpoy	$position $playername won the Association award for College Defensive Player of the Year!
+msg_SeasonRatings	A College Football website rated the performance of your team for the season...
+favorite_DoingWell	With a current record of $record, the $teamname head coach position in jeopardy. While sources have given no hint regarding the preferred choice many fans have been quick to name $yourname as the ideal candidate.
+favorite_DoingWellReturn	Fans of $favteamname, currently $record, have been calling for the return of $bossname as head coach. Sources at $favteamname have nevertheless heard no rumors of a shake-up.
+favorite_DoingPoorly	It's no secret that $favteamname will be looking for a new head coach at the end of the season but it seems unlikely that $yourname will be amongst the candidates.
+msg_SalaryCheckRoster	You need to reduce your roster to 10 players before you can reduce the recruitment credits cap.
+msg_BoostMoraleEvent0	The team had a night out at the movies.
+msg_BoostMoraleEvent1	You took the team mountain hiking for the day.
+msg_BoostMoraleEvent2	You arranged a visit from a Pro Football player who used to play for the college.
+msg_BoostMoraleEvent3	You organized a paintball day.
+msg_BoostMoraleEvent4	The cheerleaders and the band hyped up everyone at a pep rally, including the team!
+msg_BoostMoraleEvent5	You took the entire team out for a meal.
+msg_BoostMoraleEvent6	You took the team to watch a Pro Football game from the V.I.P. area.
+msg_BoostMoraleEvent7	You ordered pizzas for everyone to reward them after a tough training session.
+msg_BoostMoraleEvent8	You threw a pig roast for the team, and you invited their families too.
+msg_BoostMoraleEvent9	You booked a karaoke lounge for the evening so the team could relax.
+msg_BoostConditionEvent1	You arranged personalized dietary plans for all the players on the team.
+msg_BoostConditionEvent2	You gave the team an extra rest day.
+msg_BoostConditionEvent3	You called in a favor from a Pro Football co-ordinator who made improvements to the team's training schedule.
+msg_BoostConditionEvent4	You asked the Physiotherapy professor to get her students to assess the team's minor ailments and recommend some treatment.
+msg_BoostConditionEvent5	You told the team about your secret family recipe for curing a hangover.
+msg_BoostSalaryCap	Do you want to permanently increase the Recruitment Credits wallet to $num? It will cost you $cost Coaching Credits.
+msg_BoostSalaryNoCredit	You need $cost Coaching Credits to increase the Recruitment Credits wallet to $num.
+ui_ExtendContract	Academic Coaching
+ui_DelayRetirement	Academic Coaching
+msg_MeetingExtendContract	Arranging for $playername to see the academic tutor will cost $num Coaching Credits.##Do you want to proceed?
+msg_boost_morale2	You arrange for the RA to spend extra time with $playername.
+msg_boost_condition2	The campus health center gives $playername some relaxation pills.
+msg_boost_condition3	$playername took time off to travel back home and rest with family.
+ui_Rush	Alt2
+msg_ReinstatePlayer	Do you want to reinstate $playername until the end of the season?
+msg_TagMessageHOF	This tag allows you to select a player for the Yearbook. His stats will be recorded even after he leaves the team or graduates.
+info_StartWithFave	Retro Bowl College is a game all about building a legacy. If you choose to start with your favorite team that's fine but the story of your career will be a simple one.##Why not start out at a low ranked team and prove yourself before receiving that dream offer from your favorite team?
+ui_DetailsNotFave	Note: You will not start at your favorite institution.
+
+// General College rewrite - debugging warnings
+
+msg_SuperBowlWinner	[!!!]DEGUGGING INFO. THE RETRO BOWL COMPETITION WILL NOT BE PRESENT IN THE FINAL RELEASE. THIS IS A KNOWN ISSUE AND IS NORMAL FOR THIS DEVELOPMENT BUILD[!!!]#$teamname1 win the Retro Bowl!
+msg_CannotTradeWeek	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#You cannot trade players after week 8.##Do you want to cut $playername from your roster instead?
+msg_CannotTradeInjured	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#No teams are interested in taking $playername while he is injured.##Do you want to cut this player from your roster instead?
+msg_CannotTradeToxic	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#No teams are interested in taking $playername while his attitude is toxic.##Do you want to cut this player from your roster instead?
+msg_CannotSignMoraleLow	[!!!]CONTRACT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$playername is not interested in signing a new contract. His morale is low.
+msg_CannotTradeRookie	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$playername does not want to be traded.##Do you want to cut this player from your roster instead?
+msg_TradePlayerThis	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname is offering a round $num pick in this season's draft for $position $playername.
+msg_TradePlayerNext	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname is offering a round $num pick in next season's draft for $position $playername.
+msg_SignPlayerStore	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Do you want to sign $position $playername? It will cost $num coaching credits.
+msg_SignPlayerStoreNoCredit	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#You need $num coaching credits to sign this player.
+msg_SkipDraft	[!!!]ROUND PICKS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#You still have $num picks left.##Do you want to sell your picks in this round for $value coach credits?
+msg_SkipDraft1	[!!!]ROUND PICKS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#You still have a pick left in this round.##Do you want to sell it for $value coach credits?
+info_FreeAgents	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Free agents are players that either didn't make the draft or are out of contract.##Trades are players currently under contract with another team but looking for a move. You will need to exchange one of your future draft picks for the player you want to trade.
+ui_ExceedSalaryCap	[!!!]SALARY CAP FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Signing $playername will exceed the salary cap.##You have $$numm remaining.##You will need to cut or trade players from your roster to sign this player.
+msg_FreeAgentOffer	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE (specifically via new message ui_WalkOnStudentOffer). REPORT THIS MESSAGE IF SEEN[!!!]#$position $playername is a free agent looking for a team.##He arrives at the training facility for your assessment.
+msg_FreeAgentOffer_Rookie	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE (specifically via new message ui_WalkOnStudentOffer). REPORT THIS MESSAGE IF SEEN[!!!]#$position $playername was an undrafted rookie.##Coach $coachname thinks he is an interesting prospect.
+msg_TradeOffer	[!!!]TRADE-IN FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname is offering $position $playername as a trade.##In return they want a round $num pick in next season's draft.
+msg_TradeOfferSign	[!!!]TRADE-IN FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Do you want to sign $position $playername from $teamname?##He will cost you a round $num pick in next season's draft.
+msg_TradeRequest	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname want your $position $playername.##In return they are offering a round $num pick in next season's draft.
+msg_ContractExpired	[!!!]CONTRACT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$position $playername's contract has expired. He wants a $year year contract with a salary of $salary.
+news_PlayerRetired	[!!!]RETIREMENT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname $position $playername has retired at the age of $age.
+msg_OutOfContractPlayer	[!!!]CONTRACT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$position $playername's contract has expired. He is on the free agent list if you wish to re-sign him.
+msg_OutOfContractPlayers	[!!!]CONTRACT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#You have players with expired contracts. They are on the free agents list if you wish to re-sign them.
+msg_ClearFreeAgents	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#These players will now find new teams. Are you sure you want to proceed?
+msg_ClearTradeOffer	[!!!]TRADE-IN FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Do you want to reject this trade offer?
+msg_SalaryCapIncrease	[!!!]SALARY CAP FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#The salary cap has been raised to $$numm.
+info_DraftPicks	[!!!]ROUND PICKS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#In the next draft you have the following number of picks:##Round 1: $num1##Round 2: $num2##Round 3: $num3##You can gain extra picks by trading players out of the team.
+news_ResignedPlayer	[!!!]CONTRACT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname has agreed a $salary deal with $age year old $position $playername.
+news_SignTrade	[!!!]TRADE-IN FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname has signed $age year old $position $playername from $otherteamname.
+news_SignTrade2	[!!!]TRADE-IN FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$teamname has signed $age year old $position $playername.
+news_firstmatchTie	[!!!]NO GAME TIES IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]$yourname managed to avoid defeat after taking charge of $teamname1.##$yourlastname will be hoping for a good draft to boost their playoff chances next season.
+info_freeagents	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Players in free agency are available to sign for any team. However, persuading them to join your team will require coaching credits and salary cap space. The quality of the available players depletes over the course of a season.
+msg_FreeAgentReset	[!!!]FREE AGENTS FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#Do you wish to refresh the free agent list for $num coaching credits?
+msg_TradeDeadline	[!!!]TRADE-OUT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#The trade deadline is this week.##From next week on, you will only be able to cut players from the team, not trade them away, until next season. You will still be able to hire players from the Free Agents list.
+msg_MeetingDelayRetirement	[!!!]RETIREMENT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#It will cost $num coach credits to persuade $playername to delay his retirement by 1 year.##Do you want to proceed?
+msg_MeetingTooOld	[!!!]RETIREMENT FEATURE SHOULD BE OVERRIDDEN IN COLLEGE MODE. REPORT THIS MESSAGE IF SEEN[!!!]#$playername feels he is too old to continue playing.
+btn_ExhibitionGame	[!]DEBUG[!]#Exhibition
+ui_SimGame	DEBUG SIM
+
+msg_NotEnoughCCStore	You do not have enough CC to make this choice - would you like to get more from the store?
+msg_NotEnoughCC	You do not have enough CC to make this choice!
+
+btn_BoostGPA	Boost#GPA
+msg_BoostGPAAlreadyDone	You have already helped the Team to study this week.
+msg_BoostGPANoCredit	You need $num Coaching Credits to boost the team's GPA.
+msg_BoostGPA	Do you want to give the team a GPA boost for $num Coaching Credits?
+msg_BoostGPAEvent0	You arranged for some grad students to conduct study sessions with your players.
+msg_BoostGPAEvent1	You struck a deal with a local store to provide new study laptops for your players.
+msg_BoostGPAEvent2	You added a compulsory study break into the team's training schedule. 
+msg_BoostGPAEvent3	You accompanied the team to some guest lectures on a fascinating range of subjects.
+msg_BoostGPAEvent4	You pressured some of your faculty colleagues into helping your student athletes after class.
+msg_BoostGPAEvent5	You introduced your players to some memorization techniques to help prepare for their upcoming academic tests.
+
+epi_cut	$playername was the $position for the $teamname Football Team until his $academicyear year.
+epi_draftR1Senior	$playername entered the Pro Football Draft as a Round 1 pick and was signed as the $position for $draftedteamname.
+epi_draftR1Junior	$playername declared early for the Pro Football Draft and was signed as a Round 1 pick as the new $position for $draftedteamname.
+epi_draftR2Senior	$playername entered the Pro Football Draft as a Round 2 pick and was signed as the $position for $draftedteamname.
+epi_draftR2Junior	$playername declared early for the Pro Football Draft and was signed as a Round 2 pick as the new $position for $draftedteamname.
+epi_draftR3Senior	$playername entered the Pro Football Draft as a Round 3 pick and was signed as the $position for $draftedteamname.
+epi_draftR3Junior	[!!!]DEBUGGING[!!!] Ending up as a R3 pick when declaring early should not be possible; report this message if seen.
+
+epi_graduated1	After graduation, $playername fulfilled his lifelong dream of moving to $epilogue_city.
+epi_graduated2	On the day he graduated, $playername eloped with his girlfriend $epilogue_femalename. They are still together today, and have 7 kids.
+epi_graduated3	After graduation, $playername never felt the need to get a job due to his husband $epilogue_malename having such a high-paying job.
+epi_graduated4	$playername enjoyed his time at $teamname so much that he got a job as the college groundskeeper. He can be seen mowing the field before every Football game.
+epi_graduated5	$playername embraced his passion after college, and has dedicated his life to bringing the joys of $HOBBY to underprivileged children around the world.
+epi_graduated6	$playername graduated summa cum laude in $MAJOR.
+epi_graduated7	$playername went on to study for a doctorate in $MINOR, and his team have been nominated for a prestigious prize after a major breakthrough in the field.
+epi_graduated8	$playername retured to $HOMETOWN to marry his childhood sweetheart.
+epi_graduated9	$playername decided to continue his $MAJOR studies at $epilogue_college.
+epi_graduated10	$playername took his College Football experience and landed himself a backroom job in the big leagues working for $epilogue_proteam.
+epi_graduated11	After college, $playername became possibly the most famous $epilogue_job in America.
+epi_graduated12	$playername emigrated to $epilogue_country after a holiday fling with a local girl.
+epi_graduated13	$playername decided to spend a year living out of a van while he followed $epilogue_band on their North American tour.
+epi_graduated14	$playername was convicted on two counts of $epilogue_crime but is expected to get a shortened sentence due to good behavior.
+epi_graduated15	$playername decided to continue studying, but switched from $MAJOR to $epilogue_subject.
+epi_graduated16	Afrer college, $playername dedicated himself to raising awareness of $epilogue_charity.
+
+epi_dil_lowGPANoRescue	$playername was was forced to quit as the $position for the $teamname Football Team during his $academicyear year for academic reasons.
+epi_dil_toxicNoRescue	$playername was the $position for the $teamname Football Team, but personal issues resulted in him being pushed out of the team during his $academicyear year.
+epi_dil_maxToxic	$playername was the $position for the $teamname Football Team, but personal issues resulted in him being pushed out of the team during his $academicyear year.
+epi_dil_partyNoRescue	$playername was unable to continue as the $position for the $teamname Football Team after his hard-partying lifestyle got out of hand during his $academicyear year.
+epi_dil_maxParty	$playername was unable to continue as the $position for the $teamname Football Team after his hard-partying lifestyle got out of hand during his $academicyear year. His status as a campus party animal remains legendary.
+epi_newteam	$playername was $headcoachname's pick for the $position of the $teamname Football Team while $headcoachlastname was the Head Coach.

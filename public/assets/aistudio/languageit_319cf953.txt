@@ -1,0 +1,1163 @@
+tag	ITALIANO
+msg_Update	
+ui_NewStarGames	New Star Games
+ui_Back	Indietro
+ui_Home	Inizio
+ui_Dilemma	Dilemma
+ui_Continue	Continua
+ui_Play	Gioca
+ui_Message	Messaggio
+ui_Select	Seleziona
+ui_Profile	Profilo
+ui_Practice	Pratica
+ui_Exercise	Esercizio
+ui_Fixtures	Incontri
+ui_Results	RisultatI
+ui_Exit	Esci
+ui_Earn	Ottieni
+ui_Week	Settimana
+ui_Weeks	Settimane
+ui_Cash	Soldi
+ui_Shop	Negozio
+ui_Study	Studio
+ui_Purchase	Compra
+ui_Cancel	Cancella
+ui_NextMatch	Prossima partita
+ui_PlayMatch	Gioca partita
+ui_Standings	Classifica
+ui_Relationships	Relazioni
+ui_Opportunity	Opportunità
+ui_YourHappiness	Felicità personale
+ui_DraftPicks	Scelte nel draft
+person_He	Lui
+person_She	Lei
+tla_years	anni
+sex_0	Donna
+sex_1	Uomo
+trait_app_0	Nessuno
+trait_app_1	Attraente
+trait_app_2	Sfigurato
+trait_app_3	Alto
+trait_app_4	Basso
+trait_app_5	Ossa grosse
+trait_app_6	Grosso
+trait_app_7	Magro
+trait_app_8	Fragile
+trait_app_9	Balbetta
+trait_issue_1	Avido
+trait_issue_2	Ottimista
+trait_issue_3	Timido
+trait_issue_4	Sicuro di sé
+trait_issue_5	Impressionante
+trait_issue_6	Religioso
+trait_issue_7	Ateo
+trait_issue_8	Affettuoso
+trait_issue_9	Paranoico
+trait_issue_10	Illuso
+trait_issue_11	Fortunato
+trait_issue_12	Indulgente
+trait_issue_13	Furbo
+trait_issue_14	Amichevole
+trait_issue_15	Invidioso
+trait_issue_16	Fiero
+trait_issue_17	Onesto
+trait_issue_18	Ingannevole
+trait_issue_19	Sleale
+trait_issue_20	Pessimista
+trait_vice_1	Scommettitore
+trait_vice_2	Alcolizzato
+trait_vice_3	Ipersessuale
+trait_vice_4	Festaiolo
+trait_vice_5	Drogato
+trait_vice_6	Aggressivo
+ui_Defense	Difesa
+ui_Offense	Attacco
+quarter_1	1º Qt
+quarter_2	2º Qt
+quarter_3	3º Qt
+quarter_4	4º Qt
+quarter_5	TS
+match_Touchdown	Touchdown
+match_Interception	Intercetto
+match_Incomplete	Incompleto
+match_OutOfBounds	Fuori limiti
+match_Sacked	Sacked
+match_Fumble	Fumble
+comm_stage_KickOff	$teamname con il kick off
+comm_stage_Possession_OwnHalf1	$teamname sulla loro $num
+comm_stage_Possession_OwnHalf2	$teamname nella propria metà
+comm_stage_Possession_OwnHalf3	$teamname ha il possesso
+comm_stage_Possession_OppHalf1	$teamname giocano dalla $num
+comm_stage_Possession_OppHalf2	$teamname dalla $num
+comm_stage_Possession_OppHalf3	$teamname ha il possesso
+comm_stage_Possession_RedZone	$teamname nella red zone
+comm_stage_Possession_BackedUp	$teamname è infondo alla sua metà
+comm_stage_Possession_Halfway	$teamname è verso metà campo
+comm_stage_PuntReturnGood	È un buon ritorno
+comm_stage_PuntReturnShort	È un ritorno corto
+comm_stage_DriveRun0	Giocano la palla
+comm_stage_DriveRun1	La tengono a terra
+comm_stage_DriveRun2	Il quarterback la passa
+comm_stage_DriveRun3	Il running back la prende
+comm_stage_DriveRun4	È un'azione di corsa
+comm_stage_DrivePass0	Provano il passaggio
+comm_stage_DrivePass1	Lanciano la palla
+comm_stage_DrivePass2	É un lancio oltre la metà 
+comm_stage_DrivePass3	Provano il passaggio
+comm_stage_DrivePass4	Il quarterback la lancia
+comm_stage_DriveHailMary0	É un Hail Mary Pass!
+comm_stage_DriveHailMary1	É un lancio enorme
+comm_stage_DriveHailMary2	Il quarterback la spara via
+comm_stage_Turnover1	É un fumble!
+comm_stage_Turnover2	Intercetto!
+comm_stage_TurnoverHuman	$teamname perde il possesso
+comm_stage_TurnoverHuman4th	$teamname perde il possesso nel 4º down
+comm_stage_Touchdown	$teamname segna!
+comm_stage_Punt	$teamname fa un punt
+comm_stage_PAT1	Punto dopo il touchdown
+comm_stage_PAT2_Missed	Mancato!
+comm_stage_PAT2_Scored	Dentro!
+comm_stage_FieldGoal1	$teamname con un field goal dalla yard $num ...
+comm_stage_FieldGoal2_Missed	Mancato!
+comm_stage_FieldGoal2_Scored	Dentro!
+comm_stage_end_quarter1	Fine del primo quarto
+comm_stage_end_quarter2	Fine della prima metá
+comm_stage_end_quarter3	Fine del terzo quarto
+comm_stage_end_quarter4	Fine partita
+comm_stage_overtime	Supplementari!
+comm_stage_overtime_over	Fine partita
+comm_stage_2pt_attempt	Cercano i due punti...
+comm_stage_2pt_missed	Ma vengono fermati!
+comm_stage_2pt_scored	E segnano!
+comm_stage_Turnover_Tackle1	[$pos] $playername fa un ottimo placcaggio!
+comm_stage_Turnover_Tackle2	[$pos] $playername fa il placcaggio!
+comm_stage_Turnover_Fumble1	[$pos] $playername forza un fumble!
+comm_stage_Turnover_Fumble2	[$pos] $playername lotta per un fumble!
+comm_stage_Turnover_Sack1	[$pos] $playername fa un sack al quarterback!
+comm_stage_Turnover_Sack2	[$pos] $playername con un gran sack!
+comm_stage_Turnover_Interception1	[$pos] $playername realizza un intercetto!
+comm_stage_Turnover_Interception2	[$pos] È intercettata da $playername!
+comm_stage_failed_skill	[$pos] $playername manca il tackle
+comm_stage_failed_speed	[$pos] $playername è stato troppo lento
+comm_stage_failed_strength	[$pos] $playername non è stato abbastanza forte
+comm_stage_incomplete_Run	È corto per il 1º down
+comm_stage_incomplete_Pass	Incompleto
+comm_stage_GoForIt	$teamname vanno per il 4º down
+down_1	1º down
+down_2	2º down
+down_3	3º down
+down_4	4º down
+down_1and	1º &
+down_2and	2º &
+down_3and	3º &
+down_4and	4º &
+Goal	Goal
+Inches	Inches
+match_GetReady	Preparati!
+game_Title	Retro Bowl
+qualification_NO	Non possibile
+qualification_MAYBE	Possibile
+qualification_PO	Play-offs
+qualification_WC	Wild Card
+endseason_failure	Non sei arrivato ai play-off quest'anno.
+matchmsg_SwitchDirection	Cambiare direzione?
+ui_MyTeam	La mia squadra
+ui_QBStats	QB Stats
+ui_Team	Squadra
+ui_Wins	Vinte
+ui_Losses	Sconfitte
+ui_Ties	Pareggi
+ui_PlayOffs	Play-off
+tla_Attempts	Prv
+tla_Completed	Comp
+tla_Percent	Pct
+tla_Yards	Yds
+tla_yards	yds
+sla_Yards	Y
+sla_yards	y
+tla_TouchDowns	TD
+tla_Interceptions	Int
+tla_Sacks	Sck
+tla_Average	Avg
+tla_CompletedPercent	Comp %
+ui_League	Campionato 
+ui_Stats	Stats
+ui_Fixtures	Incontri
+ui_Schedule	Calendario
+ui_Options	Opzioni
+ui_XPLevel	Livello XP
+ui_StatsMatch	Stat Partita
+ui_StatsSeason	Stat Stagione
+ui_StatsCareer	Stat Carriera
+ui_NextGame	Prossima partita
+ui_Result	Risultato
+ui_Results	Risultati
+ui_Options	Opzioni
+ui_NewGame	Nuova partita
+ui_QuitGame	Esci dal gioco
+ui_Leaderboard	Classifica
+ui_Leaderboard_QB	Classifica QB
+ui_Name	Nome
+ui_News	Notizie
+ui_Traits	Specialitá
+conf_AFC	AFC
+conf_NFC	NFC
+division_East	Est
+division_West	Ovest
+division_North	Nord
+division_South	Sud
+sla_East	E
+sla_West	O
+sla_North	N
+sla_South	S
+sla_Wins	V
+sla_Losses	P
+sla_Ties	X
+sla_Win	V
+sla_Loss	P
+sla_Tie	X
+ui_Yes	Si
+ui_No	No
+Punt	Punt
+Field Goal	Field Goal
+msg_NewGame	Vuoi iniziare una nuova carriera? ##ATTENZIONE!# I tuoi dati di salvataggio e gli eventuali #Coaching Credits esistenti andranno persi.
+msg_NewGameCredits	Vuoi iniziare una nuova carriera?##Hai $num dI crediti di coaching rimanenti che saranno trasferiti al tuo nuovo file di salvataggio.
+matchmsg_PlayPunt	Vuoi giocare il 4º down o fare punt?
+matchmsg_PlayFG	Giocare $down o provare un field goal?
+ui_NewTrait	Nuova specialitá
+msg_NewTrait	Hai guadagnato una nuova specialitá!##$traitname##$traitdesc.
+match_StiffArm	Braccio teso!
+ui_DivisionLeaders	Teste di serie
+ui_WildCard	Wild Card
+ui_InTheHunt	In the hunt
+ui_SuperBowl	Retro Bowl
+ui_Super#Bowl	Retro#Bowl
+ui_Champion	Campione
+ui_PlayOffPicture	Vista ai play-off
+msg_PlayOffResult	$teamname1 ha battuto $teamname2 $score1-$score2!
+msg_SuperBowlWinner	$teamname1 vince il Retro Bowl!
+match_FG_Good	E' buono
+match_FG_Bad	Non è buono
+match_Kicking	Calciare
+match_FieldGoal	Field Goal
+match_PAT	Punto dopo il Touchdown
+match_Wind	Vento
+ui_Training	Allenamento 
+ui_FieldGoal	Field Goal
+ui_Running	Correre
+match_TouchToStart	Tocca Per Iniziare
+match_TouchToContinue	Tocca per continuare
+match_Success	Fatta
+match_Fail	Sbagliato
+ui_Passing	Passagio
+training_Running1	Tocca il cerchio blu
+training_Running2	Scorri per schivare
+training_Running1b	Clicca il cerchio blu
+training_Running2b	W o S per schivare
+training_Running3A	A per tuffarti
+training_Running3D	D per tuffarti
+training_Running3	Scorri in avanti per tuffarti
+training_Throw1	Trascina e tieni premuto per mirare
+training_Throw2	Rilascia per lanciare
+training_Throw3	Lancia la palla indietro
+training_Kick1	Tocca per impostare la potenza
+training_Kick2	Tocca per impostare la direzione
+training_Kick1b	Clicca per impostare la potenza
+training_Kick2b	Clicca per impostare la direzione
+training_Pass	Pratica di passaggi
+training_Running	Pratica di corsa
+training_FieldGoal	Pratica di Field Goal
+match_Caught	Presa
+match_Tipped	Ribaltato
+match_Dropped	Caduta
+msg_NewSeason	Una nuova stagione inizia!
+match_Recovered	Recuperata
+match_Turnover	Turnover
+match_Safety	Safety
+matchmsg_PATor2	Conversione da 1 o 2 punti?
+match_1pt	1 pt
+match_2pt	2 pt
+match_Scored	Segnato
+ui_ChooseTeam	Scegli la squadra
+ui_DriveDirection	Direzione di gioco
+ui_driveLeft	Sinistra
+ui_driveRight	Destra
+ui_driveBoth	Entrambe
+pos_QB	QB
+pos_OL	OL
+pos_TE	TE
+pos_RB	RB
+pos_WR	WR
+pos_DL	DL
+pos_LB	LB
+pos_SF	SF
+pos_CB	CB
+pos_KP	KP
+pos_KK	K
+pos_KR	KR
+pos_DB	DB
+position_QB	Quarterback
+position_OL	Offensive Lineman
+position_TE	Tight End
+position_RB	Running Back
+position_WR	Wide Receiver
+position_DL	Defensive Lineman
+position_LB	Linebacker
+position_SF	Safety
+position_CB	Corner Back
+position_KP	Kick Placer
+position_KK	Kicker
+position_KR	Kick Returner
+position_DB	Defensive Back
+pos_STAFF_HC	HC
+pos_STAFF_DF	DF
+pos_STAFF_OF	OF
+position_STAFF_DF	Coordinatore Difensivo
+position_STAFF_OF	Coordinatore Offensivo
+ui_Roster	Squadra
+sla_Rookie	S
+ui_SalaryCap	Tetto salariale
+ui_PlayerProfile	Profilo del giocatore
+ui_Contract	Contratto
+sla_Year	A
+sla_Years	A
+ui_Position	Posizione
+attribute_Speed	Velocità
+attribute_Strength	Forza
+attribute_Catching	Presa
+attribute_Kicking	Tiro
+attribute_Throwing	Lancio
+attribute_Stamina	Resistenza
+attribute_Tackling	Tackle
+attribute_Blocking	Blocco
+attitude_0	Tossico
+attitude_1	Basso
+attitude_2	Povero
+attitude_3	Ok
+attitude_4	Buono
+attitude_5	Ottimo
+attitude_6	Eccezionale 
+ui_Attitude	Morale
+ui_Rating	Voto
+ui_Age	Età
+ui_Trade	Scambio
+ui_TradePlayer	Scambia giocatore
+ui_TradeOffer	Offerta di scambio
+ui_Cut	Licenzia
+ui_CutPlayer	Licenzia giocatore
+msg_CutPlayer	Vuoi licenziare $position $playername dalla tua squadra?##Licenziare un giocatore non tossico danneggierá il morale della squadra.
+msg_CannotTradeWeek	Non puoi scambiare giocatori dopo la settimana 8. ##Vuoi licenziare $playername dalla tua squadra? 
+msg_CannotTradeInjured	Nessuna squadra è interessata a prendere $playername mentre è infortunato. ##Vuoi eliminare questo giocatore dalla tua squadra?
+msg_CannotTradeToxic	Nessuna squadra è interessata a prendere $playername mentre il suo atteggiamento è tossico. ##Vuoi eliminare questo giocatore dal tuo elenco?
+msg_CannotSignMoraleLow	$playername non è interessato a firmare un nuovo contratto. Il suo morale è basso.
+msg_CannotTradeRookie	$playername non vuole essere scambiato. ##Vuoi eliminare questo giocatore dalla tua squadra?
+msg_TradePlayerThis	$teamname ti offre una scelta di $num round nel draft di quest'anno per $position $playername.
+msg_TradePlayerNext	$teamname ti offre una scelta di $num round nel draft dell'anno prossimo per $position $playername.
+ui_Draft	Draft
+ui_RookieDraft	Draft dei Rookie
+ui_DraftRound	$num Round del Draft
+ui_PicksLeft	Scelte rimaste
+ui_Picks	Scelte
+ui_SignPlayer	Assumi giocatori
+msg_SignPlayer	Vuoi firmare $position $playername?
+msg_SignPlayerStore	Vuoi firmare $position $playername? Costerà $num crediti di coaching.
+msg_SignPlayerStoreNoCredit	Hai bisogno di $num crediti di coaching per ingaggiare questo giocatore.
+msg_SignRookie	Vuoi ingaggiare il Rookie $position $playername?
+msg_CannotSign1	Hai già una $position.##Dovrai tagliare o scambiare la $potion dal tuo elenco se vuoi firmare $playername.
+msg_CannotSign2	Hai già $num giocatori per la $position.## Dovrai tagliare o scambiare qualcuno dal tuo elenco se vuoi firmare $playername.
+ui_Sign	Firmare
+msg_SkipDraft	Hai ancora $num scelte a disposizione. ##Vuoi vendere le tue scelte in questo round per $value crediti del coach?
+msg_SkipDraft1	Hai ancora una scelta in questo round. ##Vuoi venderlo per $value crediti del coach?
+ui_NoMorePicks	Non hai più scelte.
+ui_NoMorePicksToTrade	Non hai una scelta di $num round per la prossima stagione da scambiare.
+ui_Rookie	Rookie
+ui_StarPlayers	Giocatori Stella
+ui_Details	Dettagli
+ui_Attributes	Attributi
+info_QB	I quarterback ricevono la palla dallo snap e la consegnano a un running back o la lanciano a un ricevitore.
+info_OL	Gli offensive lineman proteggono il quarterback. Più forte è la tua linea offensiva, più tempo ha il tuo quarterback per effettuare un passaggio.
+info_TE	Un tight end si allinea vicino alla fine della tua linea offensiva. Potrá fare blocco o provare una corsa.
+info_RB	Un running back può ricevere la palla dal quarterback e tentare di attraversare o aggirare la linea difensiva.
+info_WR	I wide receiver si allineano vicino alle linee laterali e corrono in pofondità per ricevere un passaggio lungo dal quarterback.
+info_DL	Un defensive lineman proverá a colpire il quarterback e bloccare le corse dei running back.
+info_LB	I linebackers si allineano dietro i defensive lineman. Coprono i ricevitori o spingono in avanti per fermare i running back.
+info_SF	I safety aspettano i ricevitori coprendo gli angoli del campo.
+info_CB	I corner back si posizionano di fronte ai ricevitori e provano a fermarli per evitare passaggi completi.
+info_KP	Il kick placer riceve la palla dallo snap e la posiziona per il kicker.
+info_K	I kicker provano a segnare field goals e convertire dopo i touchdown.
+info_KR	Il kick returner riceve la palla da un kick off o punt e corre verso la zona avversaria
+info_DB	I defensive back sono i tuoi corner back e safety. Copriranno principalmente tentativi di passaggio.
+info_StarPlayers	Questi sono i tuoi giocatori chiave - i ragazzi che fanno la vera differenza nella partita. Puoi avere fino a 10 giocatori chiave, rimanendo nel limite del tetto salariale.(Puoi aumentare il limite a 12 con $200M di tetto salariale nelle opzioni se preferisci).##Il resto della tua squadra non ha stelle e viene nascosto.Il loro contributo alla media di attacco e difesa dipende dal valore dei coordinatori.
+info_StarPlayers12	Questi sono i tuoi giocatori chiave - i ragazzi che fanno la vera differenza nella partita. Puoi avere fino a 12 giocatori chiave, rimanendo nel limite del tetto salariale.##Il resto della tua squadra non ha stelle e viene nascosto.Il loro contributo alla media di attacco e difesa dipende dal valore dei coordinatori.
+info_Draft	Questo è il draft dei rookie!##Ci sono 3 round e riceverai 1 selezione per round. Scegli bene!##Dovrai esaminre i giocatori per rivelarne piú dettagli.##Se volessi scambiare i tuoi giocatori attuali, puoi farlo attraverso la schermata di Squadra
+info_Draft2	Nuova regola del draft!##Avrai bisogno di esaminare i giocatori nel draft per rivelare il loro potenziale. Puoi farlo dalla loro pagina profilo. Il numero di giocatori che puoi esaminare in ogni draft è limitato.
+ui_Players	Giocatori
+info_Skill_Throwing	La precisione di lancio determina l'arco visibile mentre prepari un lancio.
+info_Skill_Kicking	La precisione di tiro determina la velocitá dell'arco di mira mentre prepari un calcio.
+info_Skill_Tackling	Tackle determina la capacitá di un giocatore di abbattere un avversario.
+info_Skill_Blocking	Bloccaggio determina la capacitá dei lineman di proteggere il quarterback
+info_Skill_Speed	Velocitá rappresenta l'accelerazione e la velocitá massima di un giocatore.
+info_Skill_Strength	Forza determina la forza con cui un giocatore colpisce e quanti "braccio teso" puó realizzare. Per i quarterback e kicker si riferisce alla massima distanza di lancio e calcio.
+info_Skill_Catching	Presa si riferisce alla capacitá di un giocatore di prendere e mantenere il possesso della palla dopo un placcaggio.
+info_Skill_Stamina	Resistenza influisce su quanto un giocatore puó correre alla sua massima velocitá. Per i quarterback e kicker determina quanto diminuisce la loro forza ad ogni lancio o calcio.
+ui_Potential	Potenziale
+ui_Page	Pagina
+ui_Round	Round
+tla_Round	Rnd
+ui_NextRound	Prossimo Round
+ui_SkipRound	Salta Round
+ui_SkipDraft	Salta il draft
+ui_FreeAgents	Svincolati
+ui_FreeAgent	Svincolato
+ui_Trades	Scambi
+info_FreeAgents	Gli svincolati sono giocatori che non sono stati scelti al draft o non hanno un contratto.##Gli scambi sono giocatori sotto contratto con una squadra ma ne stanno cercando un'altra per un trasferimento. Dovrai scambiare una delle tue future selezioni del draft per questi giocatori.
+ui_Value	Valore
+ui_None	Nessuno
+ui_Pick	Scegli
+ui_ExceedSalaryCap	Assumere $playername ti fará uscire dal tetto salariale.##Hai $$numM rimasti.##Dovrai licenziare o scambiare dei giocatori dalla tua squadra per assumere questo giocatore.
+msg_FreeAgentOffer	Il $position $playername è uno svincolato che sta cercando una squadra.##Viene alle tue strutture di allenamento per un provino.
+msg_FreeAgentOffer_Rookie	Il $position $playername è un rookie non scelto nel draft.##L'allenatore $coachname crede sia un prospetto interessante.
+msg_TradeOffer	$teamname ti sta offrendo il $position $playername.##In cambio vogliono una selezione del $num round nel draft della prossima stagione.
+msg_TradeOfferSign	Vuoi assumere il $position $playername da $teamname?##Ti costerá una selezione del $num round nel draft della prossima stagione.
+ui_Cost	Costo
+ui_TradeRequest	Richiesta di scambio
+msg_TradeRequest	$teamname vuole il tuo $position $playername.##In cambio ti offrono una selezione del $num round nel draft della prossima stagione.
+ui_Offer	Offerta
+ui_LevelUp	Prossimo livello
+short_LevelUp	Prx Lvl
+ui_Confirm	Conferma
+msg_ContractExpired	Il contratto di $position $playername è scaduto. Vuole un contratto di $salary all'anno per $year anni.
+news_PlayerRetired	$position $playername di $teamname si è ritirato all'etá di $age.
+news_PlayerRetiringNoTag	$position $playername si ritirerá al termine della stagione. Non è inserito nella hall of fame.
+news_PlayerRetiringTag	$position $playername si ritirerá al termine della stagione. È giá inserito nella hall of fame.
+news_PlayerInjured	$position $playername si è infortunato ($injurytype).##Sará fuori per $num partite.
+news_PlayerInjured1	$position $playername si è infortunato ($injurytype).##Sará fuori per 1 partita.
+news_PlayerRecovered	$position $playername ha recuperato dal suo infortunio ed è pronto a giocare.
+msg_OutOfContractPlayer	Il contratto di $position $playername è scaduto. È nell'elenco degli svincolati se desideri assumerlo di nuovo.
+msg_OutOfContractPlayers	Hai giocatori con contratti scaduti. Sono nell'elenco degli svicoltati se desideri assumerli nuovamente.
+msg_ClearFreeAgents	Questi giocatori troveranno nuove squadre. Sei sicuro di voler procedere?
+msg_ClearFreeAgent	Questo giocatore troverà una nuova squadra. Sei sicuro di voler procedere?
+msg_ClearTradeOffer	Vuoi rifiutare questa offerta?
+msg_SalaryCapIncrease	Il tetto salariale è stato aumentato a $$numm.
+ui_ByeWeek	Settimana di pausa
+ui_PlayOff	Play Off
+ui_Scanlines	Linea di fondo
+ui_On	Si
+ui_Off	No
+ui_TeamMorale	Morale della squadra
+ui_Credit	Crediti
+ui_Facilities	Strutture
+ui_Fans	Fans
+ui_Fan	Fan
+ui_Stadium	Stadio
+ui_Staff	Staff
+ui_TrainingFacilities	Stutture di allenamento
+ui_StaffFacilities	Strutture per lo Staff
+ui_StaffOffices	Uffici dello Staff
+ui_RehabFacilities	Stutture di riabilitazione
+info_Facility_Stadium	Migliora le strutture del tuo stadio per rendere i fan più positivi dopo una vittoria e meno negativi dopo una sconfitta.
+info_Facility_Training	Strutture di allenamento di qualità superiore aiutano i giocatori a guadagnare XP più velocemente.
+info_Facility_Rehab	Una migliore riabilitazione aiuta i giocatori a mantenere una buona condizione e a recuperare più velocemente da un infortunio.
+info_Staff	I tuoi coordinatori valutano la difesa e l'attacco (la valutazione viene fatta prima che i giocatori migliori siano presi in considerazione).
+msg_facility_Stadium	Vuoi migliorare lo stadio e le strutture dei tifosi per $num crediti?
+msg_facility_Training	Vuoi migliorare le strutture di allenamento dei giocatori per $num crediti?
+msg_facility_Rehab	Vuoi migliorare le strutture di riabilitazione dei giocatori per $num crediti?
+msg_NoCreditFacility	Non hai abbastanza crediti per migliorare questa struttura.
+msg_FacilityTooSoon	Non puoi migliorare questa struttura due volte in una settimana.
+ui_UpgradeCost	Upgrade#Prezzo
+ui_FrontOffice	Ufficio Centrale
+btn_FrontOffice	Ufficio#Centrale
+ui_Coordinators	Coordinatori
+ui_AvailableHires	Assunzioni disponibili
+ui_Hired	Assunto
+ui_CurrentHire	Assunti attualmente
+ui_HireStaff	Assumi Staff
+msg_HireStaff	Vuoi assumere $hirename per $year anni di contratto per $num crediti?##Il tuo allenatore attuale verrá licenziato
+msg_HireStaffNoCost	Hai bisogno di $num crediti per prendere questo membro del personale.
+msg_StaffExtend	Desideri estendere il contratto di $hirename di 1 anno per $num crediti?
+msg_StaffExtend1	Desideri estendere il contratto di $hirename di 1 anno per $num crediti?
+msg_StaffExtendNoCost	Hai bisogno di $num di crediti coach per prolungare il contratto di questo membro dello staff di 1 anno.
+msg_StaffExtendNoAge	Questo membro dello staff andrà in pensione quest'anno.
+msg_StaffExtendNoCost1	Per prolungare di 1 anno il contratto di questo membro dello staff, ti servono $num crediti.
+msg_StaffExpiring	Il contratto del tuo $position's scade alla fine di questa stagione.
+msg_StaffExpiringTip	Il contratto del tuo $position's scade alla fine di questa stagione. Puoi estendere il suo contratto dalla pagina del profilo.
+news_HireStaff	$teamname ha assunto $position $hirename per $num anni di contratto.
+msg_StaffExpired	I contratti di #position #hirename sono scaduti. Hanno lasciato la societá.
+msg_StaffRetiring	$position $hirename si ritirerá alla fine di questa stagione.
+msg_StaffRetired	$position $hirename si è ritirato.
+info_DraftPicks	Nel prossimo draft avrai il seguente numero di selezioni:##Round 1: $num1##Round 2: $num2##Round 3: $num3###Puoi ottenere piú scelte scambiando i giocatori della tua squadra.
+ui_PressInterview	Conferenza stampa
+uniformviolation_0	Asciugamano
+uniformviolation_1	Calzini
+uniformviolation_2	Tacchetti
+uniformviolation_3	Fascia per capelli
+uniformviolation_4	Fascia da polso
+uniformviolation_5	Guanti
+uniformviolation_6	Visiera
+uniformviolation_7	Scaldacollo
+uniformviolation_8	Logo
+uniformviolation_9	Divisa
+postmatch_toxic1	$position $playername riceverá una multa per uniforme indisposta ($uniform).-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic2	$position $playername riceverá una multa per violenza innecessaria.-choice_CriticisePlayer-choice_CriticiseOfficials
+postmatch_toxic3	$position $playername riceverá una multa per condotta antisportiva.-choice_CriticisePlayer-choice_CriticiseCoaches
+postmatch_toxic4	$position $playername è stato apparentemente sentito dire "vieni a prendermi" verso la panchina avversaria durante la partita di oggi.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic5	$position $playername riceverá una multa per aver fatto un segno di gang da strada durante la partita di oggi.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic6	$position $playername riceverá una multa per rissa con un avversario durante la partita di oggi.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic7	$position $playername riceverá una multa per scontro fisico con un arbitro nella partita di oggi.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_toxic8	$position $playername riceverá una multa per insulti nella partita di oggi.-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_win1	È stata una performance impressionate ed un'incredibile atmosfera.-choice_PraiseTeam-choice_PraiseFans
+postmatch_win2	Cosa ti è piaciuto di piú della vittoria di oggi?-choice_PraiseTeam-choice_PraiseCoaches
+postmatch_win3	La societá ha subito delle critiche nel passato. Deve essere bello aver vinto oggi.-choice_PraiseFans-choice_PraiseOwner
+postmatch_loss1	A cosa attribuiresti la sconfitta di oggi?-choice_CriticiseSelf-choice_CriticiseTeam
+postmatch_loss2	A cosa attribuiresti la sconfitta di oggi?-choice_CriticiseTeam-choice_CriticiseOfficials
+postmatch_loss3	A cosa attribuiresti la sconfitta di oggi?-choice_CriticiseTeam-choice_CriticiseCoaches
+postmatch_performance_good1	$position $playername è stato in partita oggi.Ti è piaciuta la sua performance?-choice_PraisePlayer-choice_PraiseCoaches
+postmatch_performance_good2	$position $playername ha fatto una partita eccezionale oggi, non credi?-choice_PraisePlayer-choice_PraiseTeam
+postmatch_performance_good3	$position $playername ha giocato molto bene oggi. I fan lo supportano davvero molto.-choice_PraisePlayer-choice_PraiseFans
+postmatch_performance_bad1	Cosa diresti ad i fan scontenti di $position $playername oggi?-choice_DefendPlayer-choice_CriticisePlayer
+postmatch_performance_bad2	Sei d'accordo nel dire che $position $playername è stato di scarso aiuto oggi?-choice_DefendPlayer-choice_CriticiseCoaches
+postmatch_performance_bad3	$position $playername non ha giocato bene oggi.Cosa ne pensi della sua performance?-choice_CriticisePlayer-choice_CriticiseSelf
+postmatch_question_player_1	Un reporter straniero chiede:##In che posizione gioca $playername?-choice_qpos_correct-choice_qpos_wrong
+postmatch_question_player_2	Un reporter straniero chiede:##In che posizione gioca $playername?-choice_qpos_wrong-choice_qpos_correct
+postmatch_question_staff_1	Un reporter straniero chiede:##Che allenatore è $playername?-choice_qpos_wrong-choice_qpos_correct
+postmatch_question_staff_2	Un reporter straniero chiede:##Che allenatore è $playername?-choice_qpos_correct-choice_qpos_wrong
+choice_PraiseTeam	Elogia#Squadra
+choice_PraiseCoaches	Elogia#Allenatori
+choice_PraiseFans	Elogia#Fans
+choice_PraiseOwner	Elogia#Presidente
+choice_PraisePlayer	Elogia#Giocatore
+choice_DefendPlayer	Difendi#Giocatore
+choice_CriticiseSelf	È colpa #mia
+choice_CriticisePlayer	Critica#Giocatore
+choice_CriticiseTeam	Critica#Squadra
+choice_CriticiseCoaches	Critica#Allenatori
+choice_CriticiseFans	Critica#Fans
+choice_CriticiseOfficials	Critica#Arbitri
+ui_MoraleDown	Scende il morale!
+ui_CreditDown	Crediti $num
+ui_Cost	Prezzo
+ui_Effect	Effetto
+dilemma_ByeWeek1	È la tua settimana di riposo. Vuoi spendere del tempo extra focalizzandoti sulla squadra o parlando con i media?-choice_FocusTeam-choice_FocusMedia
+dilemma_ByeWeek2	È la tua settimana di riposo. Vuoi spendere del tempo extra parlando con il presindente per la societá o prefrisci preparare la squadra per la prossima partita?-choice_FocusOwner-choice_FocusTeam
+dilemma_ByeWeek3	È la tua settimana di riposo. Vuoi spendere del tempo extra parlando con i media o con il tuo staff di allenatori?-choice_FocusMedia-choice_FocusCoaches
+dilemma_ByeWeek4	È la tua settimana di riposo. Vuoi spendere del tempo extra parlando con il presidente per la societá o lavorare con il tuo staff di allenatori?-choice_FocusOwner-choice_FocusCoaches
+dilemma_ByeWeek5	È la tua settimana di riposo.Vuoi spendere del tempo extra migliorando con la squadra o i tuoi allenatori?-choice_FocusTeam-choice_FocusCoaches
+choice_FocusCoaches	Allenatori
+choice_FocusTeam	Scquadra
+choice_FocusOwner	Proprietario
+choice_FocusMedia	Media
+ui_Morale	Morale
+ui_Restart	Ricomincia
+info_Options_DriveDirection	Se uai la mano destra per mirare potresti voler usare la direzione SINISTRA per evitare di oscurare la vista del campo.##Se miri con la mano sinistra usa la direzione DESTRA.
+msg_FacilityDeclineStadium	Il tuo stadio è peggiorato un po'.
+msg_FacilityDeclineTraining	Le tue strutture di allenamento sono peggiorate un po'.
+msg_FacilityDeclineRehab	Le tue strutture di riabilitazione sono peggiorate un po'.
+news_OaklandMove	La franchigia di Oakland si è spostata a Las Vegas.
+ui_stat_games	Partite
+ui_stat_attempts	Pro
+ui_stat_fgm	Fgf
+ui_stat_fga	Fgp
+ui_stat_complete	Cmp
+ui_stat_yards	Yds
+ui_stat_average	Med
+ui_stat_longest	Lng
+ui_stat_touchdowns	Tds
+ui_stat_fumbles	Fum
+ui_stat_f_fumbles	Fum F.
+ui_stat_int	Int
+ui_stat_sacks	Sck
+ui_stat_receive	Ric
+ui_stat_tackles	Tck
+ui_stat_intsacks	I/S
+ui_Passing	Passaggio
+ui_Rushing	Corsa
+ui_Receiving	Ricezione
+ui_Kicking	Calci
+ui_Tackling	Tackle
+ui_EndWeek	Fine della settimana
+ui_EndWeekN	Fine della settimana $num
+ui_XP	EXP
+tla_Position	Pos
+tla_Attitude	Mor
+attribute_ArmStrength	Forza Braccio
+attribute_KickRange	Range Calcio
+attribute_KickAccuracy	Precisione Calcio
+attribute_ThrowAccuracy	Precisione Lancio
+attribute_Range	Range
+attribute_Accuracy	Precisione
+tla_Rating	Val
+tla_Errors	Err
+condition_0	Infortunato
+condition_1	Esausto
+condition_2	Stanco
+condition_3	Ok
+condition_4	Bene
+condition_5	Ottimo
+condition_6	Perfetto
+ui_Condition	Condizione
+tla_Condition	Cnd
+tla_At	At
+tla_at	at
+tla_Versus	Vs
+tla_versus	vs
+tla_Injured	Inf
+tla_Injury	Inf
+news_DraftEnded	Il draft è finito e la stagione può iniziare!
+tla_Skill	Atr
+tla_Speed	Vlc
+tla_Strength	Frz
+tla_Stamina	Rst
+short_LevelXP	Lvl EXP
+tla_Age	Etá
+tla_Contract	Cnt
+tla_Salary	Stp
+sla_Million	M
+news_SignCoach	$position $playername ha firmato per $teamname
+news_SignFreeAgent	Lo svincolato $playername di $age anni ha firmato per $teamname.
+news_ResignedPlayer	$teamname ha trovato un accordo per $salary con il $position $playername di $age anni.
+news_SignTrade	$teamname ha assunto il $position $playername di $age anni da $otherteamname.
+news_SignTrade2	$teamname ha raggiunto un accordo con il $position $playername di $age anni.
+ui_Year	Anno
+sla_Year	A
+ui_Change	Cambia
+ui_FavoriteTeam	Squadra preferita
+ui_YourName	Il tuo nome
+ui_FirstName	Nome
+ui_LastName	Cognome
+ui_Details	Dettagli
+ui_NewCareer	Nuova carriera
+news_NewCareer	Con solo $num $weeks rimaste nella stagione regolare $teamname ha scelto $coachname come nuovo capo allenatori.##$lname ha lavorato nei college per molti anni ed ha avuto grandi risultati con $randomcollegename prima di arrivare a $teamname.
+ui_StartWithFave	Iniziare con la tua squadra preferita?
+info_StartWithFave	Retro Bowl è un gioco improntato a costruire una grande societá.Se scegli di iniziare con la tua squadra preferita va bene ma la storia della tua carriera sará semplice.##Perchè non iniziare dal basso e dimostrare le tue capacitá come capo allenatore prima di ricevere l'offerta dei tuoi sogni dalla tua squadra preferita?
+msg_Intro_1	Benvenuto a $teamname!##Questa è la tua schermata principale. Puoi toccare la griglia della divisione per vedere le divisioni ed il calendario.##Quando sei pronto tocca il pulsante UFFICIO C.
+msg_Intro_2	Dall'ufficio centrale puoi migliorare le tue strutture e lo staff.##Tocca l'icona "i" per avere piú informazioni utili.
+msg_Intro_3	Sono sicuro che vuoi incontrare i tuoi giocatori quindi visualizza la schermata SQUADRA.
+msg_Intro_4	Questi sono i tuoi giocatori chiave. Non hai bisogno di occuparti dell'intera squadra, prenditi cura di questi ragazzi e tutti gli altri si metteranno in linea.##Tocca un giocatore per aprire il suo profilo.
+msg_Intro_5	Qui puoi vedere dettagli ed attributi di ogni giocatore. Controlla il morale e la condizione.##Basso morale porterá a falli in gioco e problemi fuori dal campo.##Bassa condizione porterá ad infortuni o peggio...fumble!
+msg_Intro_6	Prima di entrare in una partita guardiamo insieme le basi per controllare i tuoi giocatori sul terreno.
+msg_Intro_8	Molto bene! Ti sei assunto il controllo di $ teamname verso la fine di una stagione difficile, giusto il tempo necessario per prendere confidenza con le cose prima dell'inizio della prossima stagione. ## I fan di $ teamname non vedono l'ora che tu possa cambiare le cose. In bocca al lupo!
+msg_Intro_Passing	Per prima cosa, passa la palla. ##Trascina il dito nella direzione opposta del tuo ricevitore per mirare, poi rilascia per lanciare.
+msg_Intro_PassingBrowser	Per prima cosa, passa la palla. ##Clicca e trascina nella direzione opposta del tuo ricevitore per mirare, poi rilascia per lanciare.
+msg_Intro_Running	Ottimo! All'inizio di ogni gioco puoi passare la palla al tuo Running Back facendo click sul cerchio blu. ##Usa W o S mentre corri per eseguire un passo laterale oppure puoi scorrere indietro per rallentare.
+msg_Intro_RunningBrowser	Ottimo! All'inizio di ogni gioco puoi passare la palla al tuo Running Back facendo click sul cerchio blu. ##Usa W o S mentre corri per eseguire un passo laterale.
+msg_Intro_Kicking	Grande! Tuffarti può aiutarti a raggiungere un primo down o un touchdown. Ti protegge anche da un fumble! ##Infine, calcia. Dai due click veloci e la palla volerà attraverso la porta!
+msg_Intro_KickingBrowser	Infine, calcia. Dai due click veloci e la palla volerà attraverso la porta!
+msg_Intro_SuccessPass	Ottimo! Questa volta il quarterback tornerá indietro con la palla leggermente...
+msg_Intro_SuccessRun	Molto bene! Puoi anche correre con il quarterback. Puoi farlo tentando di lanciare la palla all'indietro. ##Una volta che sta correndo, puoi scorrere in avanti per tuffarti.
+msg_Intro_SuccessRunBrowser	Molto bene! Puoi anche correre con il quarterback. Puoi farlo tentando di lanciare la palla all'indietro. ##Una volta che sta correndo usa A o D per rallentare o tuffarti!
+msg_Intro_SuccessKick	Bel calcio! Ricorda, i pali della porta hanno la stessa larghezza dei segni bianchi sul campo. Puoi guardare il triangolo sul terreno come guida. ##Proviamone uno da un po 'più lontano...
+ui_Ok	OK
+ui_Skip	Salta
+injurytype_0	Testa
+injurytype_1	Collo
+injurytype_2	Spalla
+injurytype_3	Braccio
+injurytype_4	Polso
+injurytype_5	Mano
+injurytype_6	Anca
+injurytype_7	Coscia
+injurytype_8	Ginocchio
+injurytype_9	Polpaccio
+injurytype_10	Caviglia
+injurytype_11	Piedi
+ui_SkipTutorial	Salta il tutorial
+ui_Credits	Design & Codici by Simon Read      ***      Arte by  Savage @pixelnfl      ***      Musica by Heatley Bros      ***      Un grazie speciale a John Holden, @MrSpecialK_, Will Thompson e Five Aces      ***      Un enorme grazie anche a tutti gli organizzatori di tornei ed i giocatori!
+match_TooLow	Troppo basso
+match_Doink	Doink
+ui_WeatherFX	Effetti meteo
+ui_Rest	Riposare
+ui_Resting	Riposo
+msg_Rest	Vuoi far riposare $pos $playername per la prossima partita?
+ui_Bench	Panchina
+ui_Benched	In panchina
+ui_BenchPlayer	Giocatore in panchina
+msg_Bench	Vuoi mettere in panchina $pos $playername fino a nuovo avviso? ##I giocatori in panchina riposeranno finché non li schiererai. Se hai un giocatore non convocato in questa posizione, giocherà mentre in titolare è in panchina.
+ui_RestPlayer	Riposa giocatore
+msg_RosterLimit	Hai raggiunto il limite del roster. Dovrai cedere dei giocatori prima di poter firmarne di nuovi.
+ui_Heads	Testa 
+ui_Tails	Croce
+msg_CoinToss	Testa o croce?
+msg_CoinTossWin	Hai vinto il lancio della moneta! Vuoi dare il calcio d'inizio o ricevere?
+msg_CoinTossLoss1	$teamname ha vinto il llancio e darà il calcio d'inizio.
+msg_CoinTossLoss2	$teamname ha vinto il lancio ericevrà il calcio d'inizio.
+match_KickOff	Calcio d'inizio
+match_Receive	Riceve
+news_firstmatchWin	La prima partita di $yourname allenaotre del $teamname1 è terminata con una vittoria contro $teamname2. ##I Fan di $yourlastname non vedono l'ora che arrivi la prossima stagione con molta speranza.
+news_firstmatchLoss	La prima partita di $yourname allenaotre del $teamname1 è terminata con una sconfitta contro $teamname2. ##$yourlastname non avrà dubbi su quanto lavoro c'è da fare per ribaltare le sorti di questa squadra.
+news_firstmatchTie	$yourname è riuscito ad evitare la sconfitta dopo aver preso il comando di $teamname1.##$yourlastname spera in un buon draft per aumentare le sue possibilità di spareggio nella prossima stagione.
+coachtrait_0	Nessuno
+coachtrait_1	Con esperienza
+coachtrait_2	Scopritore di talenti
+coachtrait_3	Motivatore
+coachtrait_4	Negoziatore
+coachtrait_5	Preferito dai Fan
+coachtrait_6	Fisio
+coachtrait_7	Simpatico
+coachtrait_8	Positivo
+coachtrait_9	Ricerca
+info_coachtrait_0	Gli allenatori possono avere caratteristiche che offrono vari potenziamenti alla squadra. Questo allenatore non ha una caratteristica.
+info_coachtrait_1	Livello istantaneo per i giocatori $pos.
+info_coachtrait_2	Incremento potenziale istantaneo per i giocatori $pos.
+info_coachtrait_3	Spinta morale istantanea per i giocatori $pos.
+info_coachtrait_4	I giocatori tossici ($pos) non hanno alcun impatto negativo sui compagni di squadra.
+info_coachtrait_5	La felicità dei fan aumenta del + 1% ogni partita ma cala molto quando licenziato.
+info_coachtrait_6	Ogni partita i giocatori $pos incrementano le loro condizioni del 5%.
+info_coachtrait_7	Ogni partita, per i giocatori $pos gli XP aumentano del 5%, ma il morale della squadra ne risente quando viene licenziato.
+info_coachtrait_8	La stanchezza non ha effetto sul morale del giocatore $pos.
+info_coachtrait_9	Trova 3 giocatori extra durante il draft.
+ui_Trait	Caratteristica
+ui_ViewHires	Vedi assunzioni
+ui_AvailableStaff	Staff disponibile
+ui_Available	Disponibile
+ui_Current	Attuale
+ui_Hire	Assumi
+ui_Offensive	Attacco
+ui_Defensive	Difesa
+ui_JobOffers	Offerte di lavoro
+ui_RejectAll	Rifiuta tutto
+msg_JobOffers_1	Il tuo talento grezzo come allenatore sta facendo scalpore in campionato. Alcune squadre sono interessate ad affrontarti.
+msg_JobOffers_2	La tua reputazione sta crescendo! Queste squadre sono interessate ad assumerti come allenatore.
+msg_JobOffers_3	La tua reputazione è ampiamente riconosciuta nell'ambiente e ci sono un certo numero di squadre interessate ad assumerti come allenatore.
+msg_JobOffers_4	La tua grande esperienza e conoscenza del gioco ti rendono l'allenatore più ricercato del campionato. Le squadre fanno la fila per assumerti come allenatore.
+msg_ChooseNewTeam	Vuoi prendere in carico $teamname?
+news_NewJob1	$yourname, capo allenatori di $oldteamname, ha deciso che è tempo di andare avanti e prendere in carico i $newteamname.Lo staff di allenatori attuale sará sciolto.
+news_NewJob2	$yourname ha convocato $oldteamname e accetta una nuova sfida come allenatore del $newteamname. I precedenti coordinatori hanno deciso di andare avanti.
+news_NewJob3	I fan di $oldteamname oggi potrebbero essere scioccati dato che $yourname sta per diventare il nuovo allenatore del $newteamname. All'arrivo, la valutazione della squadra e l'ingaggio di nuovi coordinatori saranno una priorità.
+news_FavoriteTeam1	Dopo essere diventato capo allenatori di $newteamname, $yourlastname ha dichiarato che è un sogno che si avvera.
+news_FavoriteTeam2	La fiducia di $yourlastname nel $newteamname è stata ben documentata e il trasferimento non sarà una sorpresa per molti.
+news_FavoriteTeam3	Rumors sul trasferimento circolzno da un po', molti credono il nuovo ruolo di $yourlastname sia la sua ambizione piú grande.
+dilemma_Owner1	Il proprietario ti ha invitato a una riunione del consiglio. Hai già un'intervista a quell'ora.-choice_MeetOwner-choice_MeetMedia
+dilemma_Owner2	Il proprietario vuole che incontri alcuni azionisti. Avevi programmato un incontro con il team.-choice_MeetOwner-choice_MeetTeam
+dilemma_Owner3	Il proprietario vuole discutere con te i piani futuri. Avevi intenzione di tenere una riunione con il tuo staff tecnico.-choice_MeetOwner-choice_MeetCoaches
+choice_MeetOwner	Incontra il proprietario
+choice_MeetCoaches	Incontra i coach
+choice_MeetTeam	Incontra il Tema
+choice_MeetMedia	Incontra la spampa
+dilemma_Coach_BustUp	Il tuo $coachposition ha avuto una grossa discussione con $playername.-choice_SideWithCoach-choice_SideWithPlayer
+choice_SideWithCoach	Supporta#Coach
+choice_SideWithPlayer	Supporta#Player
+dilemma_RestPlayer	Ehi allenatore, sono esausto. Posso riposarmi per la prossima partita? -Choice_RestYes-choice_RestNo
+choice_RestYes	Si
+choice_RestNo	No
+dilemma_toxic1	$playername è stato arrestato e successivamente rilasciato su cauzione per possesso di droghe ricreative la scorsa notte.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic2	$playername è stato beccato mentre combatteva fuori da una discoteca nelle prime ore del mattino da una CCTV.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic3	Il filmato è apparso sui social media in cui $playername beve diversi sorsi di tequila in un bar la sera prima di una partita.-Choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic4	I filmati CCTV di $playername che spende migliaia di dollari in un casinò sono apparse sui social media.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic5	L'ultimo scandalo sui social media è il filmato di $playername circondato da donne che fa festa fino alle prime ore del mattino la sera prima di una partita.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic6	Le foto di $playername ad una festa da ubriaco con gli amici su una casa galleggiante sono apparse su Internet.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic7	Una giornalista ha accusato $playername di aver inviato messaggi osceni nelle ultime settimane.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic8	$playername è stato accusato di scommettere su partite di football, inclusa una in cui ha giocato.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic9	È emerso un filmato della CCTV che mostra $playername che combatte con uno sconosciuto nel corridoio di un hotel.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic10	$playername è stato arrestato nella sua macchina da un'agente di polizia sotto copertura la scorsa notte.-choice_DefendPlayer-choice_CriticisePlayer
+dilemma_toxic11	$playername ha colpito un giocatore indifeso nell'allenamento di oggi.-choice_IgnoreFine-choice_FinePlayer
+dilemma_toxic12	$playername ha commesso un late hit su un giocatore nell'allenamento di oggi.-choice_IgnoreFine-choice_FinePlayer
+dilemma_toxic13	$playername è stato verbalmente offensivo nei confronti dello staff tecnico oggi.-choice_IgnoreFine-choice_FinePlayer
+dilemma_random1	$playername è stato fermato dalla polizia e ha ricevuto una multa per eccesso di velocità la scorsa notte.-choice_IgnoreFine-choice_FinePlayer
+dilemma_random2	$playername è stato fermato dalla polizia la scorsa notte ed è stato trovato in possesso di sostanze illegali.-choice_IgnoreFine-choice_FinePlayer
+dilemma_random3	La squadra ha infranto il coprifuoco ed è stata fuori a far festa tutta la notte! $playername era il leader dell'anello.-choice_FinePlayer-choice_CriticiseTeam
+dilemma_random4	Hai beccato $playername mentre giocava a Retro Bowl sul suo telefono durante una riunione di squadra.-choice_FinePlayer-choice_PraisePlayer
+dilemma_late1	$playername era in ritardo per l'allenamento di oggi.-choice_IgnoreFine-choice_FinePlayer
+dilemma_late2	$playername oggi si è presentato in ritardo per una riunione del team.-choice_IgnoreFine-choice_FinePlayer
+dilemma_late3	$playername oggi non si è presentato ad un incontro con lo staff tecnico.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie1	Uno scherzo sul campo di allenamento del rookie $playername si è rivoltato contro provocando uno scontro tra diversi giocatori.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie2	Il rookie $position $playername ha fatto commenti offensivi sui social riguardo un giocatore di $randomteamname.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie3	Il rookie $position $playername si è addormentato guardando il video della partita di oggi.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie4	Un video privato del rookie $playername ed una modella vestita da cheerleader di $randomteamname è apparso sui social.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie5	Un video che mostra il rookie $playername facendo rissa fuori da un locale notturno è apparso sui social.-choice_IgnoreFine-choice_FinePlayer
+dilemma_rookie6	Il rookie $playername è apparso su tutti i giornali dopo aver scommesso grandi quantitá di denaro nel poker online.-choice_DefendPlayer-choice_CriticePlayer
+choice_IgnoreFine	Ignora Multa
+choice_FinePlayer	Multare Giocatore
+news_CharityWork1	$playername è stato elogiato per il suo lavoro di beneficenza a sostegno di $randomcharity.
+news_CharityWork2	$playername oggi è apparso nelle notizie nazionali quando ha visitato un ospedale pediatrico.
+news_CharityWork3	$playername ha ricevuto un premio per il suo lavoro a sostegno di $randomcharity.
+news_CharityWork4	La fondazione di $playername che supporta $randomcharity ha ricevuto molti elogi.
+news_CharityWork5	$playername è stato ampiamente elogiato per aver contribuito a raccogliere fondi per le vittime dell'uragano $randomfname_female.
+news_CharityWork6	$playername oggi è stato fotografato mentre stringeva la mano al presidente per commemorare la fondazione del giocatore che sostiene $randomcharity.
+btn_ExtendContract	Estendi#Contratto
+ui_Achievement	Risultato
+ui_Achievements	Risultati
+btn_HallOfFame	Hall of#Fame
+ui_HallOfFame	Hall of Fame
+ui_RetroBowls	Retro Bowls
+ui_RetroBowl	Retro Bowl
+pos_1	1º
+pos_2	2º
+pos_3	3º
+pos_4	4º
+finish_Regular	No
+finish_WildCard	Wild Card
+finish_Divisional	Divisionale
+finish_Championship	Campione Rnd
+finish_Champ_AFC	AFC Champs
+finish_Champ_NFC	NFC Champs
+finish_SuperBowl	Champions
+ui_History	Storia
+ui_Finished	Finita
+ui_Record	Record
+iap_RestoreSuccess	Ripristino dell'acquisto riuscito
+iap_RestoreFail	Ripristino acquisto non riuscito
+iap_PurchaseSuccess	Acquisto riuscito!
+msg_PurchaseUnlock	Per continuare a giocare devi acquistare la versione completa a $prezzo. ##Desideri sbloccare la versione completa?
+msg_StoreConnect_Unlock	Per continuare a giocare devi sbloccare la versione completa. ##Assicurati di essere connesso a Internet per effettuare l'acquisto.
+msg_PurchaseCredits	Vorresti acquistare $num crediti di coaching per $price?
+msg_StoreConnect	Il negozio non è disponibile. Assicurati di avere una connessione Internet.
+msg_StoreReview	Vorresti valutare e recensire Retro Bowl nello store per $num crediti di coaching?
+ui_Store	Negozio
+btn_FreeAgents	Senza#Contratto
+btn_BuyCredits	Compra#Crediti
+btn_StaffHires	Staff#Assunzioni
+ui_Unlocked	Sbloccato
+ui_Unlock	Sblocca
+ui_Purchased	Acquisti
+ui_BuyCredits	Compra Crediti
+info_freeagents	I giocatori senza contratto sono disponibili a firmare per qualsiasi squadra. Tuttavia, convincerli a unirsi alla tua squadra richiederà crediti di coaching e spazio per il tetto salariale.
+ui_Done	Fatto
+ui_Close	Chiuso
+btn_RestorePurchases	Ripristina#Acquisti
+ui_Connecting	Connessione...
+ui_FavouriteTeam	Team preferito
+msg_Welcome	Benvenuto in Retro Bowl!##Stai per iniziare la tua prima stagione come allenatore di una squadra di calcio professionistica.##Il percorso verso il successo è arduo, ma se credi in te stesso e guidi la tua squadra, la gloria ti aspetta!
+msg_LimitedVersion	*** Versione Limitata - Rimangono $num partite ***
+ui_Tip	Cosiglio
+ui_Tips	Consigli
+tip_1	I giocatori stanchi hanno maggiori probabilità di perdere la palla
+tip_2	Il potenziamento della tua struttura di riabilitazione migliorerà il recupero energetico
+tip_3	Dopo il 2° anno è possibile ricevere offerte di lavoro da altri team
+tip_4	I giocatori tossici abbattono l'atteggiamento dei compagni di squadra dopo una sconfitta
+tip_5	I giocatori si stancano di più man mano che la stagione va avanti
+tip_6	Giocatori forti realizzano piú braccia tese in partita
+tip_7	Migliorare il tuo stadio darà ai tifosi una spinta in più
+tip_8	Il raggio di lancio del tuo quarterback si esaurisce durante una partita in base alla sua resistenza
+tip_9	Tuffarti a terra o correre fuori limite ti proteggerà dal perdere la palla
+tip_10	I giocatori stanchi perderanno morale
+tip_11	Alcuni allenatori hanno caratteristiche che possono dare una spinta alla squadra
+tip_12	Far riposare un giocatore stanco aumenterà il suo morale
+tip_13	Le prestazioni di gioco di un giocatore possono influire sul suo morale
+tip_14	Poca abilitá di presa porta ad errori e palle perse
+tip_15	Migliora la tua struttura di riabilitazione per ridurre il numero di infortuni subiti
+tip_16	Se il tuo QB viene placcato, hai bisogno di guardalinee offensivi più forti
+tip_17	I Coaching Credit non sono soldi, ma fiduca: rappresenta quanto rispetto hai da parte del proprietario, della squadra e dei tifosi
+tip_18	L'aggiornamento della tua struttura di allenamento darà ai giocatori un immediato aumento del morale
+tip_19	La forza del calcio si esaurisce durante una partita a seconda della resistenza
+tip_20	I giocatori veloci hanno maggiori probabilità di ostacolare i contrasti
+tip_21	Far passare la palla fuori limite fermerà il cronometro
+tip_22	I giocatori esperti hanno maggiori probabilità di evitare i contrasti
+tip_23	Non aver paura di lanciare la palla fuori limite per evitare un sack
+tip_24	I giocatori stanchi ottengono una spinta immediata quando migliori le strutture di riabilitazione
+tip_25	Solo i giocatori con buone capacità di ricezione possono saltare e tuffarsi per prendere la palla
+tip_26	Migliorare la tua struttura di riabilitazione darà ai giocatori stanchi una spinta immediata
+tip_27	I giocatori più anziani perdono più energia durante una partita
+tip_28	Tagliare i giocatori tossici migliorerà il morale della squadra
+tip_29	Non puoi fare scambi tra le squadre dopo l'ottava settimana 
+tip_30	A volte un'altra squadra ti offrirà una scelta al draft per uno dei tuoi giocatori
+tip_31	Gli allenatori più felici salgono di livello più velocemente
+tip_32	I regimi di allenamento influenzano la felicità, i PE, l'energia e il rischio di lesioni di un giocatore
+btn_NotInterested	Rifiuta
+ui_SoundFX	Effetti sonori
+ui_Zoom	Visuale zoom
+ui_Music	Musica
+ui_Menus	Menù
+ui_Continuous	Continuare
+ui_EditDetails	Modifica dettagli
+ui_Editor	Modifiche
+ui_Details	Dettagli
+ui_ChooseFace	Sceglia faccia
+msg_ChooseFace	Scegli la tua immagine del profilo!
+ui_Uniforms	Divisa
+btn_Uniforms	Cambia#Divisa
+msg_TickerTwitter	Segui @retro_bowl su Twitter
+msg_TickerReddit	Unisciti a noi su Reddit! r/RetroBowl
+msg_NextGame	Prossima partita:$teamname1 a $teamname2
+ui_VisitKong	Visita Kongregate.com
+ui_min1	1 Min
+ui_min2	2 Min
+ui_min3	3 Min
+ui_QtrLength	Quarti
+ui_RefreshHires	Ricarica#Assumi
+msg_FreeAgentReset	Desideri aggiornare l'elenco degli svincolati per $num crediti di coaching ?
+msg_StaffReset	Desideri aggiornare l'elenco delle assunzioni per $num crediti di coaching ?
+msg_ResetNoCredit	Hai bisogno di $num crediti per aggiornare l'elenco.
+msg_ResetTooSoon	Non è possibile aggiornare nuovamente l'elenco fino alla prossima settimana.
+match_Audible	Audible
+match_Audibles	Audibles
+match_AudiblesNone	No audibles
+match_TimeOut	Time Out
+match_TimeOuts	Time Out
+match_ChangePlay	Cambia giocata
+match_StopClock	Ferma il tempo
+msg_Audibles	AUDIBLES#I quarterback ora possono cambiare la formazione di gioco usando un audible.##Crescendo di livello il tuo quarterback potrá usare fino a 5 audibles per partita
+msg_AudiblesHtml	AUDIBLES#I quarterback ora possono cambiare la formazione di gioco usando un audible.##Crescendo di livello il tuo quarterback potrá usare fino a 5 audibles per metá.
+msg_TimeOuts	TIME OUTS#Quando un giocatore offensivo viene abbattuto l'orologio continua per qualche secondo.##Adesso hai 2 time out per metá che ti permettono di fermare l'orologio.
+ui_Load	Carica
+ui_SaveSlot1	Salvataggio 1
+ui_SaveSlot2	Salvataggio 2
+ui_SaveSlot3	Salvataggio 3
+ui_SaveSlot4	Salvataggio 4
+ui_SaveSlot5	Salvataggio 5
+ui_Delete	Cancella
+ui_ExitGame	Esci dal gioco
+ui_Exit	Esci
+msg_DeleteGame	Sei sicuro di voler cancellare questo salvataggio?##Slot$num#$savedetail##ATTENZIONE##I crediti esistenti verranno persi!
+ui_Remaining	Restanti
+tla_remaining	res
+ui_TeamEditor	Modifica Squadre
+ui_EditTeams	Modifica#Squadre
+ui_Editor	Modifiche
+ui_RestoreDefault	Ripristina#Default
+ui_ShortName	Nome corto
+ui_DefaultName	Nome predefinito
+ui_Helmet	Casco
+ui_Jersey	Maglia
+ui_Pants	Pantaloni
+ui_Tertiary	Terzi
+ui_Colors	Colori
+ui_Extra	Extra
+ui_Color	Colore
+ui_White	Bianco
+ui_Sleeve	Manica
+ui_Stripe	Striscia
+ui_SocksLow	Calze#Basso
+ui_SocksHigh	Calze#Alto
+ui_Home	Home
+ui_Away	Via
+ui_Alternate	Alt
+ui_UnlimitedVersion	Versione illimitata
+btn_WeatherOn	On
+btn_WeatherOff	Off
+msg_NeedUnlimited	Per utilizzare questa funzione è necessario eseguire l'aggiornamento alla versione illimitata. Effettuare l'aggiornamento ora?
+ui_RestoreAllTeams	Ripristina#Tutti i team
+msg_RestoreAllTeams	Ripristinare i nomi di default e i colori uniformi per tutte le squadre?
+ui_Current	Attuale
+ui_CopySlot1	Copia squadre#Dal Salva 1
+ui_CopySlot2	Copia squadre#Da Save 2
+ui_CopySlot3	Copia squadre#Da Save 3
+ui_CopySlot4	Copia squadre#Da Save 4
+ui_CopySlot5	Copia squadre#Da Save 5
+msg_CopyUniforms	Copiare i nomi della squadra e i colori delle uniformi dallo slot $num?
+msg_UnlimitedFeatures	Passa ora alla versione illimitata! ##* Ottieni 25 crediti di allenatore *#* Modifica i nomi delle squadre e delle divise *#* Modifica i nomi dei giocatori *#* Effetti meteo di neve e pioggia *#* Supporta lo sviluppo! *
+ui_Upgrade	Aggiornamento
+ui_Difficulty	Difficoltà
+ui_Difficulty0	Dinamico
+ui_Difficulty1	Facile
+ui_Difficulty2	Medio
+ui_Difficulty3	Difficle
+ui_Difficulty4	Estremo
+ui_Easy	Facile
+ui_Medium	Medio
+ui_Hard	Hard
+ui_Dynamic	Dinamico
+tla_NetPoints	Net
+tla_Percentage	Pct
+info_Options_Difficulty	Quando impostato su DINAMICO la difficoltà del gioco si regola automaticamente, diventando più difficile quando si vincono le partite o più facile se si perde. L'impostazione EXTREME fa giocare tutti gli avversari con una valutazione a 5 stelle, indipendentemente dalla loro effettiva valutazione.
+ui_Save	Salva
+ui_ReturnToLoad	Torna a#Caricare lo schermo
+ui_PlayerHallOfFame	Hall of Fame dei giocatori
+msg_RemoveFromHallOfFame	Vuoi rimuovere questo giocatore dalla Hall of Fame? Questo non può essere annullato.
+ui_Remove	Rimuovi
+ui_PlayerHallOfFameEmpty	Per inserire i giocatori nella tua Hall of Fame devi taggarli nell'angolo in alto a destra della pagina del loro profilo.
+msg_HofListTooBig	Non c'è spazio nella Hall of Fame! Si prega di rimuovere un giocatore prima di taggarne uno nuovo.
+msg_TradeAwayRookie	Attenzione! Il trading di un giocatore che ha firmato di recente ha un impatto negativo sul morale della squadra e sul vostro rapporto con i tifosi!
+ui_RetroBowlWinners	Vincitori del Retro Bowl
+ui_RetroBowls	Retro Bowls
+btn_RetroBowls	Retro   #Bowls
+btn_PlayerHallOfFame	#HOF Giocatori
+ui_YourHistory	La tua storia
+ui_Records	Registrazioni
+ui_RecordReg	Giochi regolari
+ui_RecordPO	Giochi Off
+ui_POsReached	Gioca Offs Raggiunto
+ui_WinPctReg	Pct Vit Regolare
+ui_WinPctPO	Pct Vit Play off
+ui_CoachRecord	Record allenatore
+ui_LongPassingPlay	Il più lungo gioco di passaggio
+ui_LongRushingPlay	Il gioco più lungo e veloce
+ui_LongPassTD	TD di passaggio più lungo
+ui_LongRushTD	TD più lungo e impetuoso
+ui_LongPassAir	Passaggio più lungo (aria)
+ui_LongFG	Il field goal più lungo
+ui_BestPassGame	Miglior gioco di passaggio
+ui_BestPassSeason	La migliore stagione di passaggio
+ui_BestPassCareer	Migliore carriera di passaggio
+ui_BestRecGame	Miglior gioco di ricezione
+ui_BestRecSeason	Migliore stagione di ricezione
+ui_BestRecCareer	Migliore carriera di ricezione
+ui_BestRushGame	Miglior gioco di corsa
+ui_BestRushSeason	La migliore stagione di punta
+ui_BestRushCareer	Migliore carriera di corsa
+ui_MostTDPassesGame	Partita con più rpassaggi TD
+ui_MostTDPassesSeason	Stagione con più passaggi TD
+ui_MostTDPassesCareer	Carriera con più passaggi TD
+ui_MostTDRecGame	Partita con più ricevimenti TD
+ui_MostTDRecSeason	Stagione con più ricevimenti TD
+ui_MostTDRecCareer	Carriera con più ricevimenti TD
+ui_MostTDRushGame	Partita con più TD di corsa
+ui_MostTDRushSeason	Stagione con più TD di corsa
+ui_MostTDRushCareer	Carriera con più TD di corsa
+ui_BestFGDistGame	Partita con più yards da field goal
+ui_BestFGDistSeason	Stagione con più yards da field goal
+ui_BestFGDistCareer	Carriera con più yards da field goal
+ui_MostFGGame	Partita con più field goal
+ui_MostFGSeason	Stagione con più field goal
+ui_MostFGCareer	Carrera con più field goal
+ui_MostTacklesGame	Partita con più tackel
+ui_MostTacklesSeason	Stagione con più tackle
+ui_MostTacklesCareer	Carria con più tackle
+ui_MostIntGame	Partita con più intercetti
+ui_MostIntSeason	Stagione con più intercetti
+ui_MostIntCareer	Carriera con più intercetti
+ui_MostSacksGame	Partita con più sacks
+ui_MostSacksSeason	Stagione con più sacks
+ui_MostSacksCareer	Carriera con più sacks
+ui_MostFFGame	Partita con più fumble forzati
+ui_MostFFSeason	Stagione con più fumble forzati
+ui_MostFFCareer	Carriera con più fumble forzati
+ui_MostPointsGame	Più punti
+ui_BiggestWin	Miglior vittoria
+ui_BiggestLoss	Peggior sconfitta
+ui_MostTDsGame	Più TD
+ui_PlayerRecords	Record dei giocatori
+btn_PlayerRecords	Player#Records
+ui_YourRecord	Il tuo record
+ui_Winners	Vincitori
+ui_NewRecord	Nuovo record
+msg_PlayerRecords	I record dei giocatori sono una nuova aggiunta al Retro Bowl. I record impostati prima di questo aggiornamento potrebbero non essere visualizzati.
+btn_RestAll	Riposo Tutti
+btn_UnrestAll	Cancella#Richiesta
+btn_SalaryCap	Cappuccio per lo stipendio
+msg_RecordsReset	Sei sicuro di voler reimpostare i record del giocatore? #Non può essere annullato.
+ui_Reset	Resetta
+ui_Champions	Campioni
+Champions	Campioni
+ui_HeadCoach	Capo Allenatore
+ui_TrainingRegime	Regime di formazione
+ui_TrainingLight	Luce
+ui_TrainingNormal	Normale
+ui_TrainingHard	Hard
+info_TrainingRegime	Impostare il regime di allenamento su HARD aiuterà i giocatori a guadagnare più XP a partita. Tuttavia consumeranno più energia, saranno meno contenti e il loro rischio di infortuni aumenterà.##LIGHT l'allenamento conserva le energie, aumenta il morale e riduce il rischio di infortuni, ma gli XP saranno guadagnati ad un ritmo più lento del normale.
+news_mvp	$position $playername ha vinto il premio del campionato per il giocatore più prezioso!
+news_roty	$position $playername ha vinto il premio della lega per il Rookie of the Year!
+news_opoy	$position $playername ha vinto il premio della lega per il giocatore offensivo dell'anno!
+news_dpoy	$position $playername ha vinto il premio della lega per il giocatore difensivo dell'anno!
+ui_SeasonRatings	Valutazioni di stagione
+msg_SeasonRatings	Un sondaggio tra i tifosi ha valutato le prestazioni della vostra squadra per la stagione...
+rating_Incredible	Incredibile
+rating_Great	Grande
+rating_Good	Buono
+rating_Ok	Ok
+rating_Poor	Povero
+rating_Terrible	Terribile
+msg_Watermark	$teamname ha un record di $record.
+msg_WatermarkHighlight	Il momento clou della stagione è stata una vittoria di $result contro $oppname.
+msg_WatermarkRestarts	La loro stagione è stata macchiata da $num false partenze.
+ui_restarts	riavvia
+favorite_DoingWell	Con un record attuale di $record, la posizione di allenatore capo squadra $ nome in pericolo. Mentre il proprietario non ha dato alcun indizio riguardo alla sua scelta preferita, molti tifosi sono stati veloci a nominare $yourname come candidato ideale.
+favorite_DoingWellReturn	I fan di $favteamname, attualmente $record, hanno chiesto il ritorno di $bossname come capo allenatore. Il proprietario di $favteamname si è rifiutato di commentare la situazione.
+favorite_DoingPoorly	Non è un segreto che il proprietario di $favteamname cercherà un nuovo capo allenatore a fine stagione, ma sembra improbabile che $favteamname sia tra i candidati.
+msg_SalaryCheckRoster	Devi ridurre la tua rosa a 10 giocatori prima di poter ridurre il tetto massimo di stipendio.
+ui_Update	Aggiorna
+ui_Roster10	10 Uomini
+ui_Roster12	12 Uomini
+msg_FansGood1	La base dei fan è cresciuta in questa stagione ma le aspettative sono più alte!
+msg_FansGood2	I tifosi si aspettano grandi cose per questa stagione!
+msg_FansGood3	I tifosi chiedono il successo di questa stagione!
+msg_FansBad1	La fiducia dei tifosi è diminuita un po' questa stagione.
+msg_FansBad2	Il tuo rapporto con i tifosi è diminuito durante la bassa stagione.
+msg_FansBad3	I tifosi si aspettano molto da questa stagione.
+msg_MoraleDown	Il morale della squadra è diminuito un po' durante la bassa stagione.
+tla_Offense	DI
+tla_Defense	DF
+ui_More	Altro
+ui_RainFall	Caduta di pioggia
+ui_SnowFall	Caduta di neve
+ui_Roof	Tetto
+ui_ExtraDetails	Dettagli extra
+btn_EndZone	Fine#Zona
+tla_MVP	MVP
+tla_ROTY	ROTY
+tla_DPOY	DPOY
+tla_OPOY	OPOY
+Rings	Anelli
+msg_TradeDeadline	La scadenza per il trade è questa settimana.## Dalla prossima settimana in poi, si potrà solo tagliare i giocatori dalla squadra, non scambiarli, fino alla prossima stagione. Potrai comunque assumere giocatori dalla lista degli Agenti Gratuiti.
+news_ConferenceChamps	$nome della squadra sono i campioni della $conferenza!
+btn_Gamepad	Usa Gamepad
+ui_Beta	Beta
+info_gamepad_restart	Potrebbe essere necessario riavviare l'applicazione dopo aver collegato il tuo gamepad bluetooth.##Si prega di notare che il supporto del gamepad è ancora in beta e potrebbe essere instabile.
+ui_Blocking	Blocco
+ui_stat_blocks	Blk
+ui_Conference	Conferenza
+ui_Division	Divisione
+ui_Extreme	Estremo
+ui_Weather	Meteo
+ui_Replays	Replay
+ui_Dynamic	Dinamico
+ui_EveryPlay	Ogni#gioco
+ui_Refresh	Aggiorna
+btn_BoostMorale	Boost#Morale
+msg_BoostMorale	Volete organizzare un evento che faccia salire il morale per i crediti di $num allenatore?
+msg_BoostMoraleAlreadyDone	Questa settimana avete già organizzato un evento per il morale.
+msg_BoostMoraleNoCredit	Hai bisogno di $num crediti di allenatore per organizzare un evento per il morale.
+msg_BoostMoraleEvent0	La squadra ha passato una serata al cinema.
+msg_BoostMoraleEvent1	Hai portato la squadra a fare un'escursione in montagna per la giornata.
+msg_BoostMoraleEvent2	La squadra ha passato una bella serata al casinò.
+msg_BoostMoraleEvent3	Hai organizzato una giornata di paintball.
+msg_BoostMoraleEvent4	La squadra ha portato i suoi animali al lavoro per un giorno!
+msg_BoostMoraleEvent5	Hai portato fuori tutta la squadra per un pasto.
+msg_BoostMoraleEvent6	Hai organizzato una giornata di sky diving per tutta la squadra!
+msg_BoostMoraleEvent7	La squadra è andata in mongolfiera per la giornata!
+msg_BoostMoraleEvent8	Hai organizzato una gita al Grand Canyon!
+msg_BoostMoraleEvent9	La squadra ha passato una serata a teatro.
+btn_BoostCondition	Boost#Condizione
+msg_BoostCondition	Volete dare alla squadra una spinta di condizione per i crediti di allenatore di $num?
+msg_BoostConditionNoCredit	Hai bisogno di $num crediti di allenatore per aumentare la condizione della squadra.
+msg_BoostConditionAlreadyDone	Avete già avuto un aumento della condizione della squadra questa settimana.
+msg_BoostConditionEvent0	Hai organizzato una giornata di benessere.
+msg_BoostConditionEvent1	La squadra ha preso una dose di vitamine.
+msg_BoostConditionEvent2	Avete dato alla squadra un giorno di riposo extra.
+msg_BoostConditionEvent3	Hai portato un rinomato guru della salute per parlare con la squadra.
+msg_BoostConditionEvent4	Bagni di ghiaccio e tende per l'ossigeno tutto intorno!
+msg_BoostConditionEvent5	Hai organizzato una giornata di relax sulla spiaggia per la squadra.
+btn_BoostSalaryCap	Aumenta#Capo salutare
+msg_BoostSalaryCap	Volete persuadere il commissario della lega ad aumentare permanentemente il tetto salariale a $$numm? Ti costerà $$numm.
+msg_BoostSalaryNoCredit	Hai bisogno di crediti di $cost coach per aumentare il salary cap a $$numm.
+ui_ExtendContract	Estendere il contratto
+ui_BoostMorale	Potenziare il morale
+ui_BoostCondition	Condizione di spinta
+ui_Meeting	Riunione
+msg_MeetingNoCredit	Non hai abbastanza crediti per il coaching!
+msg_MeetingDone	Hai già avuto un incontro con#$playername questa settimana.
+msg_MeetingMorale	Migliorare il morale di $playername costerà $num crediti di allenatore.## Vuoi procedere?
+msg_MeetingMoraleNotNeeded	Il morale di $playername è al massimo.
+msg_MeetingCondition	Migliorare le condizioni di $playername costerà $num crediti allenatore.##Vuoi procedere?
+msg_MeetingConditionNotNeeded	La condizione di $playername è al massimo.
+msg_MeetingLevelUpNotNeeded	$playername ha raggiunto il suo potenziale.
+ui_DelayRetirement	Ritardare il pensionamento
+msg_MeetingExtendContract	Costerà $num crediti allenatore per convincere $playername a prolungare il suo contratto di 1 anno.## Vuoi procedere?
+msg_MeetingDelayRetirement	Costerà $num crediti allenatore per convincere $playername a ritardare il suo pensionamento di 1 anno.##Vuoi procedere?
+msg_MeetingTooOld	$playername sente di essere troppo vecchio per continuare a giocare.
+ui_Retiring	Ritiro
+btn_ScoutPlayer	Scout#Giocatore
+ui_Ball	Palla
+msg_boost_morale1	Si dà $playername un pep-talk morale che aumenta il morale!
+msg_boost_morale2	Organizzi l'incontro dello psicologo dello sport con $playername.
+msg_boost_morale3	$playername si sente più felice dopo una rassicurante chiacchierata con te.
+msg_boost_condition1	Si dà $playername un giorno di riposo di formazione.
+msg_boost_condition2	Il medico della squadra dà $playername alcune pillole di rilassamento.
+msg_boost_condition3	$playername ha avuto una grande sessione con un guru di salute rinomato.
+msg_MeetingLevelUp1	Vuoi salire di livello $playername passando attraverso alcune ripetizioni extra sul campo di allenamento con lui? ## Ti costerà $num allenatore crediti.
+msg_MeetingLevelUp2	Vuoi far salire di livello $playername passando il tempo a guardare il filmato della partita con lui? ##Ti costerà $num allenatore crediti.
+msg_MeetingLevelUp3	Vuoi mettere $playername in contatto con un hall of famer al fine di raccogliere alcuni consigli pro? ##Ti costerà $num crediti allenatore.
+ui_Correct	Giusto
+ui_Wrong	Sbagliato
+tla_Week	Wk
+tla_WildCard	WC
+tla_PlayOff	PO
+tla_Champion	CH
+tla_SuperBowl	RB
+match_FieldGoal	Field goal
+match_Punt	Punt
+msg_OnSideKick	Do you want to try an onside kick? You will have a 1 in 10 chance of recovering the ball.
+match_OnsideKicking	$teamname try the onside kick!
+match_OnsideKickingSuccess	And they recover the ball!
+match_OnsideKickingFail	But $teamname recovers the ball
+ui_Logo	Logo
+ui_Rush	Rush
